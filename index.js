@@ -19,6 +19,7 @@ client.on("message", (msg) => {
     initialize();
     
     switch (args[0]){ //learn the switch statement. Note: If you set the argument to a string and case the string, it'll spam the function 5 times.
+    
         //replies
         case "ping":
             const OMEGALUL = client.emojis.find(emoji => emoji.name === "OmegaLUL");
@@ -76,29 +77,23 @@ client.on("message", (msg) => {
                     if(server.queue[0]){
                         play(connection, msg);
                     }
-                    /* else{ 
-                        //connection.disconnect(); //removing cos i want the bot to stay in the channel even when the song is done.
-                    } */
                 })
             }
             if(!args[1]) return msg.reply("Please provide a link to the music.");
             if(!msg.member.voiceChannel) return msg.reply("You must be in a voice channel.");
-            //if(!servers[msg.guild.id]) servers[msg.guild.id] = {queue:[]}
+            if(!servers[msg.guild.id]) servers[msg.guild.id] = {queue:[]}
             var server = servers[msg.guild.id];
             if(ytdl.validateURL(args[1])){
                 server.queue.push(args[1]);
             }
             else {
                 return msg.channel.send("Please input a valid URL");
-            }//make it so that if the video cannot be found, send a message and return.
+            }
             if(!msg.guild.voiceConnection) msg.member.voiceChannel.join().then(function(connection){ //learn how this works
                 play(connection, msg);
             })
-            /*else {
-                play(msg.guild.voiceConnection, msg); //if already in a channel, just play the music. -- Removed cos it messes up the queue and plays two songs simultaneously.
-            }*/
         break;
-        case "skip": //BUG: this stops the song and leaves the voice channel fsr. FIXED -- just removed the above else statement
+        case "skip":
             var server = servers[msg.guild.id];
             msg.channel.send("Song skipped.");
             if(server.dispatcher) server.dispatcher.end(); //figure out what server.dispatcher does
@@ -138,19 +133,24 @@ client.on("message", (msg) => {
             }
         break;
         case "queue":
-            //if(!servers[msg.guild.id]) servers[msg.guild.id] = {queue:[]}
             var server = servers[msg.guild.id];
-            if(server.queue[0]) msg.channel.send(server.queue);
-            else msg.channel.send("There are no songs in the queue.")
+            if(server.queue[0]){
+                var queueMsg = "";
+                for (i = 0; i < server.queue.length; i++){
+                    queueMsg +="\n" + (i + 1) + ": " + server.queue[i];
+                }
+                msg.channel.send(queueMsg);
+                msg.channel.bulkDelete(1);
+            }
+            else {
+                msg.channel.send("There are no songs in the queue.");
+            }
         break;
     }
 
     //initialization functions
     function initialize(){
-        iMusic();
-    }
-    function iMusic(){
-        if(!servers[msg.guild.id]) servers[msg.guild.id] = {queue:[]}
+        
     }
 });
 
