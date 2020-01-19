@@ -197,9 +197,17 @@ client.on("message", (msg) => {
             var difference = [];
             var time = [];
             var minutes = 0;
+            var meridiem;
             var tempvar;
             var tempvar2;
 
+            //meridiem
+            if(!args[3] || args[3] == "PM"){
+                meridiem = false;
+            }
+            else if(args[3] == "AM"){
+                meridiem = true;
+            }
             //distribute
             for (i = 0; i < timestamps.length; i++){
                 minutes = (timestamps[i].split("-")[1].split(":")[0] - timestamps[i].split("-")[0].split(":")[0]) * 60;
@@ -244,7 +252,13 @@ client.on("message", (msg) => {
                         tempvar[1] = "0" + time[x].split(":")[1];
                         time[x] = tempvar.join(":");
                     }
-                    assignments.push(activities[x] + ": [" + time[x] + "] (" + difference[x] + " minutes)");
+
+                    if(meridiem){
+                        assignments.push(activities[x] + ": [" + time[x] + " AM] (" + difference[x] + " minutes)");
+                    }
+                    else{
+                        assignments.push(activities[x] + ": [" + time[x] + " PM] (" + difference[x] + " minutes)");                        
+                    }
                 }
             }
             msg.channel.send(assignments);
