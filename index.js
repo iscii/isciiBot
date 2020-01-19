@@ -86,7 +86,6 @@ client.on("message", (msg) => {
                 var server = servers[msg.guild.id];
                 function play(connection, msg){
                     console.log("play");
-                    var prevMsg = msg;
                     server.dispatcher = connection.playStream(ytdl(server.queue[0].url, {filter: "audioonly"}));
                     currentSong = [server.queue[0].songTitle, args[1]];
                     msg.channel.send("Playing [" + server.queue[0].songTitle + "]");
@@ -102,12 +101,12 @@ client.on("message", (msg) => {
                     })
                 }
                 var server = servers[msg.guild.id];
-                ytdl.getInfo(link, async (err, info) => {
+                ytdl.getInfo(args[1], async (err, info) => {
                     if(err) console.log(err);
-                    if(ytdl.validateURL(link)){
+                    if(ytdl.validateURL(args[1])){
                         server.queue.push({
                             songTitle: info.title,
-                            url: link,
+                            url: args[1],
                             requester: msg.author.tag,
                             announceChannel: msg.channel.id
                         });
