@@ -75,7 +75,7 @@ client.on("message", (msg) => {
             msg.channel.send(sayMsg.join(" ")); //joins the array items separated by spaces.
         break;  
 
-        //music
+        //music -- straight up redo the whole command
         case "play": //learn whatever goes on in here lmao
             //BUG: when you skip, the player sometimes freezes and the play function is not called. comtinue calling skip and the queue will not skip the next song.
             if(playCooldown){
