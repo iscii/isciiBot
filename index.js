@@ -209,7 +209,7 @@ client.on("message", (msg) => {
                 meridiem = true;
             }
             else{
-                msg.channel.send("Please state a valid meridiem.")
+                return msg.channel.send("Please state a valid meridiem.");
             }
             //distribute
             for (i = 0; i < timestamps.length; i++){
