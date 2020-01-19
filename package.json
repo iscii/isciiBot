@@ -1,5 +1,5 @@
 {
-  "name": "index.js",
+  "name": "isciibot",
   "version": "1.0.0",
   "description": "discord bot",
   "main": "index.js",
@@ -17,5 +17,11 @@
   "bugs": {
     "url": "https://github.com/iscii/isciiBot/issues"
   },
-  "homepage": "https://github.com/iscii/isciiBot#readme"
+  "homepage": "https://github.com/iscii/isciiBot#readme",
+  "dependencies": {
+    "discord.js": "^11.5.1",
+    "discord.js-commando": "^0.10.0",
+    "node-opus": "^0.3.3",
+    "ytdl-core": "^1.0.7"
+  }
 }
