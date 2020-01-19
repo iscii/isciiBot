@@ -1,2 +1,0 @@
-# isciiBot
-discord bot
