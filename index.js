@@ -208,6 +208,9 @@ client.on("message", (msg) => {
             else if(args[3] == "AM"){
                 meridiem = true;
             }
+            else{
+                msg.channel.send("Please state a valid meridiem.")
+            }
             //distribute
             for (i = 0; i < timestamps.length; i++){
                 minutes = (timestamps[i].split("-")[1].split(":")[0] - timestamps[i].split("-")[0].split(":")[0]) * 60;
