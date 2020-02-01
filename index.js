@@ -256,7 +256,7 @@ client.on("message", (msg) => {
             var antec = args[1];
             var conseq = args[2];
             
-            if(getRandomInteger(0, (antec + conseq)) <= antec) msg.channel.send("Yes");
+            if(utilities.getRandomInteger(0, (antec + conseq)) <= antec) msg.channel.send("Yes");
             else msg.channel.send("No");
 
         break;
