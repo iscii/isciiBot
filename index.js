@@ -86,6 +86,7 @@ client.on("message", (msg) => {
                 var server = servers[msg.guild.id];
                 function play(connection, msg){
                     console.log("play");
+                    var prevMsg = msg;
                     server.dispatcher = connection.playStream(ytdl(server.queue[0].url, {filter: "audioonly"}));
                     currentSong = [server.queue[0].songTitle, args[1]];
                     msg.channel.send("Playing [" + server.queue[0].songTitle + "]");
@@ -101,12 +102,12 @@ client.on("message", (msg) => {
                     })
                 }
                 var server = servers[msg.guild.id];
-                ytdl.getInfo(args[1], async (err, info) => {
+                ytdl.getInfo(link, async (err, info) => {
                     if(err) console.log(err);
-                    if(ytdl.validateURL(args[1])){
+                    if(ytdl.validateURL(link)){
                         server.queue.push({
                             songTitle: info.title,
-                            url: args[1],
+                            url: link,
                             requester: msg.author.tag,
                             announceChannel: msg.channel.id
                         });
@@ -197,20 +198,9 @@ client.on("message", (msg) => {
             var difference = [];
             var time = [];
             var minutes = 0;
-            var meridiem;
             var tempvar;
             var tempvar2;
 
-            //meridiem
-            if(!args[3] || args[3] == "PM"){
-                meridiem = false;
-            }
-            else if(args[3] == "AM"){
-                meridiem = true;
-            }
-            else{
-                return msg.channel.send("Please state a valid meridiem.");
-            }
             //distribute
             for (i = 0; i < timestamps.length; i++){
                 minutes = (timestamps[i].split("-")[1].split(":")[0] - timestamps[i].split("-")[0].split(":")[0]) * 60;
@@ -255,17 +245,21 @@ client.on("message", (msg) => {
                         tempvar[1] = "0" + time[x].split(":")[1];
                         time[x] = tempvar.join(":");
                     }
-
-                    if(meridiem){
-                        assignments.push(activities[x] + ": [" + time[x] + " AM] (" + difference[x] + " minutes)");
-                    }
-                    else{
-                        assignments.push(activities[x] + ": [" + time[x] + " PM] (" + difference[x] + " minutes)");                        
-                    }
+                    assignments.push(activities[x] + ": [" + time[x] + "] (" + difference[x] + " minutes)");
                 }
             }
             msg.channel.send(assignments);
         break;  
+        case "fate":
+            if(!args[1]) return msg.channel.send("Please state a valid antecedent");
+            if(!args[2]) return msg.channel.send("Please state a valid consequent");
+            var antec = args[1];
+            var conseq = args[2];
+            
+            if(getRandomInteger(0, (antec + conseq)) <= antec) msg.channel.send("Yes");
+            else msg.channel.send("No");
+
+        break;
         /* for testing purposes
         case "test":
             var var1 = args[1];
