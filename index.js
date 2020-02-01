@@ -255,9 +255,11 @@ client.on("message", (msg) => {
             if(!args[2]) return msg.channel.send("Please state a valid consequent");
             var antec = args[1];
             var conseq = args[2];
+            var decider = utilities.getRandomInteger(0, (antec + conseq));
             
-            if(utilities.getRandomInteger(0, (antec + conseq)) <= antec) msg.channel.send("Yes");
+            if(decider <= antec) msg.channel.send("Yes");
             else msg.channel.send("No");
+            console.log(decider);
 
         break;
         /* for testing purposes
