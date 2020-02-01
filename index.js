@@ -254,8 +254,8 @@ client.on("message", (msg) => {
             if(!args[1]) return msg.channel.send("Please state a valid antecedent");
             if(!args[2]) return msg.channel.send("Please state a valid consequent");
             var antec = args[1];
-            var conseq = args[3];
-            var decider = utilities.getRandomInteger(0, (antec + conseq));
+            var conseq = args[2];
+            var decider = (antec + conseq);
             
             if(decider <= antec) msg.channel.send("Yes");
             else msg.channel.send("No");
