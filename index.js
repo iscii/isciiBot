@@ -2,6 +2,10 @@
 prefix = "|";
 bot token = "NjYyNzgwMDc4MzM3NDI1NDgx.XhEMoQ.WHnPj1FsXJoxwJaI9FzirCv3RWA";
 */
+
+client.login(process.env.TOKEN);
+//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
+
 //import discord
 const Discord = require("discord.js");
 const client = new Discord.Client();
@@ -14,6 +18,10 @@ global.servers = {}; //object list to store URLs and prevents overlapping music 
 
 client.on("ready", () => {
     console.log("bot is ready");
+    client.user.setActivity("and giving headpats", { //status
+        type: "STREAMING",
+        url: "https://www.twitch.tv/ninja"
+      });
     prefix = "|";
 });
 
@@ -47,7 +55,9 @@ client.on("message", (msg) => {
             break;
             case "help":
                 console.log("help");
-                msg.channel.send("Please help " + msg.author.username);
+                //msg.channel.send("Please help " + msg.author.username);
+                //remember to re-add "clear"
+                msg.channel.send("Commands: \n ping \n owo \n uwu \n emotelist \n emote \n say (add .e.<<emote name>> for emote) \n schedule \n fate");
             break;
 
             //emotes
@@ -176,8 +186,6 @@ client.on("message", (msg) => {
         //client.channels.get(channelID).send(msg.toString());
     }
 });
-client.login(process.env.TOKEN);
-//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
 
 /*
 //initialization functions

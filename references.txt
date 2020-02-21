@@ -1,0 +1,5 @@
+message linebreak
+https://github.com/discordjs/discord.js/issues/439
+
+bot status
+https://stackoverflow.com/questions/49286640/how-to-set-bots-status
