@@ -3,9 +3,6 @@ prefix = "|";
 bot token = "NjYyNzgwMDc4MzM3NDI1NDgx.XhEMoQ.WHnPj1FsXJoxwJaI9FzirCv3RWA";
 */
 
-client.login(process.env.TOKEN);
-//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
-
 //import discord
 const Discord = require("discord.js");
 const client = new Discord.Client();
@@ -14,6 +11,9 @@ const ytdl = require("ytdl-core");
 //import utilities
 const utilities = require("./utilities.js");
 
+client.login(process.env.TOKEN);
+//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
+
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
 client.on("ready", () => {
@@ -21,7 +21,7 @@ client.on("ready", () => {
     client.user.setActivity("and giving headpats", { //status
         type: "STREAMING",
         url: "https://www.twitch.tv/ninja"
-      });
+    });
     prefix = "|";
 });
 
