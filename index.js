@@ -15,7 +15,6 @@ global.servers = {}; //object list to store URLs and prevents overlapping music 
 client.on("ready", () => {
     console.log("bot is ready");
     prefix = "|";
-    initialize();
 });
 
 client.on("message", (msg) => {
