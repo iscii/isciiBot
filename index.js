@@ -11,8 +11,8 @@ const ytdl = require("ytdl-core");
 //import utilities
 const utilities = require("./utilities.js");
 
-client.login(process.env.TOKEN);
-//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
+//client.login(process.env.TOKEN);
+client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
@@ -35,7 +35,7 @@ client.on("message", (msg) => {
             //replies
             case "ping":
                 console.log("ping");
-                const OMEGALUL = client.emojis.find(emoji => emoji.name === "OmegaLUL");
+                const OMEGALUL = client.emojis.find(emoji => emoji.name === "omegalul");
                 msg.channel.send(`p${OMEGALUL}ng`) //back tick (`) is the tilda key -- it encloses a Template Literal. Unlike "" and '' it can contain placeholders.
             break;
             case "owo":
@@ -57,7 +57,7 @@ client.on("message", (msg) => {
                 console.log("help");
                 //msg.channel.send("Please help " + msg.author.username);
                 //remember to re-add "clear"
-                msg.channel.send("Commands: \n ping \n owo \n uwu \n emotelist \n emote \n say (add .e.<<emote name>> for emote) \n schedule \n fate");
+                msg.channel.send("Prefix: | \nCommands: \n ping \n owo \n uwu \n emotelist \n emote \n say (add .e.<emote name> for emote) \n schedule <activity>,<activity> <time>-<time> \n fate <number> <number> - give a ratio and it'll flip an uneven coin accordingly");
             break;
 
             //emotes
