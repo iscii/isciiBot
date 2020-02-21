@@ -293,5 +293,5 @@ function iVariables(){
     //let cdTime = 2; //time in seconds
 }
 
-//client.login(process.env.TOKEN);
-client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
+client.login(process.env.TOKEN);
+//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
