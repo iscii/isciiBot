@@ -10,7 +10,6 @@ const ytdl = require("ytdl-core");
 //import utilities
 const utilities = require("./utilities.js");
 
-
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
 client.on("ready", () => {
@@ -43,7 +42,7 @@ client.on("message", (msg) => {
             msg.channel.send("deleted " + messageCount + " messages");
         break;
         case "help":
-            //msg.channel.
+            msg.channel.send("Please help " + msg.author.username);
         break;
 
         //emotes
@@ -76,6 +75,7 @@ client.on("message", (msg) => {
         break;  
 
         //music
+        /*
         case "play": //learn whatever goes on in here lmao
             //BUG: when you skip, the player sometimes freezes and the play function is not called. comtinue calling skip and the queue will not skip the next song.
             if(playCooldown){
@@ -187,8 +187,8 @@ client.on("message", (msg) => {
             }
             else msg.channel.send("There are no songs in the queue.");
         break;
+        */
 
-        //minutes 
         case "schedule": //|schedule cs,payday,headsnatchers 1:22-4,5-7:59 (make a schedule based off this)
         //implement an alloted system (give an activity a minimum of time)
             if(!args[1]) return msg.channel.send("Please provide the activity and timestamps");
@@ -249,7 +249,8 @@ client.on("message", (msg) => {
                 }
             }
             msg.channel.send(assignments);
-        break;  
+        break;
+
         case "fate":
             if(!args[1]) return msg.channel.send("Please state a valid antecedent");
             if(!args[2]) return msg.channel.send("Please state a valid consequent");
@@ -260,8 +261,8 @@ client.on("message", (msg) => {
             if(decider <= antec) msg.channel.send("Yes");
             else msg.channel.send("No");
             console.log(decider);
-
         break;
+
         /* for testing purposes
         case "test":
             var var1 = args[1];
@@ -292,5 +293,5 @@ function iVariables(){
     //let cdTime = 2; //time in seconds
 }
 
-client.login(process.env.TOKEN);
-//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.XhEMoQ.WHnPj1FsXJoxwJaI9FzirCv3RWA");
+//client.login(process.env.TOKEN);
+client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
