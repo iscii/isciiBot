@@ -11,8 +11,8 @@ const ytdl = require("ytdl-core");
 //import utilities
 const utilities = require("./utilities.js");
 
-//client.login(process.env.TOKEN);
-client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
+client.login(process.env.TOKEN);
+//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
