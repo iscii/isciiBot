@@ -61,16 +61,20 @@ client.on("message", (msg) => {
             break;
 
             //emotes
-            case "emotelist":
-                console.log("emotelist");
-                const EMOTELIST =  msg.guild.emojis.map(e => e.toString()).join(" ");
-                msg.channel.send(EMOTELIST);
-            break;
             case "emote":
                 console.log("emote");
                 var emote = client.emojis.find(emoji => emoji.name === args[1]);
                 if(args[1] == null) return msg.channel.send("The emote '" + args[1] +  "' is not found. Please check for capitalization.")
                 msg.channel.send(`${emote}`);
+            break;
+            case "emotelist":
+                var emoteList = msg.guild.emojis.map(emoji => emoji + ' ~ ' + emoji.name) //on every third space (" ") add a linebreak.
+                for(i = 3; i < emoteList.length; i += 4){
+                    emoteList.splice(i, 0, "\n");
+                }
+                emoteList = emoteList.join("");
+                console.log(emoteList);
+                msg.channel.send(emoteList);
             break;
             case "say":
                 console.log("say");
@@ -90,7 +94,7 @@ client.on("message", (msg) => {
                 }   
                 msg.channel.bulkDelete(1);
                 msg.channel.send(sayMsg.join(" ")); //joins the array items separated by spaces.
-            break;  
+            break; 
 
             case "schedule": //|schedule cs,payday,headsnatchers 1:22-4,5-7:59 (make a schedule based off this)
             //implement an alloted system (give an activity a minimum of time)
