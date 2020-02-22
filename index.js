@@ -11,8 +11,8 @@ const ytdl = require("ytdl-core");
 //import utilities
 const utilities = require("./utilities.js");
 
-client.login(process.env.TOKEN);
-//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
+//client.login(process.env.TOKEN);
+client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
@@ -53,30 +53,51 @@ client.on("message", (msg) => {
                 msg.channel.bulkDelete(messageCount);
                 msg.channel.send("deleted " + messageCount + " messages");
             break;
-            case "help":
+            case "serverlist":
+                console.log("servers");
+                var serverList = client.guilds.map(g => g.name);
+                msg.channel.send(serverList);
+            break;
+            case "help": //organize the commands
                 console.log("help");
                 //msg.channel.send("Please help " + msg.author.username);
                 //remember to re-add "clear"
-                msg.channel.send("Prefix: | \nCommands: \n ping \n owo \n uwu \n emotelist \n emote \n say (add .e.<emote name> for emote) \n schedule <activity>,<activity> <time>-<time> \n fate <number> <number> - give a ratio and it'll flip an uneven coin accordingly");
+                msg.channel.send("Prefix: | \nCommands: \n ping \n owo \n uwu \n serverlist \n emotelist <server name> \n emote \n say (add .e.<emote name> for emote) \n schedule <activity>,<activity> <time>-<time> \n fate <number> <number> - give a ratio and it'll flip an uneven coin accordingly");
             break;
 
             //emotes
             case "emote":
                 console.log("emote");
                 var emote = client.emojis.find(emoji => emoji.name === args[1]);
-                if(args[1] == null) return msg.channel.send("The emote '" + args[1] +  "' is not found. Please check for capitalization.")
+                if(args[1] == null) return msg.channel.send("The emote '" + args[1] + "' is not found. Please check for capitalization.")
                 msg.channel.send(`${emote}`);
             break;
             case "emotelist":
-                var emoteList = msg.guild.emojis.map(emoji => emoji + ' ~ ' + emoji.name) //on every third space (" ") add a linebreak.
-                for(i = 3; i < emoteList.length; i += 4){
-                    emoteList.splice(i, 0, "\n");
+                console.log("emotelist");
+                function compileEmotes(list){
+                    for(i = 4; i < emoteList.length; i += 5){
+                        emoteList.splice(i, 0, "\n");
+                    }
+                    emoteList = emoteList.join("");
                 }
-                emoteList = emoteList.join("");
-                console.log(emoteList);
-                msg.channel.send(emoteList);
+                if(!args[1]){ //defaults to cuurrent guild
+                    var emoteList = msg.guild.emojis.map(emoji => emoji.name + emoji); //on every third space (" ") add a linebreak.
+                    compileEmotes(emoteList);
+                    msg.channel.send(emoteList);
+                }
+                else{ //give list of emotes of the specified guild. return message if the guild is not found.
+                    args.shift();
+                    var server = client.guilds.find(g => g.name === args.join(" "));
+                    var emoteList = server.emojis.map(emoji => emoji.name + emoji);
+                    compileEmotes(emoteList);
+                    //splits content into two messages. make it check for <s (counting from the back to the next 20 characters), and if the bracket is not closed off with > then bring that string to the next message.   
+                    if(emoteList.length > 2000){
+                        return msg.channel.send("In Maintainence: The server has too many emotes!");
+                    }
+                    msg.channel.send(emoteList);
+                }
             break;
-            case "say":
+            case "say": //to-do
                 console.log("say");
                 if(args[1] == null) return msg.channel.send("Please state the message to be sent.");
                 if(args[1] === "help" && args[2] == null) return msg.channel.send("Makes the bot send a message. Add .e. before an emote name to send an emote.");

@@ -6,3 +6,7 @@ https://stackoverflow.com/questions/49286640/how-to-set-bots-status
 
 emojis
 https://github.com/AnIdiotsGuide/discordjs-bot-guide/blob/master/coding-guides/using-emojis.md
+
+collections/maps and client.guilds
+https://github.com/AnIdiotsGuide/discordjs-bot-guide/blob/master/understanding/collections.md
+
