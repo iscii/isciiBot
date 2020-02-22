@@ -11,8 +11,8 @@ const ytdl = require("ytdl-core");
 //import utilities
 const utilities = require("./utilities.js");
 
-client.login(process.env.TOKEN);
-//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
+//client.login(process.env.TOKEN);
+client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
@@ -30,7 +30,7 @@ client.on("message", (msg) => {
     //args[1] returns the second word of the message; this function splits the message into individual words and places them into an array.
     let args = msg.content.substring(prefix.length).split(" "); //.split(" ") turns args into an array.
 
-    if(msg.guild){
+    if(msg.guild && msg.content[0] == prefix){
         switch (args[0]){ //learn the switch statement. Note: If you set the argument to a string and case the string, it'll spam the function 5 times.
             //replies
             case "ping":
