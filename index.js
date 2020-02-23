@@ -76,16 +76,7 @@ client.on("message", (msg) => {
                 console.log("emotelist");//give the bot 40 emotes (10 lines, 4 emotes per line) per message
                 var message = [];
                 function checkForSplit(){
-                    var index = 0;
-                    for(i = 0; i < Math.ceil(emoteList.length / 32); i++){
-                        if(emoteList.length - index < 32){
-                            message[i] = emoteList.slice(index, emoteList.length);
-                        }
-                        else{
-                            message[i] = emoteList.slice(index, index + 32)
-                            index += 32;
-                        }
-                    }
+                    utilities.splitArray(emoteList, 32, message);
                     for(i in message){
                         compileEmotes(message[i]);
                     }

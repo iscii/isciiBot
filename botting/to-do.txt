@@ -1,9 +1,16 @@
 
 
 
+7)
+https://cdn.discordapp.com/attachments/680227759024636001/681208103802503192/unknown.png
+	-make the bot reply a dad joke on a 5% probability
 
+6)
+https://cdn.discordapp.com/attachments/680227759024636001/681207772343304212/unknown.png
+	-make a command that'll react to a certain message (maybe the message above it)
+	with the specified emote
 
-5)
+5)X
 https://cdn.discordapp.com/attachments/680227759024636001/680608450857926703/unknown.png
 	-iterate through client.guilds to get every possible emoji
 	-instead of sending every emote in one go, make a command that sends 
@@ -16,7 +23,7 @@ https://cdn.discordapp.com/attachments/680227759024636001/680605968177954904/unk
 3)
 	-message authorization and permission checking
 
-2)
+2)X
 https://cdn.discordapp.com/attachments/680227759024636001/680228029829742618/unknown.png
 	-load bot into many servers to use as fake nitro
 
