@@ -8,6 +8,7 @@ https://cdn.discordapp.com/attachments/680227759024636001/680608450857926703/unk
 	-iterate through client.guilds to get every possible emoji
 	-instead of sending every emote in one go, make a command that sends 
 	the names of the guilds which the bot is in, and then have the user do |emotelist <guild>
+	-give bot a set num of emotes per message.
 4)
 https://cdn.discordapp.com/attachments/680227759024636001/680605968177954904/unknown.png
 	-"serveremotelist" command: fix the design (add || or smthn b/t the emotes)

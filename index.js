@@ -11,8 +11,8 @@ const ytdl = require("ytdl-core");
 //import utilities
 const utilities = require("./utilities.js");
 
-//client.login(process.env.TOKEN);
-client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
+client.login(process.env.TOKEN);
+//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
@@ -73,32 +73,43 @@ client.on("message", (msg) => {
                 msg.channel.send(`${emote}`);
             break;
             case "emotelist":
-                console.log("emotelist");
-                function compileEmotes(list){
-                    for(i = 4; i < emoteList.length; i += 5){
-                        emoteList.splice(i, 0, "\n");
+                console.log("emotelist");//give the bot 40 emotes (10 lines, 4 emotes per line) per message
+                var message = [];
+                function checkForSplit(){
+                    var index = 0;
+                    for(i = 0; i < Math.ceil(emoteList.length / 32); i++){
+                        if(emoteList.length - index < 32){
+                            message[i] = emoteList.slice(index, emoteList.length);
+                        }
+                        else{
+                            message[i] = emoteList.slice(index, index + 32)
+                            index += 32;
+                        }
                     }
-                    emoteList = emoteList.join("");
+                    for(i in message){
+                        compileEmotes(message[i]);
+                    }
                 }
-                if(!args[1]){ //defaults to cuurrent guild
-                    var emoteList = msg.guild.emojis.map(emoji => emoji.name + emoji); //on every third space (" ") add a linebreak.
-                    compileEmotes(emoteList);
-                    msg.channel.send(emoteList);
+                function compileEmotes(list){
+                    for(i = 4; i < list.length; i += 5){
+                        list.splice(i, 0, "\n");
+                    }
+                    return msg.channel.send(list.join(""));
                 }
-                else{ //give list of emotes of the specified guild. return message if the guild is not found.
+                if(!args[1]){ //defaults to current guild
+                    var emoteList = msg.guild.emojis.map(emoji => "[``" + emoji.name + "`` | " + emoji + "]  ");
+                    checkForSplit();
+                }
+                else{
                     args.shift();
                     var server = client.guilds.find(g => g.name === args.join(" "));
-                    var emoteList = server.emojis.map(emoji => emoji.name + emoji);
-                    compileEmotes(emoteList);
-                    //splits content into two messages. make it check for <s (counting from the back to the next 20 characters), and if the bracket is not closed off with > then bring that string to the next message.   
-                    if(emoteList.length > 2000){
-                        return msg.channel.send("In Maintainence: The server has too many emotes!");
-                    }
-                    msg.channel.send(emoteList);
+                    var emoteList = server.emojis.map(emoji => "[``" + emoji.name + "`` | " + emoji + "]  ");
+                    checkForSplit();
                 }
             break;
             case "say": //to-do
-                console.log("say");
+                console.log("say [" + msg.guild.name + "] [" + msg.author.username + "]");
+                msg.channel.bulkDelete(1);
                 if(args[1] == null) return msg.channel.send("Please state the message to be sent.");
                 if(args[1] === "help" && args[2] == null) return msg.channel.send("Makes the bot send a message. Add .e. before an emote name to send an emote.");
                 var sayMsg = args.slice(1); //slice is the substring function for arrays
@@ -113,8 +124,8 @@ client.on("message", (msg) => {
                 for (var i = 0; i < sayArg.length; i++){
                     sayMsg.splice(sayArg[i].split(";")[0], 1, sayArg[i].split(";")[1]);
                 }   
-                msg.channel.bulkDelete(1);
                 msg.channel.send(sayMsg.join(" ")); //joins the array items separated by spaces.
+                console.log(sayMsg.join(" "));
             break; 
 
             case "schedule": //|schedule cs,payday,headsnatchers 1:22-4,5-7:59 (make a schedule based off this)
