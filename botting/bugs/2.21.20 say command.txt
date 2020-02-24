@@ -1,0 +1,2 @@
+https://cdn.discordapp.com/attachments/680227759024636001/680227811738255392/unknown.png
+store the message id/author id into a variable and then delete that message.
