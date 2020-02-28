@@ -10,3 +10,5 @@ https://github.com/AnIdiotsGuide/discordjs-bot-guide/blob/master/coding-guides/u
 collections/maps and client.guilds
 https://github.com/AnIdiotsGuide/discordjs-bot-guide/blob/master/understanding/collections.md
 
+fetching message by id
+https://github.com/AnIdiotsGuide/discordjs-bot-guide/blob/master/frequently-asked-questions.md

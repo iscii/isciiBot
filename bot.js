@@ -11,8 +11,8 @@ const ytdl = require("ytdl-core");
 //import utilities
 const utilities = require("./utilities.js");
 
-client.login(process.env.TOKEN);
-//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
+//client.login(process.env.TOKEN);
+client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
@@ -78,7 +78,19 @@ client.on("message", (msg) => {
                     console.log("help");
                     //msg.channel.send("Please help " + msg.author.username);
                     //remember to re-add "clear"
-                    msg.channel.send("Prefix: | \nCommands: \n ping \n owo \n uwu \n serverlist \n emotelist <server name> \n emote \n say (add .e.<emote name> for emote) \n schedule <activity>,<activity> <time>-<time> \n fate <number> <number> - give a ratio and it'll flip an uneven coin accordingly");
+                    msg.channel.send("Prefix: | " + 
+                                    "\nCommands: " + 
+                                    "\n ping " + 
+                                    "\n owo " + 
+                                    "\n uwu " + 
+                                    "\n serverlist " + 
+                                    "\n emotelist <server name> " + //args[1] not required: defaulted to current server
+                                    "\n emote " + 
+                                    "\n say (add .e.<emote name> for emote) " + 
+                                    "\n schedule <activity>,<activity> <time>-<time> " + 
+                                    "\n fate <number> <number> - give a ratio and it'll flip an uneven coin accordingly" +
+                                    "\n react <emote name> <message id>" //args[2] not required: defaulted to last message
+                    );
                 break;
 
                 //emotes
@@ -115,8 +127,8 @@ client.on("message", (msg) => {
                     }
                 break;
                 case "say": //to-do
-                    console.log("say [" + msg.guild.name + "] [" + msg.author.username + "]");
-                    msg.channel.bulkDelete(1);
+                    console.log("say [" + msg.author.username + "] [" + msg.guild.name + "]");
+                    msg.delete();
                     if(args[1] == null) return msg.channel.send("Please state the message to be sent.");
                     if(args[1] === "help" && args[2] == null) return msg.channel.send("Makes the bot send a message. Add .e. before an emote name to send an emote.");
                     var sayMsg = args.slice(1); //slice is the substring function for arrays
@@ -134,11 +146,29 @@ client.on("message", (msg) => {
                     msg.channel.send(sayMsg.join(" ")); //joins the array items separated by spaces.
                     console.log(sayMsg.join(" "));
                 break; 
+                case "react": //give the user a way to specify the message it wants to react to. defaulted to the one above.
+                    console.log("react [" + msg.author.username + "] [" + msg.guild.name + "] [emote: " + args[1] + "] [msg id:" + args[2] + "]");
+                    if(!args[1]) return msg.channel.send("react <emote name> <message id>");
+                    msg.delete();
+                    var emote = client.emojis.find(e => e.name == args[1]);
+                    if(args[2]){
+                        msg.channel.fetchMessages({around: args[2], limit: 1}).then(message => {
+                            const reactMessage = message.first();
+                            reactMessage.react(emote);
+                        });
+                    }
+                    else{
+                        msg.channel.fetchMessages({limit: 1}).then(message => {
+                            const reactMessage = message.first();
+                            reactMessage.react(emote);
+                        });
+                    }
+                break;
 
                 case "schedule": //|schedule cs,payday,headsnatchers 1:22-4,5-7:59 (make a schedule based off this)
                 //implement an alloted system (give an activity a minimum of time)
                     console.log("schedule");
-                    if(!args[1]) return msg.channel.send("Please provide the activity and timestamps");
+                    if(!args[1]) return msg.channel.send("schedule <activity>,<activity> <time>-<time>");
                     var activities = utilities.shuffleArray(args[1].split(","));
                     var timestamps = args[2].split(",");
                     var assignments = [];
