@@ -51,7 +51,7 @@ client.on("message", (msg) => {
                 //replies
                 case "ping":
                     console.log("ping");
-                    const OMEGALUL = client.emojis.find(emoji => emoji.name === "omegalul");
+                    const OMEGALUL = client.emojis.find(emoji => emoji.name == "omegalul");
                     msg.channel.send(`p${OMEGALUL}ng`) //back tick (`) is the tilda key -- it encloses a Template Literal. Unlike "" and '' it can contain placeholders.
                 break;
                 case "owo":
