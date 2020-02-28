@@ -5,4 +5,8 @@ Node.js 13.5
 
 Prefix: |
 
-To edit and test locally: right click entire isciiBot folder and 'open with VSCode.' Then, node . should no longer produce errors.
+To edit and test locally:
+  -Open entire folder in VSCode
+  -Change the tokens
+  -Turn off heroku dyno worker
+
