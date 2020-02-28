@@ -1,0 +1,33 @@
+
+
+
+7)
+https://cdn.discordapp.com/attachments/680227759024636001/681208103802503192/unknown.png
+	-make the bot reply a dad joke on a 5% probability
+
+6)
+https://cdn.discordapp.com/attachments/680227759024636001/681207772343304212/unknown.png
+	-make a command that'll react to a certain message (maybe the message above it)
+	with the specified emote
+
+5)X
+https://cdn.discordapp.com/attachments/680227759024636001/680608450857926703/unknown.png
+	-iterate through client.guilds to get every possible emoji
+	-instead of sending every emote in one go, make a command that sends 
+	the names of the guilds which the bot is in, and then have the user do |emotelist <guild>
+	-give bot a set num of emotes per message.
+4)
+https://cdn.discordapp.com/attachments/680227759024636001/680605968177954904/unknown.png
+	-"serveremotelist" command: fix the design (add || or smthn b/t the emotes)
+
+3)
+	-message authorization and permission checking
+
+2)X
+https://cdn.discordapp.com/attachments/680227759024636001/680228029829742618/unknown.png
+	-load bot into many servers to use as fake nitro
+
+1)
+https://cdn.discordapp.com/attachments/680227759024636001/680227970152923157/unknown.png
+https://cdn.discordapp.com/attachments/680227759024636001/680230039710990350/unknown.png
+	-route DMS to server channel (for confessions)
