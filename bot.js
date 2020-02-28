@@ -11,8 +11,8 @@ const ytdl = require("ytdl-core");
 //import utilities
 const utilities = require("./utilities.js");
 
-client.login(process.env.TOKEN);
-//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
+//client.login(process.env.TOKEN);
+client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
@@ -149,6 +149,7 @@ client.on("message", (msg) => {
                 case "react": //give the user a way to specify the message it wants to react to. defaulted to the one above.
                     console.log("react [" + msg.author.username + "] [" + msg.guild.name + "] [emote: " + args[1] + "] [msg id:" + args[2] + "]");
                     if(!args[1]) return msg.channel.send("react <emote name> <message id>");
+                    console.log(msg.channel.lastMessageID);
                     msg.delete();
                     var emote = client.emojis.find(e => e.name == args[1]);
                     if(!emote) return msg.channel.send("That emote does not exist");
@@ -156,14 +157,12 @@ client.on("message", (msg) => {
                         msg.channel.fetchMessages({around: args[2], limit: 1}).then(message => {
                             var reactMessage = message.first();
                             reactMessage.react(emote);
-                            if(error) console.log(error);
                         });
                     }
                     if(!args[2]){
                         msg.channel.fetchMessages({limit: 1}).then(message => {
                             var reactMessage = message.first();
                             reactMessage.react(emote);
-                            if(error) console.log(error);
                         });
                     }
                 break;
