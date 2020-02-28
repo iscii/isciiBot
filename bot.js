@@ -11,8 +11,8 @@ const ytdl = require("ytdl-core");
 //import utilities
 const utilities = require("./utilities.js");
 
-//client.login(process.env.TOKEN);
-client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
+client.login(process.env.TOKEN);
+//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
@@ -151,16 +151,19 @@ client.on("message", (msg) => {
                     if(!args[1]) return msg.channel.send("react <emote name> <message id>");
                     msg.delete();
                     var emote = client.emojis.find(e => e.name == args[1]);
+                    if(!emote) return msg.channel.send("That emote does not exist");
                     if(args[2]){
                         msg.channel.fetchMessages({around: args[2], limit: 1}).then(message => {
-                            const reactMessage = message.first();
+                            var reactMessage = message.first();
                             reactMessage.react(emote);
+                            if(error) console.log(error);
                         });
                     }
-                    else{
+                    if(!args[2]){
                         msg.channel.fetchMessages({limit: 1}).then(message => {
-                            const reactMessage = message.first();
+                            var reactMessage = message.first();
                             reactMessage.react(emote);
+                            if(error) console.log(error);
                         });
                     }
                 break;
