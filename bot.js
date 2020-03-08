@@ -160,6 +160,7 @@ client.on("message", (msg) => {
                     for(var i in args){
                         if(args[i].includes(".e.")){
                             var sayEmote = client.emojis.cache.find(emoji => emoji.name === args[i].substring(3));
+                            if(sayEmote == null) return msg.channel.send("The emote '" + args[i].substring(3) +  "' is not found. Please check for capitalization.");
                             args[i] = `${sayEmote}`;
                         }
                     }
