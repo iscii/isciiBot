@@ -71,7 +71,7 @@ client.on("message", (msg) => {
                 break;
                 case "serverlist":
                     console.log("servers");
-                    var serverList = client.guilds.map(g => g.name);
+                    var serverList = client.guilds.cache.map(g => g.name);
                     msg.channel.send(serverList);
                 break;
                 case "help": //organize the commands
@@ -131,13 +131,13 @@ client.on("message", (msg) => {
                         return msg.channel.send(list.join(""));
                     }
                     if(!args[1]){ //defaults to current guild
-                        var emoteList = msg.guild.emojis.map(emoji => "[``" + emoji.name + "`` | " + emoji + "]  ");
+                        var emoteList = msg.guild.emojis.cache.map(emoji => "[``" + emoji.name + "`` | " + `${emoji}` + "]  ");
                         checkForSplit();
                     }
                     else{
                         args.shift();
-                        var server = client.guilds.find(g => g.name === args.join(" "));
-                        var emoteList = server.emojis.map(emoji => "[``" + emoji.name + "`` | " + emoji + "]  ");
+                        var server = client.guilds.cache.find(g => g.name === args.join(" "));
+                        var emoteList = server.emojis.cache.map(emoji => "[``" + emoji.name + "`` | " + `${emoji}` + "]  ");
                         checkForSplit();
                     }
                 break;
