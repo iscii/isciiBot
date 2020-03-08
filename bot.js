@@ -11,8 +11,8 @@ const ytdl = require("ytdl-core");
 //import utilities
 const utilities = require("./utilities.js");
 
-client.login(process.env.TOKEN);
-//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
+//client.login(process.env.TOKEN);
+client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
@@ -51,7 +51,7 @@ client.on("message", (msg) => {
                 //replies
                 case "ping":
                     console.log("ping");
-                    const OMEGALUL = client.emojis.find(emoji => emoji.name == "omegalul");
+                    const OMEGALUL = client.emojis.cache.find(emoji => emoji.name == "omegalul");
                     msg.channel.send(`p${OMEGALUL}ng`) //back tick (`) is the tilda key -- it encloses a Template Literal. Unlike "" and '' it can contain placeholders.
                 break;
                 case "owo":
@@ -92,11 +92,21 @@ client.on("message", (msg) => {
                                     "\n react <emote name> <message id>" //args[2] not required: defaulted to last message
                     );
                 break;
+                case "patchnotes": //place latest patch notes here
+                    msg.channel.send(
+                                    "In Progress: " + 
+                                        "\n - allow user to choose whether or not to be anonymous with |say function (default non-anonymous)" + 
+                                        "\n - delete emote command and include author name" + 
+                                    "\nLatest Updates (|help for command specifics):" +
+                                        "\n - |emotelist" + 
+                                        "\n - |serverlist"
+                                    );
+                break;
 
                 //emotes
                 case "emote":
                     console.log("emote");
-                    var emote = client.emojis.find(emoji => emoji.name === args[1]);
+                    var emote = client.emojis.cache.find(e => e.name == args[1]);
                     if(args[1] == null) return msg.channel.send("The emote '" + args[1] + "' is not found. Please check for capitalization.")
                     msg.channel.send(`${emote}`);
                 break;
@@ -126,7 +136,7 @@ client.on("message", (msg) => {
                         checkForSplit();
                     }
                 break;
-                case "say": //to-do
+                case "say": //can probably simplify the things more. -- to make anonymous
                     console.log("say [" + msg.author.username + "] [" + msg.guild.name + "]");
                     msg.delete();
                     if(args[1] == null) return msg.channel.send("Please state the message to be sent.");
@@ -135,7 +145,7 @@ client.on("message", (msg) => {
                     var sayArg = [];
                     for (var i = 0; i < args.length; i++){
                         if (args[i].includes(".e.")){
-                            var sayEmote = client.emojis.find(emoji => emoji.name === args[i].substring(3));
+                            var sayEmote = client.emojis.cache.find(emoji => emoji.name === args[i].substring(3));
                             if(sayEmote == null) return msg.channel.send("The emote '" + args[i].substring(3) +  "' is not found. Please check for capitalization.")
                             sayArg.push((i - 1).toString() + ";" + `${sayEmote}`);
                         }
@@ -151,7 +161,7 @@ client.on("message", (msg) => {
                     if(!args[1]) return msg.channel.send("react <emote name> <message id>");
                     console.log(msg.channel.lastMessageID);
                     msg.delete();
-                    var emote = client.emojis.find(e => e.name == args[1]);
+                    var emote = client.emojis.cache.find(e => e.name == args[1]);
                     if(!emote) return msg.channel.send("That emote does not exist");
                     if(args[2]){
                         msg.channel.fetchMessages({around: args[2], limit: 1}).then(message => {
@@ -263,6 +273,11 @@ client.on("message", (msg) => {
     }
 });
 
+function authorize(authorpermissionID, permission){ //take in member's role ID and check if the role meets 'permission' requirements. if so, return true.
+    //in switchcase: if(authorize(msg.author.role, staff)){return;} or {return msg.channel.send("you do not have sufficient authority")}
+    //return true/false
+    //should probably rename the parameters to their actual names once you figure them out.
+}
 /*
 //initialization functions
 function initialize(){
