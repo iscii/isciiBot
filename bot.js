@@ -148,12 +148,10 @@ client.on("message", (msg) => {
                     if(args[1] === "help" && args[2] == null) return msg.channel.send("Makes the bot send a message. Add .e. before an emote name to send an emote.");
                     //checks for anonymity
                     if(args[args.length - 1] == "--"){
-                        console.log("anonymous");
                         args.shift();
                         args.pop();
                     }
                     else{
-                        console.log("revealed");
                         args[0] = "[" + msg.author.username + "]";
                     }
                     //checks for emotes
