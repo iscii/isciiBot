@@ -85,8 +85,8 @@ client.on("message", (msg) => {
                                     "\n uwu " + 
                                     "\n serverlist " + 
                                     "\n emotelist <server name> " + //args[1] not required: defaulted to current server
-                                    "\n emote " + 
-                                    "\n say (add .e.<emote name> for emote) " + 
+                                    "\n emote (add <--> at the end of message to anonymise)" + 
+                                    "\n say (add .e.<emote name> for emote, add <--> at the end of message to anonymise) " + //defaulted to non-anonymous. Suggestion: could also maybe enclose the message in "-"?
                                     "\n schedule <activity>,<activity> <time>-<time> " + 
                                     "\n fate <number> <number> - give a ratio and it'll flip an uneven coin accordingly" +
                                     "\n react <emote name> <message id>" //args[2] not required: defaulted to last message
@@ -95,9 +95,12 @@ client.on("message", (msg) => {
                 case "patchnotes": //place latest patch notes here
                     msg.channel.send(
                                     "In Progress: " + 
-                                        "\n - allow user to choose whether or not to be anonymous with |say function (default non-anonymous)" + 
-                                        "\n - delete emote command and include author name" + 
+                                        "None" + 
                                     "\nLatest Updates (|help for command specifics):" +
+                                        "\n (3/7/2020)" + 
+                                        "\n - |say: allow user to choose whether or not to be anonymous (default non-anonymous)" + 
+                                        "\n - |emote: delete emote command and include anonymity by choice (default non-anonymous)" + 
+                                        "\n (2/23/2020)" + 
                                         "\n - |emotelist" + 
                                         "\n - |serverlist"
                                     );
@@ -107,9 +110,11 @@ client.on("message", (msg) => {
                 case "emote":
                     console.log("emote");
                     var emote = client.emojis.cache.find(e => e.name == args[1]);
-                    if(args[1] == null) return msg.channel.send("The emote '" + args[1] + "' is not found. Please check for capitalization.")
-                    msg.channel.send(`${emote}`);
-                break;
+                    if(args[1] == null) return msg.channel.send("The emote '" + args[1] + "' is not found. Please check for capitalization.");
+                    msg.delete();
+                    if(args[2] == "--") msg.channel.send(`${emote}`);
+                    else msg.channel.send("[" + msg.author.username + "] " + `${emote}`);
+                break;  
                 case "emotelist":
                     console.log("emotelist");//give the bot 40 emotes (10 lines, 4 emotes per line) per message
                     var message = [];
@@ -141,20 +146,25 @@ client.on("message", (msg) => {
                     msg.delete();
                     if(args[1] == null) return msg.channel.send("Please state the message to be sent.");
                     if(args[1] === "help" && args[2] == null) return msg.channel.send("Makes the bot send a message. Add .e. before an emote name to send an emote.");
-                    var sayMsg = args.slice(1); //slice is the substring function for arrays
-                    var sayArg = [];
-                    for (var i = 0; i < args.length; i++){
-                        if (args[i].includes(".e.")){
+                    //checks for anonymity
+                    if(args[args.length - 1] == "--"){
+                        console.log("anonymous");
+                        args.shift();
+                        args.pop();
+                    }
+                    else{
+                        console.log("revealed");
+                        args[0] = "[" + msg.author.username + "]";
+                    }
+                    //checks for emotes
+                    for(var i in args){
+                        if(args[i].includes(".e.")){
                             var sayEmote = client.emojis.cache.find(emoji => emoji.name === args[i].substring(3));
-                            if(sayEmote == null) return msg.channel.send("The emote '" + args[i].substring(3) +  "' is not found. Please check for capitalization.")
-                            sayArg.push((i - 1).toString() + ";" + `${sayEmote}`);
+                            args[i] = `${sayEmote}`;
                         }
                     }
-                    for (var i = 0; i < sayArg.length; i++){
-                        sayMsg.splice(sayArg[i].split(";")[0], 1, sayArg[i].split(";")[1]); //pls understand this splice function ty
-                    }   
-                    msg.channel.send(sayMsg.join(" ")); //joins the array items separated by spaces.
-                    console.log(sayMsg.join(" "));
+                    msg.channel.send(args.join(" "));
+                    console.log(args.join(" "));
                 break; 
                 case "react": //give the user a way to specify the message it wants to react to. defaulted to the one above.
                     console.log("react [" + msg.author.username + "] [" + msg.guild.name + "] [emote: " + args[1] + "] [msg id:" + args[2] + "]");
