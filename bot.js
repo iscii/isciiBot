@@ -85,8 +85,8 @@ client.on("message", (msg) => {
                                     "\n uwu " + 
                                     "\n serverlist " + 
                                     "\n emotelist <server name> " + //args[1] not required: defaulted to current server
-                                    "\n emote (add <--> at the end of message to anonymise)" + 
-                                    "\n say (add .e.<emote name> for emote, add <--> at the end of message to anonymise) " + //defaulted to non-anonymous. Suggestion: could also maybe enclose the message in "-"?
+                                    "\n emote (add <-> at the end of message to anonymise)" + 
+                                    "\n say (add .e.<emote name> for emote, enclose message with <-> to anonymise) " + //defaulted to non-anonymous. Suggestion: could also maybe enclose the message in "-"?
                                     "\n schedule <activity>,<activity> <time>-<time> " + 
                                     "\n fate <number> <number> - give a ratio and it'll flip an uneven coin accordingly" +
                                     "\n react <emote name> <message id>"
@@ -112,7 +112,7 @@ client.on("message", (msg) => {
                     var emote = client.emojis.cache.find(e => e.name == args[1]);
                     if(args[1] == null) return msg.channel.send("The emote '" + args[1] + "' is not found. Please check for capitalization.");
                     msg.delete();
-                    if(args[2] == "--") msg.channel.send(`${emote}`);
+                    if(args[2] == "-") msg.channel.send(`${emote}`);
                     else msg.channel.send("[" + msg.author.username + "] " + `${emote}`);
                 break;  
                 case "emotelist":
@@ -147,8 +147,8 @@ client.on("message", (msg) => {
                     if(args[1] == null) return msg.channel.send("Please state the message to be sent.");
                     if(args[1] === "help" && args[2] == null) return msg.channel.send("Makes the bot send a message. Add .e. before an emote name to send an emote.");
                     //checks for anonymity
-                    if(args[args.length - 1] == "--"){
-                        args.shift();
+                    if(args[args.length - 1] == "-" && args[args.length - 1] == "-"){
+                        args.splice(0, 2);
                         args.pop();
                     }
                     else{
