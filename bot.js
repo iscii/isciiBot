@@ -89,7 +89,7 @@ client.on("message", (msg) => {
                                     "\n say (add .e.<emote name> for emote, add <--> at the end of message to anonymise) " + //defaulted to non-anonymous. Suggestion: could also maybe enclose the message in "-"?
                                     "\n schedule <activity>,<activity> <time>-<time> " + 
                                     "\n fate <number> <number> - give a ratio and it'll flip an uneven coin accordingly" +
-                                    "\n react <emote name> <message id>" //args[2] not required: defaulted to last message
+                                    "\n react <emote name> <message id> (under maintainence)" //args[2] not required: defaulted to last message
                     );
                 break;
                 case "patchnotes": //place latest patch notes here
@@ -167,6 +167,7 @@ client.on("message", (msg) => {
                     console.log(args.join(" "));
                 break; 
                 case "react": //give the user a way to specify the message it wants to react to. defaulted to the one above.
+                    return msg.channel.send("react is currently under maintainence");
                     console.log("react [" + msg.author.username + "] [" + msg.guild.name + "] [emote: " + args[1] + "] [msg id:" + args[2] + "]");
                     if(!args[1]) return msg.channel.send("react <emote name> <message id>");
                     console.log(msg.channel.lastMessageID);
@@ -174,13 +175,13 @@ client.on("message", (msg) => {
                     var emote = client.emojis.cache.find(e => e.name == args[1]);
                     if(!emote) return msg.channel.send("That emote does not exist");
                     if(args[2]){
-                        msg.channel.fetchMessages({around: args[2], limit: 1}).then(message => {
+                        msg.channel.cache.fetchMessages({around: args[2], limit: 1}).then(message => {
                             var reactMessage = message.first();
                             reactMessage.react(emote);
                         });
                     }
                     if(!args[2]){
-                        msg.channel.fetchMessages({limit: 1}).then(message => {
+                        msg.channel.cache.fetchMessages({limit: 1}).then(message => {
                             var reactMessage = message.first();
                             reactMessage.react(emote);
                         });
