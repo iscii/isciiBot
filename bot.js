@@ -173,7 +173,7 @@ client.on("message", (msg) => {
                     if(!emote) return msg.channel.send("That emote does not exist");
                     if(!args[2]) return msg.channel.send("Please provide the message ID");
                     msg.delete();
-                    msg.channel.messages.fetch({around: args[2], limit: 1}).then(message => {
+                    msg.guild.messages.fetch({around: args[2], limit: 1}).then(message => {
                         var reactMessage = message.first();
                         reactMessage.react(emote);
                     });
