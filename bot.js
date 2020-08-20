@@ -280,7 +280,7 @@ client.on("message", (msg) => {
                 case "au.code":
                     console.log("au.code");
                     console.log(auInfo);
-                    if(auInfo.code) return msg.channel.send("There is no code");
+                    if(!auInfo.code) return msg.channel.send("There is no code");
                     return msg.channel.send(auInfo.code);
                 break;
 
