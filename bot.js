@@ -45,12 +45,13 @@ client.on("message", (msg) => {
         else return;
     }
     */
+    /*
     for(item in args){
         if(args[item].toLowerCase().includes("fuck") || args[item].toLowerCase().includes("hate")){
             return msg.channel.send("Please remember that we are all friends and it's just a game");
         }
     }
-
+    */
     //actual commands
     if (msg.content[0] == "|") {
 
@@ -305,7 +306,7 @@ client.on("message", (msg) => {
                     if (!auInfo.list[0]) return msg.channel.send("The list is empty");
                     let nameList = [];
                     for(let i = 0; i < auInfo.list.length; i++){
-                        nameList.push((msg.guild.members.cache.get(auInfo.list[i])).username);
+                        nameList.push((msg.guild.members.cache.get(auInfo.list[i])));
                     }
                     console.log(nameList);
                     break;
