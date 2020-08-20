@@ -106,6 +106,7 @@ client.on("message", (msg) => {
                                     "\n au.joinqueue " +
                                     "\n au.clearqueue "
                     );
+                break;
                 case "patchnotes": //place latest patch notes here
                     msg.channel.send(
                                     "In Progress: " + 
