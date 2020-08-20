@@ -23,6 +23,10 @@ client.on("ready", () => {
         url: "https://www.twitch.tv/ninja"
     });
     prefix = "|";
+    auInfo = {
+        code: null,
+        queue: []
+    };
 });
 
 client.on("message", (msg) => {
@@ -47,7 +51,7 @@ client.on("message", (msg) => {
         let args = msg.content.substring(prefix.length).split(" "); //.split(" ") turns args into an array.
 
         if(msg.guild){
-            switch (args[0]){ //learn the switch statement. Note: If you set the argument to a string and case the string, it'll spam the function 5 times.
+            switch (args[0]){ //Note: If you set the argument to a string and case the string, it'll spam the function 5 times.
                 //replies
                 case "ping":
                     console.log("ping");
@@ -90,6 +94,17 @@ client.on("message", (msg) => {
                                     "\n schedule <activity>,<activity> <time>-<time> " + 
                                     "\n fate <number> <number> - give a ratio and it'll flip an uneven coin accordingly" +
                                     "\n react <emote name> <message id>" //args[2] not required: defaulted to last message
+                    );
+                break;
+                case "au.help":
+                    console.log("au.help");
+                    msg.channel.send("Prefix: | " + 
+                                    "\nCommands: " +
+                                    "\n au.code " +
+                                    "\n au.setcode " +
+                                    "\n (Coming soon vv) " +
+                                    "\n au.joinqueue " +
+                                    "\n au.clearqueue "
                     );
                 break;
 
@@ -243,6 +258,26 @@ client.on("message", (msg) => {
                     console.log(decider);
                 break;
 
+                case "au.joinqueue":
+
+                break;
+
+                case "au.clearqueue":
+
+                break;
+
+                case "au.code":
+                    if(auInfo.code) return msg.channel.send("There is no code");
+                    return msg.channel.send(auInfo.code);
+                break;
+
+                case "au.setcode":
+                    if(!args[1]) return msg.channel.send("Please provide the new code");
+                    if(args[1].length != 4) return msg.channel.send("That is not a valid code");
+
+                    auInfo.code = args[1].toUpperCase();
+                break;
+
                 /* for testing purposes
                 case "test":
                     var var1 = args[1];
@@ -262,7 +297,6 @@ client.on("message", (msg) => {
         }
     }
 });
-
 /*
 //initialization functions
 function initialize(){
