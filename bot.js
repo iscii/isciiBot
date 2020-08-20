@@ -45,8 +45,10 @@ client.on("message", (msg) => {
         else return;
     }
     */
-    if((args.toLowerCase()).includes("fuck") || (args.toLowerCase()).includes("hate")){
-        return msg.channel.send("Please remember that we are all friends and it's just a game");
+    for(item in args){
+        if(args[item].toLowerCase().includes("fuck") || args[item].toLowerCase().includes("hate")){
+            return msg.channel.send("Please remember that we are all friends and it's just a game");
+        }
     }
 
     //actual commands
