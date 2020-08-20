@@ -293,22 +293,23 @@ client.on("message", (msg) => {
             switch (args[0]) {
                 case "help":
                     console.log("au.help");
-                    msg.channel.send("Prefix: | " +
+                    msg.channel.send("Prefix: au. " +
                         "\nCommands: " +
-                        "\n au.code " +
-                        "\n au.setcode " +
-                        "\n (Coming soon vv) " +
-                        "\n au.joinqueue " +
-                        "\n au.clearqueue "
+                        "\n code " +
+                        "\n setcode " +
+                        "\n joinqueue " +
+                        "\n clearqueue " +
+                        "\n leavequeue " + 
+                        "\n endsession "
                     );
                     break;
                 case "queue":
                     if (!auInfo.list[0]) return msg.channel.send("The list is empty");
-                    let nameList = [];
+                    let nameList = "Queue:";
                     for(let i = 0; i < auInfo.list.length; i++){
-                        nameList.push((msg.guild.members.cache.get(auInfo.list[i])));
+                        nameList += "\n - " + (msg.guild.members.cache.get(auInfo.list[i])).user.username;
                     }
-                    console.log(nameList);
+                    msg.channel.send(nameList);
                     break;
 
                 case "joinqueue":
@@ -318,7 +319,13 @@ client.on("message", (msg) => {
                     break;
 
                 case "leavequeue":
-
+                    if(!auInfo.list.includes(msg.author.id)) return msg.channel.send("You are not on the list");
+                    for(let i = 0; i < auInfo.list.length; i++){
+                        if(auInfo.list[i] == msg.author.id){
+                            let removed = auInfo.list.splice(i, 1);
+                            return msg.channel.send(`Removed ${(msg.guild.members.cache.get(removed[0])).user.username} from the list`);
+                        }
+                    }
                     break;
 
                 case "clearqueue":
@@ -339,7 +346,7 @@ client.on("message", (msg) => {
                     msg.channel.send("Code set to " + args[1].toUpperCase());
                     break;
 
-                case "end":
+                case "endsession":
                     auInfo.code = null;
                     auInfo.list = [];
                     msg.channel.send("Session cleared");
