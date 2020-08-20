@@ -278,20 +278,16 @@ client.on("message", (msg) => {
                 break;
 
                 case "au.code":
-                    console.log("au.code");
-                    console.log(auInfo);
                     if(!auInfo.code) return msg.channel.send("There is no code");
                     return msg.channel.send(auInfo.code);
                 break;
 
                 case "au.setcode":
-                    console.log("au.setcode");
-                    console.log(auInfo);
                     if(!args[1]) return msg.channel.send("Please provide the new code");
                     if(args[1].length != 4) return msg.channel.send("That is not a valid code");
 
                     auInfo.code = args[1].toUpperCase();
-                    console.log(auInfo);
+                    msg.channel.send("Code set to " + args[1].toUpperCase());
                 break;
 
                 /* for testing purposes
