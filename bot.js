@@ -278,11 +278,13 @@ client.on("message", (msg) => {
                 break;
 
                 case "au.code":
+                    console.log("au.code");
                     if(auInfo.code) return msg.channel.send("There is no code");
                     return msg.channel.send(auInfo.code);
                 break;
 
                 case "au.setcode":
+                    console.log("au.setcode");
                     if(!args[1]) return msg.channel.send("Please provide the new code");
                     if(args[1].length != 4) return msg.channel.send("That is not a valid code");
 
@@ -317,5 +319,4 @@ function authorize(authorpermissionID, permission){ //take in member's role ID a
     //in switchcase: if(authorize(msg.author.role, staff)){return;} or {return msg.channel.send("you do not have sufficient authority")}
     //return true/false
     //should probably rename the parameters to their actual names once you figure them out.
-}
-
+}*/
