@@ -305,7 +305,7 @@ client.on("message", (msg) => {
                     break;
                 case "queue":
                     if (!auInfo.list[0]) return msg.channel.send("The list is empty");
-                    let nameList = "Queue:";
+                    let nameList = "Queue [" + auInfo.list.length + "]";
                     for(let i = 0; i < auInfo.list.length; i++){
                         nameList += "\n - " + (msg.guild.members.cache.get(auInfo.list[i])).user.username;
                     }
