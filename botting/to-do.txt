@@ -31,8 +31,5 @@ https://discordapp.com/channels/745349499958067230/745349500587212943/7457974641
 	- among us queuemaker
 
 8)
-https://discordapp.com/channels/745349499958067230/745349500587212943/745799007195889684
-	- let ppl update the code and have bot say the code when a command is issued
-	- |code
-		-> BHSY
-	- |setcode KYNS
+	- have the bot join the voice channel when someone joins the queue.
+	- detect when everyone leaves and call endsession function there

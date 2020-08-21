@@ -315,22 +315,22 @@ client.on("message", (msg) => {
                 case "joinqueue":
                     if(auInfo.list.includes(msg.author.id)) return msg.channel.send("You are already on the list");
                     auInfo.list.push(msg.author.id);
-                    msg.channel.send(`Added ${msg.author.username} to the list`);
+                    msg.react("✅");
                     break;
 
                 case "leavequeue":
                     if(!auInfo.list.includes(msg.author.id)) return msg.channel.send("You are not on the list");
                     for(let i = 0; i < auInfo.list.length; i++){
                         if(auInfo.list[i] == msg.author.id){
-                            let removed = auInfo.list.splice(i, 1);
-                            return msg.channel.send(`Removed ${(msg.guild.members.cache.get(removed[0])).user.username} from the list`);
+                            auInfo.list.splice(i, 1);
+                            return msg.react("✅");
                         }
                     }
                     break;
 
                 case "clearqueue":
                     auInfo.list = [];
-                    msg.channel.send("Queue cleared");
+                    msg.react("✅");
                     break;
 
                 case "code":
@@ -343,13 +343,13 @@ client.on("message", (msg) => {
                     if (args[1].length != 4 || /[^a-zA-Z]+/g.test(args[1])) return msg.channel.send("That is not a valid code");
 
                     auInfo.code = args[1].toUpperCase();
-                    msg.channel.send("Code set to " + args[1].toUpperCase());
+                    msg.react("✅");
                     break;
 
                 case "endsession":
                     auInfo.code = null;
                     auInfo.list = [];
-                    msg.channel.send("Session cleared");
+                    msg.react("✅");
                     break;
             }
         }
