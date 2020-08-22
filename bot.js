@@ -11,8 +11,8 @@ const ytdl = require("ytdl-core");
 //import utilities
 const utilities = require("./utilities.js");
 
-client.login(process.env.TOKEN);
-//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
+//client.login(process.env.TOKEN);
+client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
@@ -23,16 +23,20 @@ client.on("ready", () => {
         url: "https://www.twitch.tv/ninja"
     });
     prefix = "|";
-    auInfo = {
-        code: null,
-        list: []
-    };
+    gameInfo = [];
+    gameList = {
+        au: "Among Us",
+        mc: "Minecraft",
+        d2: "Drawful 2",
+        fg: "Fall Guys",
+        osu: "Osu!"
+    }
 });
 
 client.on("message", (msg) => {
 
     //5% dad jokes
-    let args = msg.content.split(" ");
+    //let args = msg.content.split(" ");
     /*
     if(args[0].toLowerCase() == "i'm" || args[0].toLowerCase() == "im"){
         if(utilities.getRandomInteger(0, 100) <= 10)
@@ -268,6 +272,14 @@ client.on("message", (msg) => {
                     console.log(decider);
                     break;
 
+                case "games":
+                    let abbs = Object.keys(gameList);
+                    let list = `Games [${abbs.length}]`;
+                    for (item in abbs) {
+                        list += `\n - ${abbs[item]} (${gameList[abbs[item]]})`;
+                    }
+                    msg.channel.send(list);
+                    break;
                 /* for testing purposes
                 case "test":
                     var var1 = args[1];
@@ -287,74 +299,221 @@ client.on("message", (msg) => {
         }
     }
     else {
-        var type = msg.content.split(".");
-        if (type[0] == "au") {
-            let args = msg.content.substring(3).split(" ");
-            switch (args[0]) {
-                case "help":
-                    console.log("au.help");
-                    msg.channel.send("Prefix: au. " +
-                        "\nCommands: " +
-                        "\n code " +
-                        "\n setcode " +
-                        "\n joinqueue " +
-                        "\n clearqueue " +
-                        "\n leavequeue " + 
-                        "\n endsession "
-                    );
-                    break;
-                case "queue":
-                    if (!auInfo.list[0]) return msg.channel.send("The list is empty");
-                    let nameList = "Queue [" + auInfo.list.length + "]";
-                    for(let i = 0; i < auInfo.list.length; i++){
-                        nameList += "\n - " + (msg.guild.members.cache.get(auInfo.list[i])).user.username;
+        if (msg.content.split(" ")[0].includes(".") && msg.guild.id == "745349499958067230") {
+            var type = msg.content.split(".");
+            var abbs = Object.keys(gameList); //abbreviations
+            for (item in abbs) {
+                if (type[0] == abbs[item]) { //check if the game exists in list
+                    let args = msg.content.substring(3).split(" ");
+
+                    //get index of game in gameInfo
+                    var idx = null;
+                    for (let i = 0; i < gameInfo.length; i++) {
+                        if (gameInfo[i].abb == abbs[item]) idx = i;
                     }
-                    msg.channel.send(nameList);
-                    break;
 
-                case "joinqueue":
-                    if(auInfo.list.includes(msg.author.id)) return msg.channel.send("You are already on the list");
-                    auInfo.list.push(msg.author.id);
-                    msg.react("✅");
-                    break;
+                    //basic party game commands
+                    switch (args[0]) {
+                        case "help": {
+                            msg.channel.send(`Prefix: ${abbs[item]}` +
+                                "\nCommands: " +
+                                "\n start *code*" +
+                                "\n end " +
+                                "\n code " +
+                                "\n setcode " +
+                                "\n join " +
+                                "\n clear " +
+                                "\n leave "
+                            );
+                            break;
+                        }
+                        /*
+                        case "list": { //TODO remove this once the embed is in place
+                            if (idx == null) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
+                            if (!gameInfo[idx].players[0]) return msg.channel.send("The list is empty");
 
-                case "leavequeue":
-                    if(!auInfo.list.includes(msg.author.id)) return msg.channel.send("You are not on the list");
-                    for(let i = 0; i < auInfo.list.length; i++){
-                        if(auInfo.list[i] == msg.author.id){
-                            auInfo.list.splice(i, 1);
-                            return msg.react("✅");
+                            let nameList = `Players [${gameInfo[idx].players.length}]`;
+                            for (let i = 0; i < gameInfo[idx].players.length; i++) {
+                                nameList += "\n - " + (msg.guild.members.cache.get(gameInfo[idx].players[i])).user.username;
+                            }
+                            msg.channel.send(nameList);
+                            break;
+                        }
+                        case "code": { //TODO remove this once the embed is in place
+                            if (abbs[item] != "au" && abbs[item] != "d2") return msg.channel.send("Codes are not available for this game");
+                            if (!gameInfo[idx].code) return msg.channel.send("There is no code");
+                            msg.channel.send(gameInfo[idx].code);
+                            break;
+                        }*/
+
+                        case "join": {
+                            if (idx == null) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
+                            if (gameInfo[idx].players.includes(msg.author.id)) return msg.react("❌");
+
+                            gameInfo[idx].players.push(msg.author.id);
+                            editEmbed();
+                            msg.react("✅");
+                            break;
+                        }
+                        case "leave": {
+                            if (idx == null) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
+
+                            for (let i = 0; i < gameInfo[idx].players.length; i++) {
+                                if (gameInfo[idx].players[i] == msg.author.id) {
+                                    gameInfo[idx].players.splice(i, 1);
+                                    return msg.react("✅");
+                                }
+                            }
+                            editEmbed();
+                            msg.react("❌");
+                            break;
+                        }
+                        case "clear": {
+                            gameInfo[idx].list = [];
+                            editEmbed();
+                            msg.react("✅");
+                            break;
+                        }
+                        case "setcode": {
+                            /* if (!args[1]) return msg.channel.send("Please provide the new code");
+                            if (args[1].length != 4 || /[^a-zA-Z]+/g.test(args[1])) return msg.channel.send("That is not a valid code");
+
+                            gameInfo.code = args[1].toUpperCase(); */
+                            if (idx == null) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
+                            if (abbs[item] != "au" && abbs[item] != "d2") return msg.channel.send("Codes are not available for this game");
+                            let code = args[1].toUpperCase();
+                            if (!(/^[A-Z]{4}$/g.test(code))) return msg.react("❌");
+
+                            gameInfo[idx].code = code;
+                            editEmbed();
+                            msg.react("✅");
+                            break;
+                        }
+                        case "start": {
+                            if (idx != null) return msg.react("❌"); //if index was set (the game session exists) return
+                            let code = null;
+                            if (/^[a-zA-Z]{4}$/g.test(args[1])) code = args[1].toUpperCase();
+
+                            idx = gameInfo.length;
+                            gameInfo.push(eval(`new ${capitalize(abbs[item])}(code)`));
+                            createEmbed();
+                            msg.react("✅");
+                            break;
+                        }
+                        case "end": {
+                            if (idx == null) return msg.react("❌");
+                            msg.guild.channels.cache.get('746501018694582346').messages.fetch(gameInfo[idx].embedid).then((message) => {
+                                message.delete();
+                            });
+                            gameInfo.splice(idx, 1);
+                            msg.react("✅");
+                            break;
                         }
                     }
-                    break;
+                    //other game commands
+                    function createEmbed() {
+                        var em = new Discord.MessageEmbed()
+                            .setTitle(`${gameList[abbs[item]]}`)
+                            .setTimestamp()
+                            .setFooter("good morning gamers");
+                        switch (abbs[item]) {
+                            case "au": {
+                                em
+                                    .setColor('#ff2929')
+                                    .setDescription("Play with 4-10 players online or via local WiFi as you attempt to lynch two imposters but end up lynching your friendships instead")
+                                    .setURL('https://uploadhaven.com/download/c923e0b51044411fb1707340b858385a')
+                                    .setThumbnail('https://cdn.discordapp.com/emojis/745802940580888706.png?v=1');
+                                if (gameInfo[idx].code) {
+                                    em.addField('Code', gameInfo[idx].code);
+                                }
 
-                case "clearqueue":
-                    auInfo.list = [];
-                    msg.react("✅");
-                    break;
+                                break;
+                            }
+                            case "mc": {
+                                em
+                                    .setColor('#4a6f28')
+                                    .setDescription("If you need a description of minecraft you are hereby crippled")
+                                    .addField('IP', 'partygames.ochi.pw\n144.217.111.35:25605')
+                                    .setThumbnail('https://cdn.discordapp.com/icons/745349499958067230/59e07aecbc4cd38bba8e5f048d4fd477.png?size=128');
+                            }
+                            case "d2": {
+                                em
+                                    .setColor('#34ebe1')
+                                    .setDescription("Self-degradation by means of exposure to the reality of your lack of creativity and analysis")
+                                    .setThumbnail('https://jackboxgames.b-cdn.net/wp-content/uploads/2019/07/drawful2.png');
+                                if (gameInfo[idx].code) {
+                                    em.addField('Code', gameInfo[idx].code);
+                                }
+                            }
+                        }
+                        msg.guild.channels.cache.get('746501018694582346').send(em).then((message => {
+                            gameInfo[idx].embedid = message.id;
+                        }));
+                    }
+                    async function editEmbed() {
+                        let nameList = `[${gameInfo[idx].players.length}]`;
+                        for (let i = 0; i < gameInfo[idx].players.length; i++) {
+                            nameList += "\n - " + (msg.guild.members.cache.get(gameInfo[idx].players[i])).user.username;
+                        }
+                        const message = await msg.guild.channels.cache.get('746501018694582346').messages.fetch(gameInfo[idx].embedid);
+                        var em = message.embeds[0];
+                        em.fields = [];
+                        switch (abbs[item]) {
+                            case "au":
+                            case "d2": {
+                                if (gameInfo[idx].code)
+                                    em.addField('Code', gameInfo[idx].code);
+                                if (gameInfo[idx].players[0])
+                                    em.addField('Players', nameList);
+                                break;
+                            }
+                            case "mc": {
+                                if(gameInfo[idx].players[0])
+                                    em.addField('Players', nameList);
+                            }
+                        }
 
-                case "code":
-                    if (!auInfo.code) return msg.channel.send("There is no code");
-                    msg.channel.send(auInfo.code);
-                    break;
-
-                case "setcode":
-                    if (!args[1]) return msg.channel.send("Please provide the new code");
-                    if (args[1].length != 4 || /[^a-zA-Z]+/g.test(args[1])) return msg.channel.send("That is not a valid code");
-
-                    auInfo.code = args[1].toUpperCase();
-                    msg.react("✅");
-                    break;
-
-                case "endsession":
-                    auInfo.code = null;
-                    auInfo.list = [];
-                    msg.react("✅");
-                    break;
+                        msg.guild.channels.cache.get('746501018694582346').messages.fetch(gameInfo[idx].embedid).then((message) => {
+                            message.edit(em);
+                        });
+                    }
+                    return;
+                }
             }
         }
     }
 });
+
+//game classes
+function Au(code) {
+    this.abb = "au";
+    this.code = code;
+    this.players = [];
+    this.embedid = null;
+}
+function Mc() {
+    this.abb = "mc";
+    this.players = [];
+    this.coords = {
+
+    };
+    this.embedid = null;
+}
+function D2(code) {
+    this.abb = "d2";
+    this.code = code;
+    this.players = [];
+    this.embedid = null;
+}
+function Osu(password) {
+    this.abb = "osu";
+    this.password = password;
+    this.players = [];
+    this.embedid = null;
+}
+function capitalize(str) {
+    return str.substr(0, 1).toUpperCase() + str.substr(1, str.length - 1);
+}
 /*
 //initialization functions
 function initialize(){
