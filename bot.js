@@ -31,6 +31,7 @@ client.on("ready", () => {
         fg: "Fall Guys",
         osu: "Osu!"
     }
+    embedchannelid = "746864165704171530";
 });
 
 client.on("message", (msg) => {
@@ -402,7 +403,7 @@ client.on("message", (msg) => {
                         }
                         case "end": {
                             if (idx == null) return msg.react("❌");
-                            msg.guild.channels.cache.get('746501018694582346').messages.fetch(gameInfo[idx].embedid).then((message) => {
+                            msg.guild.channels.cache.get(embedchannelid).messages.fetch(gameInfo[idx].embedid).then((message) => {
                                 message.delete();
                             });
                             gameInfo.splice(idx, 1);
@@ -446,7 +447,7 @@ client.on("message", (msg) => {
                                 }
                             }
                         }
-                        msg.guild.channels.cache.get('746501018694582346').send(em).then((message => {
+                        msg.guild.channels.cache.get(embedchannelid).send(em).then((message => {
                             gameInfo[idx].embedid = message.id;
                         }));
                     }
@@ -455,7 +456,7 @@ client.on("message", (msg) => {
                         for (let i = 0; i < gameInfo[idx].players.length; i++) {
                             nameList += "\n - " + (msg.guild.members.cache.get(gameInfo[idx].players[i])).user.username;
                         }
-                        const message = await msg.guild.channels.cache.get('746501018694582346').messages.fetch(gameInfo[idx].embedid);
+                        const message = await msg.guild.channels.cache.get(embedchannelid).messages.fetch(gameInfo[idx].embedid);
                         var em = message.embeds[0];
                         em.fields = [];
                         switch (abbs[item]) {
@@ -473,7 +474,7 @@ client.on("message", (msg) => {
                             }
                         }
 
-                        msg.guild.channels.cache.get('746501018694582346').messages.fetch(gameInfo[idx].embedid).then((message) => {
+                        msg.guild.channels.cache.get(embedchannelid).messages.fetch(gameInfo[idx].embedid).then((message) => {
                             message.edit(em);
                         });
                     }
