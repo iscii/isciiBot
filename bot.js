@@ -11,8 +11,8 @@ const ytdl = require("ytdl-core");
 //import utilities
 const utilities = require("./utilities.js");
 
-//client.login(process.env.TOKEN);
-client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
+client.login(process.env.TOKEN);
+//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
@@ -20,7 +20,7 @@ client.on("ready", () => {
     console.log("bot is ready");
     client.user.setActivity("and giving headpats", { //status
         type: "STREAMING",
-        url: "https://www.twitch.tv/ninja"
+        url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     });
     prefix = "|";
     gameInfo = [];
@@ -418,6 +418,13 @@ client.on("message", (msg) => {
                                 message.delete();
                             });
                             gameInfo.splice(idx, 1);
+                            msg.react("✅");
+                            break;
+                        }
+                        case "delete": {
+                            if(msg.author.id != "303922359595696138" && msg.author.id != "267080878503493632") return msg.react("❌");
+
+                            msg.guild.channels.cache.get(embedchannelid).bulkDelete(5);
                             msg.react("✅");
                             break;
                         }
