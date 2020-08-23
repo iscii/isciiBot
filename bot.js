@@ -107,7 +107,10 @@ client.on("message", (msg) => {
                         "\n schedule <activity>,<activity> <time>-<time> " +
                         "\n fate <number> <number> - give a ratio and it'll flip an uneven coin accordingly" +
                         "\n react <emote name> <message id>" +
-                        "\n au.help - Among Us commands"
+                        "\n au/mc/d2/fg/osu.help " +
+                        "\n lenny " + 
+                        "\n spacify "
+
                     );
                     break;
                 case "patchnotes": //place latest patch notes here
@@ -159,6 +162,20 @@ client.on("message", (msg) => {
                         checkForSplit();
                     }
                     break;
+                case "lenny":
+                    msg.delete();
+                    msg.channel.send(`${msg.author.username}: ( ͡° ͜ʖ ͡°)`);
+                break;
+                case "spacify":
+                    console.log("spacify [" + msg.author.username + "] [" + msg.guild.name + "]");
+                    msg.delete();
+                    if (args[1] == null) return msg.channel.send("Please state the message to be sent.");
+                    let spaced = "[" + msg.author.username + "]";
+                    for(let i = 0; i < msg.content.length - 9; i++){
+                        spaced += `${msg.content[i]} `;
+                    }
+                    msg.channel.send(spaced);
+                break;
                 case "say": //can probably simplify the things more. -- to make anonymous
                     console.log("say [" + msg.author.username + "] [" + msg.guild.name + "]");
                     msg.delete();
