@@ -11,8 +11,8 @@ const ytdl = require("ytdl-core");
 //import utilities
 const utilities = require("./utilities.js");
 
-client.login(process.env.TOKEN);
-//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
+//client.login(process.env.TOKEN);
+client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
@@ -324,7 +324,8 @@ client.on("message", (msg) => {
                                 "\n setcode " +
                                 "\n join " +
                                 "\n clear " +
-                                "\n leave "
+                                "\n leave " +
+                                "\n ping "
                             );
                             break;
                         }
@@ -372,6 +373,16 @@ client.on("message", (msg) => {
                         case "clear": {
                             gameInfo[idx].list = [];
                             editEmbed();
+                            msg.react("✅");
+                            break;
+                        }
+                        case "ping": {
+                            let pingmessage = `ping! ${gameList[abbs[item]]} [ `;
+                            for (let i = 0; i < gameInfo[idx].players.length; i++) {
+                                pingmessage += `<@!${gameInfo[idx].players[i]}> `;
+                            }
+                            pingmessage += "]";
+                            msg.channel.send(pingmessage);
                             msg.react("✅");
                             break;
                         }
@@ -447,9 +458,13 @@ client.on("message", (msg) => {
                                 }
                             }
                         }
-                        msg.guild.channels.cache.get(embedchannelid).send(em).then((message => {
-                            gameInfo[idx].embedid = message.id;
-                        }));
+                        msg.guild.channels.cache.get(embedchannelid).send(em)
+                            .then((message => {
+                                gameInfo[idx].embedid = message.id;
+                            }))
+                            .catch((error) => {
+                                console.log(error);
+                            });
                     }
                     async function editEmbed() {
                         let nameList = `[${gameInfo[idx].players.length}]`;
@@ -469,7 +484,7 @@ client.on("message", (msg) => {
                                 break;
                             }
                             case "mc": {
-                                if(gameInfo[idx].players[0])
+                                if (gameInfo[idx].players[0])
                                     em.addField('Players', nameList);
                             }
                         }
