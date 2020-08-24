@@ -108,7 +108,7 @@ client.on("message", (msg) => {
                         "\n fate <number> <number> - give a ratio and it'll flip an uneven coin accordingly" +
                         "\n react <emote name> <message id>" +
                         "\n au/mc/d2/fg/osu.help " +
-                        "\n lenny " + 
+                        "\n lenny " +
                         "\n spacify "
 
                     );
@@ -165,17 +165,17 @@ client.on("message", (msg) => {
                 case "lenny":
                     msg.delete();
                     msg.channel.send(`${msg.author.username}: ( ͡° ͜ʖ ͡°)`);
-                break;
+                    break;
                 case "spacify":
                     console.log("spacify [" + msg.author.username + "] [" + msg.guild.name + "]");
                     msg.delete();
                     if (args[1] == null) return msg.channel.send("Please state the message to be sent.");
                     let spaced = "[" + msg.author.username + "]";
-                    for(let i = 0; i < msg.content.length - 9; i++){
+                    for (let i = 0; i < msg.content.length - 9; i++) {
                         spaced += `${msg.content[i]} `;
                     }
                     msg.channel.send(spaced);
-                break;
+                    break;
                 case "say": //can probably simplify the things more. -- to make anonymous
                     console.log("say [" + msg.author.username + "] [" + msg.guild.name + "]");
                     msg.delete();
@@ -418,6 +418,15 @@ client.on("message", (msg) => {
                             msg.react("✅");
                             break;
                         }
+                        case "settime": {
+                            if (idx == null) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
+                            if (!(/^(0?[1-9]|1[0-2]):[0-5][0-9]$/.test(args[1]))) return msg.channel.send("State time in the format HH:MM");
+
+                            gameInfo[idx].time = args[1];
+                            editEmbed();
+                            msg.react("✅");
+                            break;
+                        }
                         case "start": {
                             if (idx != null) return msg.react("❌"); //if index was set (the game session exists) return
                             let code = null;
@@ -433,16 +442,31 @@ client.on("message", (msg) => {
                             if (idx == null) return msg.react("❌");
                             msg.guild.channels.cache.get(embedchannelid).messages.fetch(gameInfo[idx].embedid).then((message) => {
                                 message.delete();
-                            });
-                            gameInfo.splice(idx, 1);
+                                gameInfo.splice(idx, 1);
+                                msg.react("✅");
+                            }).catch((error) => {
+                                msg.react("❌");
+                                console.log(error);
+                            })
+                            break;
+                        }
+                        case "delete5": {
+                            if (msg.author.id != "303922359595696138" && msg.author.id != "267080878503493632") return msg.react("❌");
+
+                            msg.guild.channels.cache.get(embedchannelid).bulkDelete(5);
                             msg.react("✅");
                             break;
                         }
                         case "delete": {
-                            if(msg.author.id != "303922359595696138" && msg.author.id != "267080878503493632") return msg.react("❌");
+                            if (msg.author.id != "303922359595696138" && msg.author.id != "267080878503493632") return msg.react("❌");
 
-                            msg.guild.channels.cache.get(embedchannelid).bulkDelete(5);
-                            msg.react("✅");
+                            msg.guild.channels.cache.get(embedchannelid).messages.fetch(args[1]).then((message) => {
+                                message.delete();
+                                msg.react("✅");
+                            }).catch((error) => {
+                                msg.react("❌");
+                                console.log(error);
+                            });
                             break;
                         }
                     }
@@ -505,6 +529,8 @@ client.on("message", (msg) => {
                             case "d2": {
                                 if (gameInfo[idx].code)
                                     em.addField('Code', gameInfo[idx].code);
+                                if (gameInfo[idx].time)
+                                    em.addField('Time', gameInfo[idx].time);
                                 if (gameInfo[idx].players[0])
                                     em.addField('Players', nameList);
                                 break;
@@ -512,6 +538,7 @@ client.on("message", (msg) => {
                             case "mc": {
                                 if (gameInfo[idx].players[0])
                                     em.addField('Players', nameList);
+                                break;
                             }
                         }
 
@@ -529,28 +556,37 @@ client.on("message", (msg) => {
 //game classes
 function Au(code) {
     this.abb = "au";
+
     this.code = code;
+    this.time = null;
     this.players = [];
+
     this.embedid = null;
 }
 function Mc() {
     this.abb = "mc";
-    this.players = [];
-    this.coords = {
 
-    };
+    this.time = null;
+    this.players = [];
+
     this.embedid = null;
 }
 function D2(code) {
     this.abb = "d2";
+
     this.code = code;
+    this.time = null;
     this.players = [];
+
     this.embedid = null;
 }
 function Osu(password) {
     this.abb = "osu";
+
     this.password = password;
+    this.time = null;
     this.players = [];
+
     this.embedid = null;
 }
 function capitalize(str) {
