@@ -31,7 +31,7 @@ client.on("ready", () => {
         fg: "Fall Guys",
         osu: "Osu!"
     }
-    embedchannelid = "746864165704171530";
+    embedchannelid = "746864165704171530"; /* "746501018694582346"; */
 });
 
 client.on("message", (msg) => {
@@ -471,6 +471,7 @@ client.on("message", (msg) => {
                                     .setDescription("If you need a description of minecraft you are hereby crippled")
                                     .addField('IP', 'partygames.ochi.pw\n144.217.111.35:25605')
                                     .setThumbnail('https://cdn.discordapp.com/icons/745349499958067230/59e07aecbc4cd38bba8e5f048d4fd477.png?size=128');
+                                break;
                             }
                             case "d2": {
                                 em
@@ -480,6 +481,7 @@ client.on("message", (msg) => {
                                 if (gameInfo[idx].code) {
                                     em.addField('Code', gameInfo[idx].code);
                                 }
+                                break;
                             }
                         }
                         msg.guild.channels.cache.get(embedchannelid).send(em)

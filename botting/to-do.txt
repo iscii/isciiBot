@@ -34,3 +34,5 @@ https://discordapp.com/channels/745349499958067230/745349500587212943/7457974641
 	- detect when everyone leaves and call endsession function there
 9)
 	- minecraft coords
+10)
+	- voting
