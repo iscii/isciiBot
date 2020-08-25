@@ -1,6 +1,6 @@
 /*ownerID = "303922359595696138";
 prefix = "|";
-bot token = "NjYyNzgwMDc4MzM3NDI1NDgx.XhEMoQ.WHnPj1FsXJoxwJaI9FzirCv3RWA";
+bot token = "NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.DlSCWsHBwsR2dA8znr2etAESEn8";
 */
 
 //import discord
@@ -12,7 +12,7 @@ const ytdl = require("ytdl-core");
 const utilities = require("./utilities.js");
 
 client.login(process.env.TOKEN);
-//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xk8ZzQ.5Yqc_tcIg8wyLj-DEVNH3Gkh1rY");
+//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.DlSCWsHBwsR2dA8znr2etAESEn8");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
