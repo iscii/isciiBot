@@ -170,7 +170,7 @@ client.on("message", (msg) => {
                     msg.delete();
                     if (args[1] == null) return msg.channel.send("Please state the message to be sent.");
                     let spaced = "[" + msg.author.username + "]";
-                    for (let i = 0; i < msg.content.length - 9; i++) {
+                    for (let i = msg.content.length - 9; i < msg.content.length; i++) {
                         spaced += `${msg.content[i]} `;
                     }
                     msg.channel.send(spaced);
