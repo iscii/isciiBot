@@ -166,10 +166,10 @@ client.on("message", (msg) => {
                     msg.channel.send(`${msg.author.username}: ( ͡° ͜ʖ ͡°)`);
                     break;
                 case "spacify":
-                    console.log("spacify [" + msg.author.username + "] [" + msg.guild.name + "] ");
+                    console.log("spacify [" + msg.author.username + "] [" + msg.guild.name + "]");
                     msg.delete();
                     if (args[1] == null) return msg.channel.send("Please state the message to be sent.");
-                    let spaced = "[" + msg.author.username + "]";
+                    let spaced = msg.author.username + ": ";
                     for (let i = 9; i < msg.content.length; i++) {
                         spaced += `${msg.content[i]} `;
                     }
