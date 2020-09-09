@@ -8,13 +8,9 @@ const ytdl = require("ytdl-core");
 const utilities = require("./utilities.js");
 //firebase
 const firebase = require("firebase/app");
-require("dotenv/config");
 const FieldValue = require("firebase-admin").firestore.FieldValue;
 const admin = require("firebase-admin");
 const serviceAccount = require("./serviceAccount.json");
-
-const owner = process.env.OWNER;
-const token = process.env.TOKEN;
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
