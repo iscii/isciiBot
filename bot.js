@@ -1,6 +1,3 @@
-/*ownerID = "303922359595696138";
-prefix = "|";
-*/
 
 //import discord
 const Discord = require("discord.js");
@@ -9,6 +6,21 @@ const client = new Discord.Client();
 const ytdl = require("ytdl-core");
 //import utilities
 const utilities = require("./utilities.js");
+//firebase
+const firebase = require("firebase/app");
+require("dotenv/config");
+const FieldValue = require("firebase-admin").firestore.FieldValue;
+const admin = require("firebase-admin");
+const serviceAccount = require("./serviceAccount.json");
+
+const owner = process.env.OWNER;
+const token = process.env.TOKEN;
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+});
+
+let db = admin.firestore(); //13:37
 
 client.login(process.env.TOKEN);
 //client.login("");
@@ -19,10 +31,9 @@ client.on("ready", () => {
     console.log("bot is ready");
     client.user.setActivity("and giving headpats", { //status
         type: "STREAMING",
-        url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        url: "https://www.youtube.com/watch?v=fZCzsG1I9Ak"
     });
     prefix = "|";
-    gameInfo = [];
     gameList = {
         au: "Among Us",
         mc: "Minecraft",
@@ -33,29 +44,8 @@ client.on("ready", () => {
     embedchannelid = "746864165704171530"; /* "746501018694582346"; */
 });
 
-client.on("message", (msg) => {
+client.on("message", async (msg) => {
 
-    //5% dad jokes
-    //let args = msg.content.split(" ");
-    /*
-    if(args[0].toLowerCase() == "i'm" || args[0].toLowerCase() == "im"){
-        if(utilities.getRandomInteger(0, 100) <= 10)
-            return msg.channel.send("hi " + args.slice(1, args.length).join(" ") + ", i'm dad");
-        else return;
-    }
-    if((args[0] + args[1]).toLowerCase() == "iam"){
-        if(utilities.getRandomInteger(0, 100) <= 10)
-            return msg.channel.send("hi " + args.slice(2, args.length).join(" ") + ", i'm dad");
-        else return;
-    }
-    */
-    /*
-    for(item in args){
-        if(args[item].toLowerCase().includes("fuck") || args[item].toLowerCase().includes("hate")){
-            return msg.channel.send("Please remember that we are all friends and it's just a game");
-        }
-    }
-    */
     //actual commands
     if (msg.content[0] == "|") {
 
@@ -112,6 +102,7 @@ client.on("message", (msg) => {
 
                     );
                     break;
+                /*
                 case "patchnotes": //place latest patch notes here
                     msg.channel.send(
                         "In Progress: " +
@@ -125,7 +116,7 @@ client.on("message", (msg) => {
                         "\n - |serverlist"
                     );
                     break;
-
+                */
                 //emotes
                 case "emote":
                     console.log("emote");
@@ -289,7 +280,7 @@ client.on("message", (msg) => {
                     console.log(decider);
                     break;
 
-                case "games":
+                case "games":{
                     let abbs = Object.keys(gameList);
                     let list = `Games [${abbs.length}]`;
                     for (item in abbs) {
@@ -297,18 +288,29 @@ client.on("message", (msg) => {
                     }
                     msg.channel.send(list);
                     break;
-                /* for testing purposes
-                case "test":
-                    var var1 = args[1];
-                    var var2 = args[2];
-                    var array1 = [];
-                    array1 = var1 + ":" + var2;
-                    var replacement = array1.split(":");
-                    replacement[1] = 5;
-                    array1 = replacement.join(":");
-                    console.log(array1.split(":"));
-                break;
-                */
+                }
+                case "censor:": {
+                    msg.channel.send("wip");
+                    break;
+                }
+                case "poll": {
+                    msg.channel.send("wip");
+                    break;
+                    //args[1] = message
+
+                    /*preset emotes for y/n
+                        - when a user clicks one, remove their reaction and add the vote count to a progress-bar
+                        type thing, which displays the percent yes/no or smtn (like yt poll posts)
+                        (keeps it anonymous) 
+                    x button to delete the poll (only if poll creator/bean/me)    
+                    */
+                    let em = new Discord.MessageEmbed()
+                        .setColor()
+                        .setTimestamp()
+                        .setDescription(/* message */)
+                        .addField({name: /* yes */"name", value: /* changing value */"value"})
+                        .addField({name: /* no */"name", value: /* changing value */"value"});
+                }
             }
         }
         else { //messages from dms
@@ -323,11 +325,9 @@ client.on("message", (msg) => {
                 if (type[0] == abbs[item]) { //check if the game exists in list
                     let args = msg.content.substring(3).split(" ");
 
-                    //get index of game in gameInfo
-                    var idx = null;
-                    for (let i = 0; i < gameInfo.length; i++) {
-                        if (gameInfo[i].abb == abbs[item]) idx = i;
-                    }
+                    //set data vars
+                    const game = db.collection("sessions").doc(abbs[item]);
+                    var gdata = await game.get();
 
                     //basic party game commands
                     switch (args[0]) {
@@ -345,57 +345,101 @@ client.on("message", (msg) => {
                             );
                             break;
                         }
-                        /*
-                        case "list": { //TODO remove this once the embed is in place
-                            if (idx == null) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
-                            if (!gameInfo[idx].players[0]) return msg.channel.send("The list is empty");
-
-                            let nameList = `Players [${gameInfo[idx].players.length}]`;
-                            for (let i = 0; i < gameInfo[idx].players.length; i++) {
-                                nameList += "\n - " + (msg.guild.members.cache.get(gameInfo[idx].players[i])).user.username;
+                        case "start": {
+                            if(gdata.exists) return msg.react("❌");
+                            
+                            switch(abbs[item]){
+                                case "au": 
+                                case "d2": {
+                                    await db.collection("sessions").doc(abbs[item]).set({
+                                        users: [],
+                                        code: null,
+                                        time: null,
+                                        embedid: null
+                                    });
+                                    break;
+                                }
+                                case "mc": {
+                                    await db.collection("sessions").doc(abbs[item]).set({
+                                        users: [],
+                                        time: null,
+                                        embedid: null
+                                    });
+                                    break;
+                                }
+                                case "osu": {
+                                    await db.collection("sessions").doc(abbs[item]).set({
+                                        users: [],
+                                        time: null,
+                                        password: null,
+                                        embedid: null
+                                    });
+                                    break;
+                                }
                             }
-                            msg.channel.send(nameList);
+                            createEmbed();
+
+                            msg.react("✅");
                             break;
                         }
-                        case "code": { //TODO remove this once the embed is in place
-                            if (abbs[item] != "au" && abbs[item] != "d2") return msg.channel.send("Codes are not available for this game");
-                            if (!gameInfo[idx].code) return msg.channel.send("There is no code");
-                            msg.channel.send(gameInfo[idx].code);
+                        case "end": {
+                            if(!gdata.exists) return msg.react("❌");
+                            let props = gdata.data();
+                            
+                            msg.guild.channels.cache.get(embedchannelid).messages.fetch(props.embedid).then((message) => {
+                                message.delete();
+                                game.delete();
+                                msg.react("✅");
+                            }).catch((error) => {
+                                msg.react("❌");
+                                console.log(error);
+                            })
+
                             break;
-                        }*/
-
+                        }
                         case "join": {
-                            if (idx == null) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
-                            if (gameInfo[idx].players.includes(msg.author.id)) return msg.react("❌");
+                            if(!gdata.exists) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
+                            let props = gdata.data();
+                            if(props.users.includes(msg.author.id)) return msg.react("❌");
 
-                            gameInfo[idx].players.push(msg.author.id);
+                            await db.collection("sessions").doc(abbs[item]).update({
+                                users: admin.firestore.FieldValue.arrayUnion(msg.author.id)
+                            });
+
                             editEmbed();
+
                             msg.react("✅");
                             break;
                         }
                         case "leave": {
-                            if (idx == null) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
+                            if(!gdata.exists) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
+                            let props = gdata.data();
+                            if(!props.users.includes(msg.author.id)) return msg.react("❌");
 
-                            for (let i = 0; i < gameInfo[idx].players.length; i++) {
-                                if (gameInfo[idx].players[i] == msg.author.id) {
-                                    gameInfo[idx].players.splice(i, 1);
-                                    return msg.react("✅");
-                                }
-                            }
+                            await db.collection("sessions").doc(abbs[item]).update({
+                                users: admin.firestore.FieldValue.arrayRemove(msg.author.id)
+                            });
+
                             editEmbed();
-                            msg.react("❌");
+
+                            msg.react("✅");
                             break;
                         }
                         case "clear": {
-                            gameInfo[idx].list = [];
+                            await db.collection("sessions").doc(abbs[item]).update({
+                               users: [] 
+                            });
                             editEmbed();
                             msg.react("✅");
                             break;
                         }
                         case "ping": {
+                            if(!gdata.exists) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
+                            let props = gdata.data();
+
                             let pingmessage = `ping! ${gameList[abbs[item]]} [ `;
-                            for (let i = 0; i < gameInfo[idx].players.length; i++) {
-                                pingmessage += `<@!${gameInfo[idx].players[i]}> `;
+                            for (let i = 0; i < props.users.length; i++) {
+                                pingmessage += `<@!${props.users[i]}> `;
                             }
                             pingmessage += "]";
                             msg.channel.send(pingmessage);
@@ -403,57 +447,52 @@ client.on("message", (msg) => {
                             break;
                         }
                         case "setcode": {
-                            /* if (!args[1]) return msg.channel.send("Please provide the new code");
+                            /* if (!args[1]) return msg.channel.send("Please provide the new code"); */
                             if (args[1].length != 4 || /[^a-zA-Z]+/g.test(args[1])) return msg.channel.send("That is not a valid code");
 
-                            gameInfo.code = args[1].toUpperCase(); */
-                            if (idx == null) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
+                            if (!gdata.exists) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
                             if (abbs[item] != "au" && abbs[item] != "d2") return msg.channel.send("Codes are not available for this game");
                             let code = args[1].toUpperCase();
                             if (!(/^[A-Z]{4}$/g.test(code))) return msg.react("❌");
 
-                            gameInfo[idx].code = code;
+                            await db.collection("sessions").doc(abbs[item]).update({
+                               code: code 
+                            });
                             editEmbed();
                             msg.react("✅");
                             break;
                         }
                         case "settime": {
-                            if (idx == null) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
+                            if (!gdata.exists) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
                             if (!(/^(0?[1-9]|1[0-2]):[0-5][0-9]$/.test(args[1]))) return msg.channel.send("State time in the format HH:MM");
 
-                            gameInfo[idx].time = args[1];
+                            await db.collection("sessions").doc(abbs[item]).update({
+                                time: args[1]
+                            });
                             editEmbed();
                             msg.react("✅");
                             break;
                         }
-                        case "start": {
-                            if (idx != null) return msg.react("❌"); //if index was set (the game session exists) return
-                            let code = null;
-                            if (/^[a-zA-Z]{4}$/g.test(args[1])) code = args[1].toUpperCase();
+                        //manual commands cos ppl r too lazy to change channels
+                        case "list": {
+                            let props = gdata.data();
 
-                            idx = gameInfo.length;
-                            gameInfo.push(eval(`new ${capitalize(abbs[item])}(code)`));
-                            createEmbed();
-                            msg.react("✅");
+                            if (!gdata.exists) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
+                            if (!props.users[0]) return msg.channel.send("The list is empty");
+
+                            let nameList = `Players [${props.users.length}]`;
+                            for (let i = 0; i < props.users.length; i++) {
+                                nameList += "\n - " + (msg.guild.members.cache.get(props.users[i])).user.username;
+                            }
+                            msg.channel.send(nameList);
                             break;
                         }
-                        case "end": {
-                            if (idx == null) return msg.react("❌");
-                            msg.guild.channels.cache.get(embedchannelid).messages.fetch(gameInfo[idx].embedid).then((message) => {
-                                message.delete();
-                                gameInfo.splice(idx, 1);
-                                msg.react("✅");
-                            }).catch((error) => {
-                                msg.react("❌");
-                                console.log(error);
-                            })
-                            break;
-                        }
-                        case "delete5": {
-                            if (msg.author.id != "303922359595696138" && msg.author.id != "267080878503493632") return msg.react("❌");
+                        case "code": {
+                            let props = gdata.data();
 
-                            msg.guild.channels.cache.get(embedchannelid).bulkDelete(5);
-                            msg.react("✅");
+                            if (abbs[item] != "au" && abbs[item] != "d2") return msg.channel.send("Codes are not available for this game");
+                            if (!props.code) return msg.channel.send("There is no code");
+                            msg.channel.send(props.code);
                             break;
                         }
                         case "delete": {
@@ -470,11 +509,15 @@ client.on("message", (msg) => {
                         }
                     }
                     //other game commands
-                    function createEmbed() {
+                    async function createEmbed() {
                         var em = new Discord.MessageEmbed()
                             .setTitle(`${gameList[abbs[item]]}`)
                             .setTimestamp()
                             .setFooter("good morning gamers");
+
+                        gdata = await game.get();
+                        const props = gdata.data();
+
                         switch (abbs[item]) {
                             case "au": {
                                 em
@@ -482,8 +525,8 @@ client.on("message", (msg) => {
                                     .setDescription("Play with 4-10 players online or via local WiFi as you attempt to lynch two imposters but end up lynching your friendships instead")
                                     .setURL('https://uploadhaven.com/download/c923e0b51044411fb1707340b858385a')
                                     .setThumbnail('https://cdn.discordapp.com/emojis/745802940580888706.png?v=1');
-                                if (gameInfo[idx].code) {
-                                    em.addField('Code', gameInfo[idx].code);
+                                if (props.code) {
+                                    em.addField('Code', props.code);
                                 }
 
                                 break;
@@ -501,47 +544,52 @@ client.on("message", (msg) => {
                                     .setColor('#34ebe1')
                                     .setDescription("Self-degradation by means of exposure to the reality of your lack of creativity and analysis")
                                     .setThumbnail('https://jackboxgames.b-cdn.net/wp-content/uploads/2019/07/drawful2.png');
-                                if (gameInfo[idx].code) {
-                                    em.addField('Code', gameInfo[idx].code);
+                                if (props.code) {
+                                    em.addField('Code', props.code);
                                 }
                                 break;
                             }
                         }
                         msg.guild.channels.cache.get(embedchannelid).send(em)
                             .then((message => {
-                                gameInfo[idx].embedid = message.id;
+                                game.update({
+                                    embedid: message.id
+                                });
                             }))
                             .catch((error) => {
                                 console.log(error);
                             });
                     }
                     async function editEmbed() {
-                        let nameList = `[${gameInfo[idx].players.length}]`;
-                        for (let i = 0; i < gameInfo[idx].players.length; i++) {
-                            nameList += "\n - " + (msg.guild.members.cache.get(gameInfo[idx].players[i])).user.username;
+                        gdata = await game.get();
+                        const props = gdata.data();
+
+                        let nameList = `[${props.users.length}]`;
+                        for (let i = 0; i < props.users.length; i++) {
+                            nameList += "\n - " + (msg.guild.members.cache.get(props.users[i])).user.username;
                         }
-                        const message = await msg.guild.channels.cache.get(embedchannelid).messages.fetch(gameInfo[idx].embedid);
+                        const message = await msg.guild.channels.cache.get(embedchannelid).messages.fetch(props.embedid);
                         var em = message.embeds[0];
                         em.fields = [];
                         switch (abbs[item]) {
                             case "au":
                             case "d2": {
-                                if (gameInfo[idx].code)
-                                    em.addField('Code', gameInfo[idx].code);
-                                if (gameInfo[idx].time)
-                                    em.addField('Time', gameInfo[idx].time);
-                                if (gameInfo[idx].players[0])
+                                if (props.code)
+                                    em.addField('Code', props.code);
+                                if (props.time)
+                                    em.addField('Time', props.time);
+                                if (props.users[0])
                                     em.addField('Players', nameList);
                                 break;
                             }
                             case "mc": {
-                                if (gameInfo[idx].players[0])
+                                if (props.users[0])
                                     em.addField('Players', nameList);
                                 break;
                             }
                         }
 
-                        msg.guild.channels.cache.get(embedchannelid).messages.fetch(gameInfo[idx].embedid).then((message) => {
+                        msg.guild.channels.cache.get(embedchannelid).messages.fetch(props.embedid).then((message) => {
                             message.edit(em);
                         });
                     }
@@ -552,42 +600,6 @@ client.on("message", (msg) => {
     }
 });
 
-//game classes
-function Au(code) {
-    this.abb = "au";
-
-    this.code = code;
-    this.time = null;
-    this.players = [];
-
-    this.embedid = null;
-}
-function Mc() {
-    this.abb = "mc";
-
-    this.time = null;
-    this.players = [];
-
-    this.embedid = null;
-}
-function D2(code) {
-    this.abb = "d2";
-
-    this.code = code;
-    this.time = null;
-    this.players = [];
-
-    this.embedid = null;
-}
-function Osu(password) {
-    this.abb = "osu";
-
-    this.password = password;
-    this.time = null;
-    this.players = [];
-
-    this.embedid = null;
-}
 function capitalize(str) {
     return str.substr(0, 1).toUpperCase() + str.substr(1, str.length - 1);
 }

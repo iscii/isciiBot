@@ -19,8 +19,12 @@
   },
   "homepage": "https://github.com/iscii/isciiBot#readme",
   "dependencies": {
+    "bad-words": "^3.0.3",
     "discord.js": "^12.0.1",
     "discord.js-commando": "^0.10.0",
+    "dotenv": "^8.2.0",
+    "firebase": "^7.19.1",
+    "firebase-admin": "^9.1.1",
     "node-opus": "^0.3.3",
     "owoify-js": "^1.0.7",
     "ytdl-core": "^1.0.7"

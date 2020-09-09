@@ -36,3 +36,11 @@ https://discordapp.com/channels/745349499958067230/745349500587212943/7457974641
 	- minecraft coords
 10)
 	- voting
+	- preset emotes for y/n
+		- when a user clicks one, remove their reaction and add the vote count to a progress-bar
+		type thing, which displays the percent yes/no or smtn (like yt poll posts)
+		(keeps it anonymous)
+
+11)
+	- whack a mole
+https://discordapp.com/channels/745349499958067230/748924877674643559/750439146002055230
