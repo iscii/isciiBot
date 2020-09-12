@@ -342,33 +342,43 @@ client.on("message", async (msg) => {
                             break;
                         }
                         case "start": {
-                            if(gdata.exists) return msg.react("❌");
-                            
+                            let now = new Date();
+                            if(gdata.exists) {
+                                let hours = parseInt(Math.abs((now - new Date(gdata.timestamp)) / (1000 * 60 * 60) % 24));
+                                if(hours < 11){
+                                    return msg.react("❌");
+                                }
+                                await game.delete();
+                            }
+
                             switch(abbs[item]){
                                 case "au": 
                                 case "d2": {
-                                    await db.collection("sessions").doc(abbs[item]).set({
+                                    await game.set({
                                         users: [],
                                         code: null,
                                         time: null,
-                                        embedid: null
+                                        embedid: null,
+                                        timestamp: now
                                     });
                                     break;
                                 }
                                 case "mc": {
-                                    await db.collection("sessions").doc(abbs[item]).set({
+                                    await game.set({
                                         users: [],
                                         time: null,
-                                        embedid: null
+                                        embedid: null,
+                                        timestamp: now
                                     });
                                     break;
                                 }
                                 case "osu": {
-                                    await db.collection("sessions").doc(abbs[item]).set({
+                                    await game.set({
                                         users: [],
                                         time: null,
                                         password: null,
-                                        embedid: null
+                                        embedid: null,
+                                        timestamp: now
                                     });
                                     break;
                                 }
@@ -398,7 +408,7 @@ client.on("message", async (msg) => {
                             let props = gdata.data();
                             if(props.users.includes(msg.author.id)) return msg.react("❌");
 
-                            await db.collection("sessions").doc(abbs[item]).update({
+                            await game.update({
                                 users: admin.firestore.FieldValue.arrayUnion(msg.author.id)
                             });
 
@@ -412,7 +422,7 @@ client.on("message", async (msg) => {
                             let props = gdata.data();
                             if(!props.users.includes(msg.author.id)) return msg.react("❌");
 
-                            await db.collection("sessions").doc(abbs[item]).update({
+                            await game.update({
                                 users: admin.firestore.FieldValue.arrayRemove(msg.author.id)
                             });
 
@@ -422,7 +432,7 @@ client.on("message", async (msg) => {
                             break;
                         }
                         case "clear": {
-                            await db.collection("sessions").doc(abbs[item]).update({
+                            await game.update({
                                users: [] 
                             });
                             editEmbed();
@@ -451,7 +461,7 @@ client.on("message", async (msg) => {
                             let code = args[1].toUpperCase();
                             if (!(/^[A-Z]{4}$/g.test(code))) return msg.react("❌");
 
-                            await db.collection("sessions").doc(abbs[item]).update({
+                            await game.update({
                                code: code 
                             });
                             editEmbed();
@@ -462,7 +472,7 @@ client.on("message", async (msg) => {
                             if (!gdata.exists) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
                             if (!(/^(0?[1-9]|1[0-2]):[0-5][0-9]$/.test(args[1]))) return msg.channel.send("State time in the format HH:MM");
 
-                            await db.collection("sessions").doc(abbs[item]).update({
+                            await game.update({
                                 time: args[1]
                             });
                             editEmbed();
