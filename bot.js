@@ -513,6 +513,18 @@ client.on("message", async (msg) => {
                             });
                             break;
                         }
+                        //fun responses
+                        case "fuck": {
+                            if(args[1] == "you"){
+                                let fu = client.emojis.cache.find(e => e.name == "kannafu");
+                                return msg.channel.send(fu);
+                            }
+                            if(args[1] == "me"){
+                                let x = utilities.getRandomInteger(0, 5);
+                                let nos = ["いやだ", "no", "nein", "不", "아니", "never"];
+                                return msg.channel.send(nos[x]);
+                            }
+                        }
                     }
                     //other game commands
                     async function createEmbed() {
