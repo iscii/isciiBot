@@ -18,8 +18,8 @@ admin.initializeApp({
 
 let db = admin.firestore(); //13:37
 
-client.login(process.env.TOKEN);
-//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
+//client.login(process.env.TOKEN);
+client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
@@ -38,6 +38,23 @@ client.on("ready", () => {
         osu: "Osu!"
     }
     embedchannelid = "746864165704171530"; /* "746501018694582346"; */
+
+    //time
+    let date = new Date();
+    let hour = date.getHours();
+    let till = 0;
+    if(hour < 7){
+        till = 7 - hour;
+    }
+    else if(hour > 7){
+        till = (24 - hour) + 7;
+    }
+    console.log(till);
+    setTimeout(() => {
+        client.channels.get("745349500587212943").send("Good Morning!!!");
+    }, till * 3600000);
+
+    //find time till 7:00 AM and then create settimeout. say goodmorning. also au.end
 });
 
 client.on("message", async (msg) => {
