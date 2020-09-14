@@ -136,8 +136,8 @@ client.on("message", async (msg) => {
                     var emote = client.emojis.cache.find(e => e.name == args[1]);
                     if (args[1] == null) return msg.channel.send("The emote '" + args[1] + "' is not found. Please check for capitalization.");
                     msg.delete();
-                    if (args[2] == "-") msg.channel.send(`${emote}`);
-                    else msg.channel.send("[" + msg.author.username + "] " + `${emote}`);
+                    msg.channel.send(msg.author.username);
+                    msg.channel.send(`${emote}`);
                     break;
                 case "emotelist":
                     console.log("emotelist");//give the bot 40 emotes (10 lines, 4 emotes per line) per message
