@@ -18,8 +18,8 @@ admin.initializeApp({
 
 let db = admin.firestore(); //13:37
 
-//client.login(process.env.TOKEN);
-client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
+client.login(process.env.TOKEN);
+//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
@@ -558,7 +558,7 @@ client.on("message", async (msg) => {
                                 em
                                     .setColor('#ff2929')
                                     .setDescription("Play with 4-10 players online or via local WiFi as you attempt to lynch two imposters but end up lynching your friendships instead")
-                                    .setURL('https://uploadhaven.com/download/c923e0b51044411fb1707340b858385a')
+                                    .setURL('https://uploadhaven.com/download/0fa4664a96111dac74b4b1530e6e2b45')
                                     .setThumbnail('https://cdn.discordapp.com/emojis/745802940580888706.png?v=1');
                                 if (props.code) {
                                     em.addField('Code', props.code);
