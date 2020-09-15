@@ -51,7 +51,9 @@ client.on("ready", () => {
     }
     console.log(till);
     setTimeout(() => {
-        client.channels.fetch("745349500587212943").send("Good Morning!!!");
+        client.channels.fetch("745349500587212943").then((channel) => {
+            channel.send("Good Morning!!!");
+        });
     }, till * 3600000);
 
     //find time till 7:00 AM and then create settimeout. say goodmorning. also au.end
