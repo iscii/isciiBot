@@ -51,8 +51,9 @@ client.on("ready", () => {
     }
     console.log(till);
     setTimeout(() => {
-        client.channels.fetch("745349500587212943").then((channel) => {
-            channel.send("Good Morning!!!");
+        client.channels.fetch("745349500587212943").then(async (channel) => {
+            let emote = client.emojis.cache.find(emoji => emoji.name == "miyanohey");
+            channel.send(`Good Morning!!! ${emote}`);
         });
     }, till * 3600000);
 
