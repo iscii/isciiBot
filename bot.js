@@ -51,7 +51,7 @@ client.on("ready", () => {
     }
     console.log(till);
     setTimeout(() => {
-        client.channels.get("745349500587212943").send("Good Morning!!!");
+        client.channels.fetch("745349500587212943").send("Good Morning!!!");
     }, till * 3600000);
 
     //find time till 7:00 AM and then create settimeout. say goodmorning. also au.end
@@ -359,13 +359,22 @@ client.on("message", async (msg) => {
                             break;
                         }
                         case "start": {
-                            let now = new Date();
+                            let date = new Date();
+                            let props = gdata.data();
                             if(gdata.exists) {
-                                let hours = parseInt(Math.abs((now - new Date(gdata.timestamp)) / (1000 * 60 * 60) % 24));
+                                let hours = parseInt(Math.abs((date - new Date(props.date)) / (1000 * 60 * 60) % 24));
+                                console.log(hours);
                                 if(hours < 11){
                                     return msg.react("❌");
                                 }
-                                await game.delete();
+                                await msg.guild.channels.cache.get(embedchannelid).messages.fetch(props.embedid).then(async (message) => {
+                                    message.delete();
+                                    game.delete();
+                                    msg.react("✅");
+                                }).catch((error) => {
+                                    msg.react("❌");
+                                    console.log(error);
+                                })
                             }
 
                             switch(abbs[item]){
@@ -376,7 +385,7 @@ client.on("message", async (msg) => {
                                         code: null,
                                         time: null,
                                         embedid: null,
-                                        timestamp: now
+                                        date: date.toString()
                                     });
                                     break;
                                 }
@@ -385,7 +394,7 @@ client.on("message", async (msg) => {
                                         users: [],
                                         time: null,
                                         embedid: null,
-                                        timestamp: now
+                                        date: date.toString()
                                     });
                                     break;
                                 }
@@ -395,7 +404,7 @@ client.on("message", async (msg) => {
                                         time: null,
                                         password: null,
                                         embedid: null,
-                                        timestamp: now
+                                        date: date.toString()
                                     });
                                     break;
                                 }
