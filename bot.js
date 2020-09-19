@@ -386,6 +386,7 @@ client.on("message", async (msg) => {
                                     await game.set({
                                         users: [],
                                         code: null,
+                                        region: null,
                                         time: null,
                                         embedid: null,
                                         date: date.toString()
@@ -483,15 +484,38 @@ client.on("message", async (msg) => {
                         }
                         case "setcode": {
                             /* if (!args[1]) return msg.channel.send("Please provide the new code"); */
-                            //if (args[1].length != 5 || /[^a-zA-Z]+/g.test(args[1])) return msg.channel.send("That is not a valid code");
 
                             if (!gdata.exists) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
                             if (abbs[item] != "au" && abbs[item] != "d2") return msg.channel.send("Codes are not available for this game");
                             let code = args[1].toUpperCase();
                             if (!(/^[A-Z]{6}$/g.test(code))) return msg.react("❌");
-
+                            let region = null;
+                            if(args[2]){
+                                let region = args[2].toUpperCase();
+                                if (region != "NA" || region != "EU" || region != "ASIA") {
+                                    msg.channel.send("Regions must be NA, EU, or ASIA");
+                                    return msg.react("❌");
+                                }
+                            }
                             await game.update({
-                               code: code 
+                               code: code,
+                               region: region
+                            });
+                            editEmbed();
+                            msg.react("✅");
+                            break;
+                        }
+                        case "setregion": {
+                            let props = gdata.data();
+                            if (!gdata.exists) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
+                            if (abbs[item] != "au" && abbs[item] != "d2") return msg.channel.send("Regions are not available for this game");
+                            let region = args[1].toUpperCase();
+                            if (region != "NA" || region != "EU" || region != "ASIA") {
+                                msg.channel.send("Regions must be NA, EU, or ASIA");
+                                return msg.react("❌");
+                            }
+                            await game.update({
+                               region: region
                             });
                             editEmbed();
                             msg.react("✅");
@@ -623,6 +647,8 @@ client.on("message", async (msg) => {
                             case "d2": {
                                 if (props.code)
                                     em.addField('Code', props.code);
+                                if (props.region)
+                                    em.addField('Region', props.region);
                                 if (props.time)
                                     em.addField('Time', props.time);
                                 if (props.users[0])
