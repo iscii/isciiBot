@@ -43,7 +43,7 @@ client.on("ready", () => {
     let date = new Date();
     let hour = date.getHours();
     let till = 0;
-    if(hour < 7){
+    if(hour < 6){
         till = 7 - hour;
     }
     else if(hour > 7){
@@ -483,12 +483,12 @@ client.on("message", async (msg) => {
                         }
                         case "setcode": {
                             /* if (!args[1]) return msg.channel.send("Please provide the new code"); */
-                            if (args[1].length != 4 || /[^a-zA-Z]+/g.test(args[1])) return msg.channel.send("That is not a valid code");
+                            //if (args[1].length != 5 || /[^a-zA-Z]+/g.test(args[1])) return msg.channel.send("That is not a valid code");
 
                             if (!gdata.exists) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
                             if (abbs[item] != "au" && abbs[item] != "d2") return msg.channel.send("Codes are not available for this game");
                             let code = args[1].toUpperCase();
-                            if (!(/^[A-Z]{4}$/g.test(code))) return msg.react("❌");
+                            if (!(/^[A-Z]{6}$/g.test(code))) return msg.react("❌");
 
                             await game.update({
                                code: code 
