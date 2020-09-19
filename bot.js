@@ -491,8 +491,8 @@ client.on("message", async (msg) => {
                             if (!(/^[A-Z]{6}$/g.test(code))) return msg.react("❌");
                             let region = null;
                             if(args[2]){
-                                let region = args[2].toUpperCase();
-                                if (region != "NA" || region != "EU" || region != "ASIA") {
+                                region = args[2].toUpperCase();
+                                if (region != "NA" && region != "EU" && region != "ASIA") {
                                     msg.channel.send("Regions must be NA, EU, or ASIA");
                                     return msg.react("❌");
                                 }
@@ -506,11 +506,10 @@ client.on("message", async (msg) => {
                             break;
                         }
                         case "setregion": {
-                            let props = gdata.data();
                             if (!gdata.exists) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
                             if (abbs[item] != "au" && abbs[item] != "d2") return msg.channel.send("Regions are not available for this game");
                             let region = args[1].toUpperCase();
-                            if (region != "NA" || region != "EU" || region != "ASIA") {
+                            if (region != "NA" && region != "EU" && region != "ASIA") {
                                 msg.channel.send("Regions must be NA, EU, or ASIA");
                                 return msg.react("❌");
                             }
