@@ -593,7 +593,7 @@ client.on("message", async (msg) => {
                                 em
                                     .setColor('#ff2929')
                                     .setDescription("Play with 4-10 players online or via local WiFi as you attempt to lynch two imposters but end up lynching your friendships instead")
-                                    .setURL('https://uploadhaven.com/download/0fa4664a96111dac74b4b1530e6e2b45')
+                                    .setURL('https://uploadhaven.com/download/abf5aafb8f7098fbb0afd22406c7bcfb')
                                     .setThumbnail('https://cdn.discordapp.com/emojis/745802940580888706.png?v=1');
                                 if (props.code) {
                                     em.addField('Code', props.code);
