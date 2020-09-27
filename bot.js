@@ -18,12 +18,12 @@ admin.initializeApp({
 
 let db = admin.firestore(); //13:37
 
-client.login(process.env.TOKEN);
-//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
+//client.login(process.env.TOKEN);
+client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
-client.on("ready", () => {
+client.on("ready", async () => {
     console.log("bot is ready");
     client.user.setActivity("and giving headpats", { //status
         type: "STREAMING",
@@ -41,19 +41,33 @@ client.on("ready", () => {
 
     //time
     let date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1; //getmonth starts from 0
     let hour = date.getHours();
     let till = 0;
+
     if(hour < 6){
         till = 7 - hour;
     }
     else if(hour > 7){
         till = (24 - hour) + 7;
+        day++;    
     }
+
+    let bd = await db.collection("birthdays").doc(month + "." + day).get();
+    let ppl = bd.data();
+
     console.log(till);
     setTimeout(() => {
-        client.channels.fetch("745349500587212943").then(async (channel) => {
-            let emote = client.emojis.cache.find(emoji => emoji.name == "miyanohey");
-            channel.send(`Good Morning!!! ${emote}`);
+        client.channels.fetch("7453495005872129436").then(async (channel) => { //745349500587212943
+            channel.send(`Good Morning!!! ${client.emojis.cache.find(emoji => emoji.name == "miyanohey")}`);
+            if(ppl.users){
+                let users = "";
+                for(item in ppl.users){
+                    users += `<@!${ppl.users[item]}> `;
+                }
+                channel.send(`Happy Birthday!!! :birthday: ${users}`);
+            }
         });
     }, till * 3600000);
 
@@ -73,6 +87,7 @@ client.on("message", async (msg) => {
                 //replies
                 case "ping":
                     console.log("ping");
+                    console.log(msg.author.id);
                     const OMEGALUL = client.emojis.cache.find(emoji => emoji.name == "omegalul");
                     msg.channel.send(`p${OMEGALUL}ng`) //back tick (`) is the tilda key -- it encloses a Template Literal. Unlike "" and '' it can contain placeholders.
                     break;
@@ -577,93 +592,93 @@ client.on("message", async (msg) => {
                                 return msg.channel.send(nos[x]);
                             }
                         }
-                    }
-                    //other game commands
-                    async function createEmbed() {
-                        var em = new Discord.MessageEmbed()
-                            .setTitle(`${gameList[abbs[item]]}`)
-                            .setTimestamp()
-                            .setFooter("good morning gamers");
+                        //other game commands
+                        async function createEmbed() {
+                            var em = new Discord.MessageEmbed()
+                                .setTitle(`${gameList[abbs[item]]}`)
+                                .setTimestamp()
+                                .setFooter("good morning gamers");
 
-                        gdata = await game.get();
-                        const props = gdata.data();
+                            gdata = await game.get();
+                            const props = gdata.data();
 
-                        switch (abbs[item]) {
-                            case "au": {
-                                em
-                                    .setColor('#ff2929')
-                                    .setDescription("Play with 4-10 players online or via local WiFi as you attempt to lynch two imposters but end up lynching your friendships instead")
-                                    .setURL('https://uploadhaven.com/download/abf5aafb8f7098fbb0afd22406c7bcfb')
-                                    .setThumbnail('https://cdn.discordapp.com/emojis/745802940580888706.png?v=1');
-                                if (props.code) {
-                                    em.addField('Code', props.code);
+                            switch (abbs[item]) {
+                                case "au": {
+                                    em
+                                        .setColor('#ff2929')
+                                        .setDescription("Play with 4-10 players online or via local WiFi as you attempt to lynch two imposters but end up lynching your friendships instead")
+                                        .setURL('https://uploadhaven.com/download/abf5aafb8f7098fbb0afd22406c7bcfb')
+                                        .setThumbnail('https://cdn.discordapp.com/emojis/745802940580888706.png?v=1');
+                                    if (props.code) {
+                                        em.addField('Code', props.code);
+                                    }
+
+                                    break;
                                 }
-
-                                break;
-                            }
-                            case "mc": {
-                                em
-                                    .setColor('#4a6f28')
-                                    .setDescription("If you need a description of minecraft you are hereby crippled")
-                                    .addField('IP', 'partygames.ochi.pw\n144.217.111.35:25605')
-                                    .setThumbnail('https://cdn.discordapp.com/icons/745349499958067230/59e07aecbc4cd38bba8e5f048d4fd477.png?size=128');
-                                break;
-                            }
-                            case "d2": {
-                                em
-                                    .setColor('#34ebe1')
-                                    .setDescription("Self-degradation by means of exposure to the reality of your lack of creativity and analysis")
-                                    .setThumbnail('https://jackboxgames.b-cdn.net/wp-content/uploads/2019/07/drawful2.png');
-                                if (props.code) {
-                                    em.addField('Code', props.code);
+                                case "mc": {
+                                    em
+                                        .setColor('#4a6f28')
+                                        .setDescription("If you need a description of minecraft you are hereby crippled")
+                                        .addField('IP', 'partygames.ochi.pw\n144.217.111.35:25605')
+                                        .setThumbnail('https://cdn.discordapp.com/icons/745349499958067230/59e07aecbc4cd38bba8e5f048d4fd477.png?size=128');
+                                    break;
                                 }
-                                break;
+                                case "d2": {
+                                    em
+                                        .setColor('#34ebe1')
+                                        .setDescription("Self-degradation by means of exposure to the reality of your lack of creativity and analysis")
+                                        .setThumbnail('https://jackboxgames.b-cdn.net/wp-content/uploads/2019/07/drawful2.png');
+                                    if (props.code) {
+                                        em.addField('Code', props.code);
+                                    }
+                                    break;
+                                }
                             }
-                        }
-                        msg.guild.channels.cache.get(embedchannelid).send(em)
-                            .then((message => {
-                                game.update({
-                                    embedid: message.id
+                            msg.guild.channels.cache.get(embedchannelid).send(em)
+                                .then((message => {
+                                    game.update({
+                                        embedid: message.id
+                                    });
+                                }))
+                                .catch((error) => {
+                                    console.log(error);
                                 });
-                            }))
-                            .catch((error) => {
-                                console.log(error);
+                        }
+                        async function editEmbed() {
+                            gdata = await game.get();
+                            const props = gdata.data();
+
+                            let nameList = `[${props.users.length}]`;
+                            for (let i = 0; i < props.users.length; i++) {
+                                nameList += "\n - " + (msg.guild.members.cache.get(props.users[i])).user.username;
+                            }
+                            const message = await msg.guild.channels.cache.get(embedchannelid).messages.fetch(props.embedid);
+                            var em = message.embeds[0];
+                            em.fields = [];
+                            switch (abbs[item]) {
+                                case "au":
+                                case "d2": {
+                                    if (props.code)
+                                        em.addField('Code', props.code);
+                                    if (props.region)
+                                        em.addField('Region', props.region);
+                                    if (props.time)
+                                        em.addField('Time', props.time);
+                                    if (props.users[0])
+                                        em.addField('Players', nameList);
+                                    break;
+                                }
+                                case "mc": {
+                                    if (props.users[0])
+                                        em.addField('Players', nameList);
+                                    break;
+                                }
+                            }
+
+                            msg.guild.channels.cache.get(embedchannelid).messages.fetch(props.embedid).then((message) => {
+                                message.edit(em);
                             });
-                    }
-                    async function editEmbed() {
-                        gdata = await game.get();
-                        const props = gdata.data();
-
-                        let nameList = `[${props.users.length}]`;
-                        for (let i = 0; i < props.users.length; i++) {
-                            nameList += "\n - " + (msg.guild.members.cache.get(props.users[i])).user.username;
                         }
-                        const message = await msg.guild.channels.cache.get(embedchannelid).messages.fetch(props.embedid);
-                        var em = message.embeds[0];
-                        em.fields = [];
-                        switch (abbs[item]) {
-                            case "au":
-                            case "d2": {
-                                if (props.code)
-                                    em.addField('Code', props.code);
-                                if (props.region)
-                                    em.addField('Region', props.region);
-                                if (props.time)
-                                    em.addField('Time', props.time);
-                                if (props.users[0])
-                                    em.addField('Players', nameList);
-                                break;
-                            }
-                            case "mc": {
-                                if (props.users[0])
-                                    em.addField('Players', nameList);
-                                break;
-                            }
-                        }
-
-                        msg.guild.channels.cache.get(embedchannelid).messages.fetch(props.embedid).then((message) => {
-                            message.edit(em);
-                        });
                     }
                     return;
                 }
