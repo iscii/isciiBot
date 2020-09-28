@@ -59,7 +59,7 @@ client.on("ready", async () => {
 
     console.log(till);
     setTimeout(() => {
-        client.channels.fetch("7453495005872129436").then(async (channel) => { //745349500587212943
+        client.channels.fetch("745349500587212943").then(async (channel) => { //745349500587212943
             channel.send(`Good Morning!!! ${client.emojis.cache.find(emoji => emoji.name == "miyanohey")}`);
             if(ppl.users){
                 let users = "";
