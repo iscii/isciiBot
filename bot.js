@@ -11,6 +11,8 @@ const firebase = require("firebase/app");
 const FieldValue = require("firebase-admin").firestore.FieldValue;
 const admin = require("firebase-admin");
 const serviceAccount = require("./serviceAccount.json");
+//other js
+const bGames = require("./games.js");
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
@@ -37,7 +39,7 @@ client.on("ready", async () => {
         fg: "Fall Guys",
         osu: "Osu!"
     }
-    embedchannelid = "746864165704171530"; /* "746501018694582346"; */
+    embedchannel = "746864165704171530"; /* "746501018694582346"; */
 
     //time
     let date = new Date();
@@ -56,12 +58,23 @@ client.on("ready", async () => {
 
     let bd = await db.collection("birthdays").doc(month + "." + day).get();
     let ppl = bd.data();
+    let game = await db.collection("sessions").doc("au").get();
+    let props = game.data();
 
     console.log(till);
     setTimeout(() => {
         client.channels.fetch("745349500587212943").then(async (channel) => { //745349500587212943
+            //good morning
             channel.send(`Good Morning!!! ${client.emojis.cache.find(emoji => emoji.name == "miyanohey")}`);
-            if(ppl.users){
+            //end au session
+            msg.guild.channels.cache.get(embedchannel).messages.fetch(props.embedid).then((message) => {
+                message.delete();
+                game.delete();
+            }).catch((error) => {
+                console.log(error);
+            })
+            //birthdays
+            if(ppl){
                 let users = "";
                 for(item in ppl.users){
                     users += `<@!${ppl.users[item]}> `;
@@ -360,6 +373,8 @@ client.on("message", async (msg) => {
                     const game = db.collection("sessions").doc(abbs[item]);
                     var gdata = await game.get();
 
+                    msg.react("✅");
+
                     //basic party game commands
                     switch (args[0]) {
                         case "help": {
@@ -385,7 +400,7 @@ client.on("message", async (msg) => {
                                 if(hours < 11){
                                     return msg.react("❌");
                                 }
-                                await msg.guild.channels.cache.get(embedchannelid).messages.fetch(props.embedid).then(async (message) => {
+                                await msg.guild.channels.cache.get(embedchannel).messages.fetch(props.embedid).then(async (message) => {
                                     message.delete();
                                     game.delete();
                                     msg.react("✅");
@@ -437,7 +452,7 @@ client.on("message", async (msg) => {
                             if(!gdata.exists) return msg.react("❌");
                             let props = gdata.data();
                             
-                            msg.guild.channels.cache.get(embedchannelid).messages.fetch(props.embedid).then((message) => {
+                            msg.guild.channels.cache.get(embedchannel).messages.fetch(props.embedid).then((message) => {
                                 message.delete();
                                 game.delete();
                                 msg.react("✅");
@@ -568,10 +583,13 @@ client.on("message", async (msg) => {
                             msg.channel.send(props.code);
                             break;
                         }
+                        case "queue": {
+
+                        }
                         case "delete": {
                             if (msg.author.id != "303922359595696138" && msg.author.id != "267080878503493632") return msg.react("❌");
 
-                            msg.guild.channels.cache.get(embedchannelid).messages.fetch(args[1]).then((message) => {
+                            msg.guild.channels.cache.get(embedchannel).messages.fetch(args[1]).then((message) => {
                                 message.delete();
                                 msg.react("✅");
                             }).catch((error) => {
@@ -584,7 +602,7 @@ client.on("message", async (msg) => {
                         case "fuck": {
                             if(args[1] == "you"){
                                 let fu = client.emojis.cache.find(e => e.name == "kannafu");
-                                return msg.channel.send(fu);
+                                return msg.react(fu);
                             }
                             if(args[1] == "me"){
                                 let x = utilities.getRandomInteger(0, 5);
@@ -634,7 +652,7 @@ client.on("message", async (msg) => {
                                     break;
                                 }
                             }
-                            msg.guild.channels.cache.get(embedchannelid).send(em)
+                            msg.guild.channels.cache.get(embedchannel).send(em)
                                 .then((message => {
                                     game.update({
                                         embedid: message.id
@@ -652,7 +670,7 @@ client.on("message", async (msg) => {
                             for (let i = 0; i < props.users.length; i++) {
                                 nameList += "\n - " + (msg.guild.members.cache.get(props.users[i])).user.username;
                             }
-                            const message = await msg.guild.channels.cache.get(embedchannelid).messages.fetch(props.embedid);
+                            const message = await msg.guild.channels.cache.get(embedchannel).messages.fetch(props.embedid);
                             var em = message.embeds[0];
                             em.fields = [];
                             switch (abbs[item]) {
@@ -675,7 +693,7 @@ client.on("message", async (msg) => {
                                 }
                             }
 
-                            msg.guild.channels.cache.get(embedchannelid).messages.fetch(props.embedid).then((message) => {
+                            msg.guild.channels.cache.get(embedchannel).messages.fetch(props.embedid).then((message) => {
                                 message.edit(em);
                             });
                         }
