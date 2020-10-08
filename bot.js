@@ -12,7 +12,6 @@ const FieldValue = require("firebase-admin").firestore.FieldValue;
 const admin = require("firebase-admin");
 const serviceAccount = require("./serviceAccount.json");
 //other js
-const bGames = require("./games.js");
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
