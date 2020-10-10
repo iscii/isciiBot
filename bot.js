@@ -67,7 +67,7 @@ client.on("ready", async () => {
             //good morning
             channel.send(`Good Morning!!! ${client.emojis.cache.find(emoji => emoji.name == "miyanohey")}`);
             //end au session
-            msg.guild.channels.cache.get(embedchannel).messages.fetch(props.embedid).then((message) => {
+            client.channels.cache.get(embedchannel).messages.fetch(props.embedid).then((message) => {
                 message.delete();
                 game.delete();
             }).catch((error) => {
@@ -422,6 +422,14 @@ client.on("message", async (msg) => {
                                         date: date.toString()
                                     });
                                     break;
+                                }
+                                case "ph": {
+                                    await game.set({
+                                        users: [],
+                                        time: null,
+                                        embedid: null,
+                                        date: date.toString()
+                                    })
                                 }
                                 case "mc": {
                                     await game.set({
