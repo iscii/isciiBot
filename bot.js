@@ -36,7 +36,8 @@ client.on("ready", async () => {
         mc: "Minecraft",
         d2: "Drawful 2",
         fg: "Fall Guys",
-        osu: "Osu!"
+        osu: "Osu!",
+        ph: "Phasmophobia"
     }
     embedchannel = "746864165704171530"; /* "746501018694582346"; */
 
@@ -583,7 +584,7 @@ client.on("message", async (msg) => {
                             break;
                         }
                         case "queue": {
-
+                            
                         }
                         case "delete": {
                             if (msg.author.id != "303922359595696138" && msg.author.id != "267080878503493632") return msg.react("❌");
@@ -650,6 +651,12 @@ client.on("message", async (msg) => {
                                     }
                                     break;
                                 }
+                                case "ph": {
+                                    em
+                                        .setColor("000000")
+                                        .setDescription("Some horror game I don't know about")
+                                        .setThumbnail('https://steamcdn-a.akamaihd.net/steam/apps/739630/header.jpg?t=1600451822')
+                                }
                             }
                             msg.guild.channels.cache.get(embedchannel).send(em)
                                 .then((message => {
@@ -684,6 +691,12 @@ client.on("message", async (msg) => {
                                     if (props.users[0])
                                         em.addField('Players', nameList);
                                     break;
+                                }
+                                case "ph": {
+                                    if(props.time)
+                                        em.addField('Time', props.time);
+                                    if (props.users[0])
+                                        em.addField('Players', nameList);
                                 }
                                 case "mc": {
                                     if (props.users[0])

@@ -27,14 +27,28 @@ client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
 client.on("guildCreate", guild => {
     console.log("Joined a new guild: " + guild.name);
     prefix = "|";
+    gameList = {
+        au: "Among Us",
+        mc: "Minecraft",
+        d2: "Drawful 2",
+        fg: "Fall Guys",
+        osu: "Osu!"
+    }
 
     let guild = await db.collection("guilds").doc(guild.id).get();
     gData = guild.data();
 
 });
 
-client.on("message", message => {
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
-    let args = msg.content.substring(prefix.length).split(" ");
+client.on("message", msg => {
+    if (!message.content.startsWith(prefix)) cmdGeneral(msg);
+    else cmdGames(msg);
 
 });
+function cmdGeneral(msg) {
+}
+function cmdGames(msg) {
+    const game = msg.content.split(" ")[0].split(".")[0];
+    const args = msg.content.spl
+    case ms
+}
