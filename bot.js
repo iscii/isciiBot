@@ -703,8 +703,9 @@ client.on("message", async (msg) => {
                                 case "ph": {
                                     if(props.time)
                                         em.addField('Time', props.time);
-                                    if (props.users[0])
+                                    if(props.users[0])
                                         em.addField('Players', nameList);
+                                    break;
                                 }
                                 case "mc": {
                                     if (props.users[0])
