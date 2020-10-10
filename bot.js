@@ -373,7 +373,7 @@ client.on("message", async (msg) => {
                     const game = db.collection("sessions").doc(abbs[item]);
                     var gdata = await game.get();
 
-                    msg.react("✅");
+                    //msg.react("✅");
 
                     //basic party game commands
                     switch (args[0]) {
