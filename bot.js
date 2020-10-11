@@ -69,7 +69,8 @@ client.on("ready", async () => {
             //end au session
             client.channels.cache.get(embedchannel).messages.fetch(props.embedid).then((message) => {
                 message.delete();
-                game.delete();
+                db.collection("sessions").doc("au").delete();
+                db.collection("sessions").doc("ph").delete();
             }).catch((error) => {
                 console.log(error);
             })
