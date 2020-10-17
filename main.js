@@ -49,6 +49,7 @@ function cmdGeneral(msg) {
 }
 function cmdGames(msg) {
     const game = msg.content.split(" ")[0].split(".")[0];
-    const args = msg.content.spl
-    case ms
+    const cmd = msg.content.split(" ")[0].split(".")[1];
+    const args = msg.content.split(" ").splice(0, 1)[0];
+    
 }

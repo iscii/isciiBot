@@ -525,9 +525,15 @@ client.on("message", async (msg) => {
                             /* if (!args[1]) return msg.channel.send("Please provide the new code"); */
 
                             if (!gdata.exists) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
-                            if (abbs[item] != "au" && abbs[item] != "d2") return msg.channel.send("Codes are not available for this game");
+                            if (abbs[item] != "au" || abbs[item] != "d2") {
+                                if (!(/^[A-Z]{6}$/g.test(code))) return msg.react("❌");
+                            }
+                            else if(abbs[item] == "ph") {
+                                if (!(/^[0-9]{6}$/g.test(code))) return msg.react("❌");
+                            }
+                            else
+                                return msg.channel.send("Codes are not available for this game");
                             let code = args[1].toUpperCase();
-                            if (!(/^[A-Z]{6}$/g.test(code))) return msg.react("❌");
                             let region = null;
                             if(args[2]){
                                 region = args[2].toUpperCase();
