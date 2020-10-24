@@ -19,8 +19,8 @@ admin.initializeApp({
 
 let db = admin.firestore(); //13:37
 
-//client.login(process.env.TOKEN);
-client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
+client.login(process.env.TOKEN);
+//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
