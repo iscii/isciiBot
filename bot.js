@@ -663,7 +663,7 @@ client.on("message", async (msg) => {
                                         em
                                             .setColor('#ff2929')
                                             .setDescription("Play with 4-10 players online or via local WiFi as you attempt to lynch two imposters but end up lynching your friendships instead")
-                                            .setURL('https://uploadhaven.com/download/abf5aafb8f7098fbb0afd22406c7bcfb')
+                                            .setURL('https://gofile.io/d/CfY2cQ')
                                             .setThumbnail('https://cdn.discordapp.com/emojis/745802940580888706.png?v=1');
                                         if (props.code) {
                                             em.addField('Code', props.code);
