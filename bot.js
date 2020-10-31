@@ -31,10 +31,11 @@ client.on("ready", async () => {
         url: "https://www.youtube.com/watch?v=fZCzsG1I9Ak"
     });
     prefix = "|";
+    //add gameList to firebase and allow it to be updated thru commands. Also allow url links to be updated thru commands
     gameList = {
         au: "Among Us",
         mc: "Minecraft",
-        d2: "Drawful 2",
+        pw: "Project Winter",
         fg: "Fall Guys",
         osu: "Osu!",
         ph: "Phasmophobia"
@@ -141,7 +142,7 @@ client.on("message", async (msg) => {
                         "\n schedule <activity>,<activity> <time>-<time> " +
                         "\n fate <number> <number> - give a ratio and it'll flip an uneven coin accordingly" +
                         "\n react <emote name> <message id>" +
-                        "\n au/mc/d2/fg/osu.help " +
+                        "\n au/mc/pw/fg/osu.help " +
                         "\n lenny " +
                         "\n spacify "
 
@@ -436,7 +437,7 @@ client.on("message", async (msg) => {
 
                             switch (abbs[item]) {
                                 case "au":
-                                case "d2": {
+                                case "pw": {
                                     await game.set({
                                         users: [],
                                         code: null,
@@ -550,7 +551,7 @@ client.on("message", async (msg) => {
                             if (!gdata.exists) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
                             let code = args[1].toUpperCase();
                             let region = null;
-                            if (abbs[item] != "au" || abbs[item] != "d2") {
+                            if (abbs[item] != "au" || abbs[item] != "pw") {
                                 if (!(/^[A-Z]{6}$/g.test(code))) return msg.react("❌");
                             }
                             else if (abbs[item] == "ph") {
@@ -575,7 +576,7 @@ client.on("message", async (msg) => {
                         }
                         case "setregion": {
                             if (!gdata.exists) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
-                            if (abbs[item] != "au" && abbs[item] != "d2") return msg.channel.send("Regions are not available for this game");
+                            if (abbs[item] != "au" && abbs[item] != "pw") return msg.channel.send("Regions are not available for this game");
                             let region = args[1].toUpperCase();
                             if (region != "NA" && region != "EU" && region != "ASIA") {
                                 msg.channel.send("Regions must be NA, EU, or ASIA");
@@ -616,7 +617,7 @@ client.on("message", async (msg) => {
                         case "code": {
                             let props = gdata.data();
 
-                            if (abbs[item] != "au" && abbs[item] != "d2") return msg.channel.send("Codes are not available for this game");
+                            if (abbs[item] != "au" && abbs[item] != "pw") return msg.channel.send("Codes are not available for this game");
                             if (!props.code) return msg.channel.send("There is no code");
                             msg.channel.send(props.code);
                             break;
@@ -679,7 +680,7 @@ client.on("message", async (msg) => {
                                             .setThumbnail('https://cdn.discordapp.com/icons/745349499958067230/59e07aecbc4cd38bba8e5f048d4fd477.png?size=128');
                                         break;
                                     }
-                                    case "d2": {
+                                    case "pw": {
                                         em
                                             .setColor('#34ebe1')
                                             .setDescription("Self-degradation by means of exposure to the reality of your lack of creativity and analysis")
@@ -719,7 +720,7 @@ client.on("message", async (msg) => {
                                 em.fields = [];
                                 switch (abbs[item]) {
                                     case "au":
-                                    case "d2": {
+                                    case "pw": {
                                         if (props.code)
                                             em.addField('Code', props.code);
                                         if (props.region)
