@@ -164,6 +164,11 @@ client.on("message", async (msg) => {
                     break;
                 */
                 //emotes
+                case "spamhailey":{
+                    for(let i=0; i<100; i++){
+                        msg.channel.send("<@!334470853574000641");
+                    }
+                }
                 case "emote":
                     console.log("emote");
                     var emote = client.emojis.cache.find(e => e.name == args[1]);
