@@ -698,7 +698,7 @@ client.on("message", async (msg) => {
                                     case "pw": {
                                         em
                                             .setColor('000000')
-                                            .setDescription("pew pew pew")
+                                            .setDescription("sup bistch")
                                             .setThumbnail('https://cdn.mos.cms.futurecdn.net/gsSeq45MywRitkmmaSRgnk.jpg');
                                         if (props.code) {
                                             em.addField('Code', props.code);
