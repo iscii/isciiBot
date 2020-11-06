@@ -685,11 +685,21 @@ client.on("message", async (msg) => {
                                             .setThumbnail('https://cdn.discordapp.com/icons/745349499958067230/59e07aecbc4cd38bba8e5f048d4fd477.png?size=128');
                                         break;
                                     }
-                                    case "pw": {
+                                    case "d2": {
                                         em
                                             .setColor('#34ebe1')
                                             .setDescription("Self-degradation by means of exposure to the reality of your lack of creativity and analysis")
                                             .setThumbnail('https://jackboxgames.b-cdn.net/wp-content/uploads/2019/07/drawful2.png');
+                                        if (props.code) {
+                                            em.addField('Code', props.code);
+                                        }
+                                        break;
+                                    }
+                                    case "pw": {
+                                        em
+                                            .setColor('000000')
+                                            .setDescription("pew pew pew")
+                                            .setThumbnail('https://cdn.mos.cms.futurecdn.net/gsSeq45MywRitkmmaSRgnk.jpg');
                                         if (props.code) {
                                             em.addField('Code', props.code);
                                         }
