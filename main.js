@@ -27,7 +27,7 @@ client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
 client.on("guildCreate", guild => {
     console.log("Joined a new guild: " + guild.name);
     prefix = "|";
-    gameList = {
+    gameList = { //make this firebase dynamic
         au: "Among Us",
         mc: "Minecraft",
         d2: "Drawful 2",
@@ -41,15 +41,21 @@ client.on("guildCreate", guild => {
 });
 
 client.on("message", msg => {
+    if(message.author.bot) return;
     if (!message.content.startsWith(prefix)) cmdGeneral(msg);
     else cmdGames(msg);
 
 });
 function cmdGeneral(msg) {
+    const args = msg.content.split(" ").splice(0, 1)[0];
 }
 function cmdGames(msg) {
     const game = msg.content.split(" ")[0].split(".")[0];
     const cmd = msg.content.split(" ")[0].split(".")[1];
     const args = msg.content.split(" ").splice(0, 1)[0];
+
+    console.log(game);
+    console.log(cmd);
+    console.log(args);
     
 }

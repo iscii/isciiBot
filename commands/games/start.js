@@ -1,7 +1,7 @@
 module.exports = {
     name: 'start',
     description: 'start',
-    execute(message, args, abb, game) {
+    execute(msg, abb, game) {
         let date = new Date();
         let props = gdata.data();
         if(gdata.exists) {
