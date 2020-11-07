@@ -24,7 +24,7 @@ const bGames = require("./games.js");
 //client.login(process.env.TOKEN);
 client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
 
-client.on("guildCreate", guild => {
+client.on("guildCreate", async (guild) => {
     console.log("Joined a new guild: " + guild.name);
     let newGuild = await db.collection("guilds").doc(guild.id).get();
 });
@@ -41,7 +41,7 @@ client.on("ready", async () => {
 });
 
 client.on("message", msg => {
-    if(message.author.bot) return;
+    if (message.author.bot) return;
 
     let guild = await db.collection("guilds").doc(msg.guild.id).get();
     gData = guild.data();
