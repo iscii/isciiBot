@@ -26,6 +26,10 @@ client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
 
 client.on("guildCreate", guild => {
     console.log("Joined a new guild: " + guild.name);
+    let newGuild = await db.collection("guilds").doc(guild.id).get();
+});
+
+client.on("ready", async () => {
     prefix = "|";
     gameList = { //make this firebase dynamic
         au: "Among Us",
@@ -34,20 +38,20 @@ client.on("guildCreate", guild => {
         fg: "Fall Guys",
         osu: "Osu!"
     }
-
-    let guild = await db.collection("guilds").doc(guild.id).get();
-    gData = guild.data();
-
 });
 
 client.on("message", msg => {
     if(message.author.bot) return;
+
+    let guild = await db.collection("guilds").doc(msg.guild.id).get();
+    gData = guild.data();
+
     if (!message.content.startsWith(prefix)) cmdGeneral(msg);
     else cmdGames(msg);
-
 });
 function cmdGeneral(msg) {
-    const args = msg.content.split(" ").splice(0, 1)[0];
+    const args = msg.content.slice(prefix.length).trim().split(" ");
+    console.log(args);
 }
 function cmdGames(msg) {
     const game = msg.content.split(" ")[0].split(".")[0];
@@ -57,5 +61,4 @@ function cmdGames(msg) {
     console.log(game);
     console.log(cmd);
     console.log(args);
-    
 }
