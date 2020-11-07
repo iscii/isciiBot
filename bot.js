@@ -40,7 +40,7 @@ client.on("ready", async () => {
         osu: "Osu!",
         ph: "Phasmophobia"
     }
-    embedchannel = "746864165704171530"; /* "746501018694582346"; */
+    embedchannel = "746501018694582346"; /* "746501018694582346"; */
 
     //time
     let date = new Date();

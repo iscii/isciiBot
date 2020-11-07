@@ -26,7 +26,6 @@
     "firebase": "^7.19.1",
     "firebase-admin": "^9.1.1",
     "node-opus": "^0.3.3",
-    "owoify-js": "^1.0.7",
-    "ytdl-core": "^1.0.7"
+    "owoify-js": "^1.0.7"
   }
 }
