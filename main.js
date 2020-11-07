@@ -22,7 +22,7 @@ client.gameCmds = new Discord.Collection();
 const utilities = require("./utilities.js");
 
 //login
-//client.login(process.env.TOKEN);
+//client.login(process.env.TOKEN); -- use this if ever plan on making repo public
 client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
 
 //get command files
@@ -53,7 +53,7 @@ client.on("ready", async () => {
         pw: "Project Winter",
         ph: "Phasmophobia"
     }
-    embedchannel = /* "746864165704171530"; */ "746501018694582346";
+    embedchannel = "746864165704171530"; /* "746501018694582346" */;
 });
 
 client.on("message", async (msg) => {
