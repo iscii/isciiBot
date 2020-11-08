@@ -88,24 +88,12 @@ async function cmdGames(msg) {
 
     //console.log(game + cmd + args);
 
-    if(game in gameList){
+    if(game in gameList && msg.content.includes(".")){
         session = guild.collection("sessions").doc(game);
         sessionGet = await session.get();
         sessionData = sessionGet.data();
         
-        
-        switch(cmd){
-            case "start": client.gameCmds.get("start").execute(msg, session, sessionGet, embedchannel, game, createEmbed); break;
-            case "end": client.gameCmds.get("end").execute(msg, session, sessionGet, embedchannel); break;
-            case "join": client.gameCmds.get("join").execute(msg, admin, session, sessionGet, game, editEmbed); break;
-            case "leave": client.gameCmds.get("leave").execute(msg, admin, session, sessionGet, game, editEmbed); break;
-            case "ping": client.gameCmds.get("ping").execute(msg, sessionGet, gameList, game); break;
-            case "setcode": client.gameCmds.get("setcode").execute(msg, sessionGet, args, game, editEmbed); break;
-            case "setregion": client.gameCmds.get("setregion").execute(msg, session, sessionGet, args, game, editEmbed); break;
-            case "settime": client.gameCmds.get("settime").execute(msg, session, sessionGet, args, game, editEmbed); break;
-            case "code": client.gameCmds.get("code").execute(msg, sessionGet, game); break;
-            case "": client.gameCmds.get("").execute(); break;
-        }
+        client.gameCmds.get(cmd).execute(msg, admin, session, sessionGet, gameList, embedchannel, game, args, createEmbed, editEmbed);
     }
 }
 async function createEmbed(msg, game) {

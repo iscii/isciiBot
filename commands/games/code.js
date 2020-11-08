@@ -1,7 +1,7 @@
 module.exports = {
     name: "code",
     description: "code",
-    execute(msg, sessionGet, game) {
+    execute(msg, admin, session, sessionGet, gameList, embedchannel, game, args, createEmbed, editEmbed) {
         let props = sessionGet.data();
 
         if (game != "au" && game != "pw") return msg.channel.send("Codes are not available for this game");

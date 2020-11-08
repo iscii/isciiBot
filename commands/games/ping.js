@@ -1,7 +1,7 @@
 module.exports = {
     name: "ping",
     description: "ping",
-    execute(msg, sessionGet, gameList, game) {
+    execute(msg, admin, session, sessionGet, gameList, embedchannel, game, args, createEmbed, editEmbed) {
         if (!sessionGet.exists) return msg.channel.send(`Please start the game session with ${game}.start`);
         let props = sessionGet.data();
 

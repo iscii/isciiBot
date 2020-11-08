@@ -1,7 +1,7 @@
 module.exports = {
     name: "setregion",
     description: "setregion",
-    async execute(msg, session, sessionGet, args, game, editEmbed) {
+    async execute(msg, admin, session, sessionGet, gameList, embedchannel, game, args, createEmbed, editEmbed) {
         if (!args[0]) return msg.react("❌");
 
         if (!sessionGet.exists) return msg.channel.send(`Please start the game session with ${game}.start`);

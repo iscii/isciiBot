@@ -1,7 +1,7 @@
 module.exports = {
     name: "",
     description: "",
-    execute() {
+    execute(msg, admin, session, sessionGet, gameList, embedchannel, game, args, createEmbed, editEmbed) {
 
     },
 }
