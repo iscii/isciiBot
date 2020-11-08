@@ -72,14 +72,8 @@ function cmdGeneral(msg) {
     const args = msg.content.slice(prefix.length).trim().split(" ").splice(1);
 
     //console.log(cmd + args);
-
-    switch(cmd){
-        case "ping": client.normCmds.get("ping").execute(msg); break;
-        case "owo": client.normCmds.get("owu").execute(msg, cmd); break;
-        case "uwu": client.normCmds.get("owu").execute(msg, cmd); break;
-        case "delete": client.normCmds.get("delete").execute(msg, embedchannel, args); break;
-        case "": client.normCmds.get("").execute(); break;
-    }
+    if(msg.content.includes("|"))
+        client.normCmds.get(cmd).execute(msg, admin, cmd, args);
 }
 async function cmdGames(msg) {
     const game = msg.content.trim().split(" ")[0].split(".")[0];
