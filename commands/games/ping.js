@@ -4,8 +4,8 @@ module.exports = {
     execute(msg, admin, session, sessionGet, gameList, embedChannel, game, args, createEmbed, editEmbed) {
         if (!sessionGet.exists) return msg.channel.send(`Please start the game session with ${game}.start`);
         let props = sessionGet.data();
-
-        let pingmessage = `ping! ${gameList[game]} [ `;
+        
+        let pingmessage = `ping! ${gameList[game].name} [ `;
         for (let i = 0; i < props.users.length; i++) {
             pingmessage += `<@!${props.users[i]}> `;
         }
