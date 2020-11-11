@@ -55,9 +55,11 @@ client.on("guildDelete", (guild) => {
 
 client.on("ready", async () => {
     console.log("bot is ready");
-    /*var x = client.guilds.cache.array();
+    /*
+    var x = client.guilds.cache.array();
     for (i in x){
         db.collection("guilds").doc(x[i].id).update({
+            prefix: "i."
         })
     }*/
 });
