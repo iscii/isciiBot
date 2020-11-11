@@ -1,11 +1,11 @@
 module.exports = {
     name: "end",
-    description: "end",
-    execute(msg, admin, session, sessionGet, gameList, embedchannel, game, args, createEmbed, editEmbed) {
+    description: "end | end the session",
+    execute(msg, admin, session, sessionGet, gameList, embedChannel, game, args, createEmbed, editEmbed) {
         if (!sessionGet.exists) return msg.react("❌");
         const props = sessionGet.data();
 
-        msg.guild.channels.cache.get(embedchannel).messages.fetch(props.embedid).then((message) => {
+        msg.guild.channels.cache.get(embedChannel).messages.fetch(props.embedid).then((message) => {
             session.delete();
             message.delete();
             msg.react("✅");

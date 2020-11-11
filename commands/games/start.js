@@ -1,7 +1,7 @@
 module.exports = {
     name: 'start',
-    description: 'start',
-    async execute(msg, admin, session, sessionGet, gameList, embedchannel, game, args, createEmbed, editEmbed) {
+    description: 'start | start a session',
+    async execute(msg, admin, session, sessionGet, gameList, embedChannel, game, args, createEmbed, editEmbed) {
         let date = new Date();
         const props = sessionGet.data();
         if(sessionGet.exists) {
@@ -10,7 +10,7 @@ module.exports = {
             if (hours < 11) {
                 return msg.react("❌");
             }
-            await msg.guild.channels.cache.get(embedchannel).messages.fetch(props.embedid).then(async (message) => {
+            await msg.guild.channels.cache.get(embedChannel).messages.fetch(props.embedid).then(async (message) => {
                 session.delete();
                 message.delete();
                 msg.react("✅");
@@ -28,7 +28,7 @@ module.exports = {
             embedid: null,
             date: date.toString()
         });
-        createEmbed(msg, game);
+        createEmbed(msg, game, embedChannel);
     
         msg.react("✅");
     },

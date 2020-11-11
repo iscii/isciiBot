@@ -1,11 +1,10 @@
 module.exports = {
     name: "setregion",
-    description: "setregion",
-    async execute(msg, admin, session, sessionGet, gameList, embedchannel, game, args, createEmbed, editEmbed) {
+    description: "setregion <NA/EU/ASIA> | set the region (ex: ex.setregion NA)",
+    async execute(msg, admin, session, sessionGet, gameList, embedChannel, game, args, createEmbed, editEmbed) {
         if (!args[0]) return msg.react("❌");
 
         if (!sessionGet.exists) return msg.channel.send(`Please start the game session with ${game}.start`);
-        if (game != "au" && game != "pw") return msg.channel.send("Regions are not available for this game");
 
         let region = args[0].toUpperCase();
 
@@ -16,7 +15,7 @@ module.exports = {
         await session.update({
             region: region
         });
-        editEmbed(msg, game);
+        editEmbed(msg, game, embedChannel);
         msg.react("✅");
     },
 }

@@ -28,38 +28,40 @@ client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
 //get command files
 const normCmdFiles = fs.readdirSync("./commands/normal").filter(file => file.endsWith(".js"));
 const gameCmdFiles = fs.readdirSync("./commands/games").filter(file => file.endsWith(".js"));
-for (const file of normCmdFiles){
+for (const file of normCmdFiles) {
+    if (file == "1-format.js") continue;
     const command = require(`./commands/normal/${file}`);
     client.normCmds.set(command.name, command);
 }
-for (const file of gameCmdFiles){
+for (const file of gameCmdFiles) {
+    if (file == "1-format.js") continue;
     const command = require(`./commands/games/${file}`);
     client.gameCmds.set(command.name, command);
 }
 
 //client
-client.on("guildCreate", async (guild) => {
-    console.log("Joined a new guild: " + guild.name);
-    let newGuild = await db.collection("guilds").doc(guild.id).get();
+client.on("guildCreate", (guild) => {
+    console.log(`Joined ${guild.name}`);
+    db.collection("guilds").doc(guild.id).set({
+        exists: true
+    });
+});
+
+client.on("guildDelete", (guild) => {
+    console.log(`Left ${guild.name}`);
+    db.collection("guilds").doc(guild.id).delete();
 });
 
 client.on("ready", async () => {
     console.log("bot is ready");
-    //make these firebase dynamic and set them to a variable here
     prefix = "|";
-    gameList = {
-        au: "Among Us",
-        d2: "Drawful 2",
-        pw: "Project Winter",
-        ph: "Phasmophobia"
-    }
-    embedchannel = "746864165704171530"; /* "746501018694582346" */;
 });
 
 client.on("message", async (msg) => {
     if (msg.author.bot) return;
 
     //holidays!! set a bot calendar thing that announces holidays/birthdays set by users
+    //make bot autoping users in a queue
     guild = db.collection("guilds").doc(msg.guild.id);
     guildGet = await guild.get();
     guildData = guildGet.data();
@@ -71,75 +73,58 @@ function cmdGeneral(msg) {
     const cmd = msg.content.slice(prefix.length).trim().split(" ")[0];
     const args = msg.content.slice(prefix.length).trim().split(" ").splice(1);
 
-    //console.log(cmd + args);
-    if(msg.content.includes("|"))
-        client.normCmds.get(cmd).execute(msg, admin, cmd, args);
+    if (msg.content.includes(prefix)) {
+        if(client.normCmds.get(cmd) == undefined) return msg.channel.send("That command does not exist");
+        if(cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord);
+
+        console.log(`${cmd} ${args}`);
+
+        try {
+            client.normCmds.get(cmd).execute(msg, admin, cmd, args, Discord);
+        }
+        catch (error) {
+            msg.channel.send("There was an error");
+            console.log(error);
+        }
+    }
 }
 async function cmdGames(msg) {
     const game = msg.content.trim().split(" ")[0].split(".")[0];
     const cmd = msg.content.trim().split(" ")[0].split(".")[1];
     const args = msg.content.trim().split(" ").splice(1);
 
-    //console.log(game + cmd + args);
+    gameList = guildData.gameList;
+    embedChannel = guildData.embedChannel;
 
-    if(game in gameList && msg.content.includes(".")){
+    if (msg.content.includes(".") && (gameList != undefined && gameList.hasOwnProperty(game))) {
+        if(client.gameCmds.get(cmd) == undefined) return msg.channel.send("That command does not exist");
+        if(cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord);
+
+        console.log(`${game} ${cmd} ${args}`);
+        
         session = guild.collection("sessions").doc(game);
         sessionGet = await session.get();
-        sessionData = sessionGet.data();
-        
-        client.gameCmds.get(cmd).execute(msg, admin, session, sessionGet, gameList, embedchannel, game, args, createEmbed, editEmbed);
+
+        try {
+            client.gameCmds.get(cmd).execute(msg, admin, session, sessionGet, gameList, embedChannel, game, args, createEmbed, editEmbed);
+        }
+        catch (error) {
+            msg.channel.send("There was an error");
+            console.log(error);
+        }
     }
 }
-async function createEmbed(msg, game) {
+async function createEmbed(msg, game, embedChannel) {
     var em = new Discord.MessageEmbed()
-        .setTitle(`${gameList[game]}`)
+        .setTitle(gameList[game].name)
         .setTimestamp()
-        .setFooter("good morning gamers");
+        .setFooter("Good Morning!")
+        .setColor(gameList[game].color)
+        .setDescription(gameList[game].description)
+        .setURL(gameList[game].url)
+        .setThumbnail(gameList[game].icon);
 
-    sessionGet = await session.get();
-    const props = sessionGet.data();
-
-    switch (game) {
-        case "au": {
-            em
-                .setColor('#ff2929')
-                .setDescription("Play with 4-10 players online or via local WiFi as you attempt to lynch two imposters but end up lynching your friendships instead")
-                .setURL('https://gofile.io/d/CfY2cQ')
-                .setThumbnail('https://cdn.discordapp.com/emojis/745802940580888706.png?v=1');
-            if (props.code) {
-                em.addField('Code', props.code);
-            }
-
-            break;
-        }
-        case "d2": {
-            em
-                .setColor('#34ebe1')
-                .setDescription("Self-degradation by means of exposure to the reality of your lack of creativity and analysis")
-                .setThumbnail('https://jackboxgames.b-cdn.net/wp-content/uploads/2019/07/drawful2.png');
-            if (props.code) {
-                em.addField('Code', props.code);
-            }
-            break;
-        }
-        case "pw": {
-            em
-                .setColor('#042850')
-                .setDescription("sup bistch")
-                .setThumbnail('https://cdn.mos.cms.futurecdn.net/gsSeq45MywRitkmmaSRgnk.jpg');
-            if (props.code) {
-                em.addField('Code', props.code);
-            }
-            break;
-        }
-        case "ph": {
-            em
-                .setColor("#000000")
-                .setDescription("Some horror game I don't know about")
-                .setThumbnail('https://steamcdn-a.akamaihd.net/steam/apps/739630/header.jpg?t=1600451822')
-        }
-    }
-    msg.guild.channels.cache.get(embedchannel).send(em)
+    msg.guild.channels.cache.get(embedChannel).send(em)
         .then((message => {
             session.update({
                 embedid: message.id
@@ -149,39 +134,44 @@ async function createEmbed(msg, game) {
             console.log(error);
         });
 }
-async function editEmbed(msg, game) {
-    sessionGet = await session.get();
-    const props = sessionGet.data();
 
-    let nameList = `[${props.users.length}]`;
-    for (let i = 0; i < props.users.length; i++) {
-        nameList += "\n - " + (msg.guild.members.cache.get(props.users[i])).user.username;
+async function editEmbed(msg, game, embedChannel) {
+    let sessionData = await session.get().then((data) => {return data.data();});
+    if(sessionData == undefined) return console.log("session not started");
+    
+    let nameList = `[${sessionData.users.length}]`;
+
+    for (let i = 0; i < sessionData.users.length; i++) {
+        await msg.guild.members.fetch(sessionData.users[i]).then((member) => {
+            let m = member.user.username
+            nameList += `\n - ${m}`;
+        })
     }
-    const message = await msg.guild.channels.cache.get(embedchannel).messages.fetch(props.embedid);
-    var em = message.embeds[0];
+
+    const message = await msg.guild.channels.cache.get(embedChannel).messages.fetch(sessionData.embedid).catch((error) => {
+        console.log("The game's embed exists in a non-embedChannel channel.");
+        console.log(error);
+    });
+
+    let gameList = await db.collection("guilds").doc(msg.guild.id).get().then((data) => {return data.data().gameList;});
+
+    var em = message.embeds[0]
+        .setColor(gameList[game].color)
+        .setDescription(gameList[game].description)
+        .setURL(gameList[game].url)
+        .setThumbnail(gameList[game].icon);
+
     em.fields = [];
-    switch (game) {
-        case "au":
-        case "d2":
-        case "pw": {
-            if (props.code)
-                em.addField('Code', props.code);
-            if (props.region)
-                em.addField('Region', props.region);
-            if (props.time)
-                em.addField('Time', props.time);
-            if (props.users[0])
-                em.addField('Players', nameList);
-            break;
-        }
-        case "ph": {
-            if (props.time)
-                em.addField('Time', props.time);
-            if (props.users[0])
-                em.addField('Players', nameList);
-            break;
-        }
-    }
+
+    if (sessionData.code)
+        em.addField('Code', sessionData.code);
+    if (sessionData.region)
+        em.addField('Region', sessionData.region);
+    if (sessionData.time)
+        em.addField('Time', sessionData.time);
+    if (sessionData.users[0])
+        em.addField('Players', nameList);
 
     message.edit(em);
 }
+//disclaimer: I know there's a ton of redundant code and im a lil lazy to fix them pls forgiv

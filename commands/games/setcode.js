@@ -1,24 +1,17 @@
 module.exports = {
     name: "setcode",
-    description: "setcode",
-    async execute(msg, admin, session, sessionGet, gameList, embedchannel, game, args, createEmbed, editEmbed) {
+    description: "setcode <code> | set the code (ex: ex.setcode ABCDEF)",
+    async execute(msg, admin, session, sessionGet, gameList, embedChannel, game, args, createEmbed, editEmbed) {
         if (!args[0]) return msg.react("❌");
 
         if (!sessionGet.exists) return msg.channel.send(`Please start the game session with ${game}.start`);
-        let code = args[0].toUpperCase();
-        if (game != "au" || game != "pw") {
-            if (!(/^[A-Z]{6}$/g.test(code))) return msg.react("❌");
-        }
-        else if (game == "ph") {
-            if (!(/^[0-9]{6}$/g.test(code))) return msg.react("❌");
-        }
-        else
-            return msg.channel.send("Codes are not available for this game");
+        let code = args[0].toUpperCase(); // /^[A-Z]{6}$/g (au) /^[0-9]{6}$/g (ph)
 
         await session.update({
             code: code
         });
-        editEmbed(msg, game);
+        
+        editEmbed(msg, game, embedChannel);
         msg.react("✅");
     },
 }

@@ -1,7 +1,7 @@
 module.exports = {
     name: "settime",
-    description: "settime",
-    async execute(msg, admin, session, sessionGet, gameList, embedchannel, game, args, createEmbed, editEmbed) {
+    description: "settime <HH:MM> | set the time (ex: ex.settime 5:00)",
+    async execute(msg, admin, session, sessionGet, gameList, embedChannel, game, args, createEmbed, editEmbed) {
         if (!args[0]) return msg.react("❌");
 
         let time = args[0];
@@ -13,7 +13,7 @@ module.exports = {
             time: time
         });
 
-        editEmbed(msg, game);
+        editEmbed(msg, game, embedChannel);
         msg.react("✅");
     },
 }
