@@ -3,7 +3,7 @@ module.exports = {
     description: "say <message [.e.<emotename>] [prefix]> | say stuff. include <.e.> to emote, <prefix> to anonymize. (ex: |say hi | // |say hi .e.poop)",
     async execute(msg, admin, cmd, args, Discord) {
         if (args[0] == null) return msg.channel.send("Please state the message to be sent.");
-        msg.delete();
+        msg.delete(); //* unknown message error: two instances of bot running; one deletes, the other can't find
         let prefix = await admin.firestore().collection("guilds").doc(msg.guild.id).get().then((data) => {return data.data().prefix;});
 
         //checks for anonymity
