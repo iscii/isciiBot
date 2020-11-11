@@ -58,14 +58,12 @@ client.on("ready", async () => {
     /*var x = client.guilds.cache.array();
     for (i in x){
         db.collection("guilds").doc(x[i].id).update({
-            prefix: "|"
         })
     }*/
 });
 
 client.on("message", async (msg) => {
     if (msg.author.bot) return;
-
     //holidays!! set a bot calendar thing that announces holidays/birthdays set by users
     //make bot autoping users in a queue
     //tic tac toe and rps

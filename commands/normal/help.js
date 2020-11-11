@@ -1,6 +1,6 @@
 module.exports = {
     name: "help",
-    description: "help <[g]> | get list of commands (ex: |help // |help g)",
+    description: "help [g] | get list of commands (ex: |help // |help g)",
     execute(msg, args, client, Discord, prefix) {
         let commands = "";
         let list = client.normCmds;

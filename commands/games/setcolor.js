@@ -7,7 +7,7 @@ module.exports = {
         await admin.firestore().collection("guilds").doc(msg.guild.id).set({
             gameList: {
                 [`${game}`]: {
-                    color: `#${args[0]}`
+                    color: `${args[0]}`
                 }
             }
         }, { merge: true })
