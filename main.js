@@ -43,7 +43,8 @@ for (const file of gameCmdFiles) {
 client.on("guildCreate", (guild) => {
     console.log(`Joined ${guild.name}`);
     db.collection("guilds").doc(guild.id).set({
-        exists: true
+        exists: true,
+        prefix: "|"
     });
 });
 
@@ -54,7 +55,12 @@ client.on("guildDelete", (guild) => {
 
 client.on("ready", async () => {
     console.log("bot is ready");
-    prefix = "|";
+    /*var x = client.guilds.cache.array();
+    for (i in x){
+        db.collection("guilds").doc(x[i].id).update({
+            prefix: "|"
+        })
+    }*/
 });
 
 client.on("message", async (msg) => {
@@ -62,9 +68,11 @@ client.on("message", async (msg) => {
 
     //holidays!! set a bot calendar thing that announces holidays/birthdays set by users
     //make bot autoping users in a queue
+    //tic tac toe and rps
     guild = db.collection("guilds").doc(msg.guild.id);
     guildGet = await guild.get();
     guildData = guildGet.data();
+    prefix = guildData.prefix;
 
     if (msg.content.startsWith(prefix)) cmdGeneral(msg);
     else cmdGames(msg);
@@ -75,7 +83,7 @@ function cmdGeneral(msg) {
 
     if (msg.content.includes(prefix)) {
         if(client.normCmds.get(cmd) == undefined) return msg.channel.send("That command does not exist");
-        if(cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord);
+        if(cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord, prefix);
 
         console.log(`${cmd} ${args}`);
 
@@ -98,7 +106,7 @@ async function cmdGames(msg) {
 
     if (msg.content.includes(".") && (gameList != undefined && gameList.hasOwnProperty(game))) {
         if(client.gameCmds.get(cmd) == undefined) return msg.channel.send("That command does not exist");
-        if(cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord);
+        if(cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord, prefix);
 
         console.log(`${game} ${cmd} ${args}`);
         
