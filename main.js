@@ -57,10 +57,10 @@ client.on("ready", async () => {
     console.log("bot is ready");
     /*
     var x = client.guilds.cache.array();
-    for (i in x){
+    for (i in x) {
         db.collection("guilds").doc(x[i].id).update({
-            prefix: "i."
-        })
+
+        }, { merge: true });
     }*/
 });
 
@@ -82,8 +82,8 @@ function cmdGeneral(msg) {
     const args = msg.content.slice(prefix.length).trim().split(" ").splice(1);
 
     if (msg.content.includes(prefix)) {
-        if(client.normCmds.get(cmd) == undefined) return msg.channel.send("That command does not exist");
-        if(cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord, prefix);
+        if (client.normCmds.get(cmd) == undefined) return msg.channel.send("That command does not exist");
+        if (cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord, prefix);
 
         console.log(`${cmd} ${args}`);
 
@@ -105,11 +105,11 @@ async function cmdGames(msg) {
     embedChannel = guildData.embedChannel;
 
     if (msg.content.includes(".") && (gameList != undefined && gameList.hasOwnProperty(game))) {
-        if(client.gameCmds.get(cmd) == undefined) return msg.channel.send("That command does not exist");
-        if(cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord, prefix);
+        if (client.gameCmds.get(cmd) == undefined) return msg.channel.send("That command does not exist");
+        if (cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord, prefix);
 
         console.log(`${game} ${cmd} ${args}`);
-        
+
         session = guild.collection("sessions").doc(game);
         sessionGet = await session.get();
 
@@ -132,21 +132,19 @@ async function createEmbed(msg, game, embedChannel) {
         .setURL(gameList[game].url)
         .setThumbnail(gameList[game].icon);
 
-    msg.guild.channels.cache.get(embedChannel).send(em)
+    let ch = await msg.guild.channels.cache.get(embedChannel);
+    ch.send(em)
         .then((message => {
             session.update({
                 embedid: message.id
             });
-        }))
-        .catch((error) => {
-            console.log(error);
-        });
+        }));
 }
 
 async function editEmbed(msg, game, embedChannel) {
-    let sessionData = await session.get().then((data) => {return data.data();});
-    if(sessionData == undefined) return console.log("session not started");
-    
+    let sessionData = await session.get().then((data) => { return data.data(); });
+    if (sessionData == undefined) return console.log("session not started");
+
     let nameList = `[${sessionData.users.length}]`;
 
     for (let i = 0; i < sessionData.users.length; i++) {
@@ -161,7 +159,7 @@ async function editEmbed(msg, game, embedChannel) {
         console.log(error);
     });
 
-    let gameList = await db.collection("guilds").doc(msg.guild.id).get().then((data) => {return data.data().gameList;});
+    let gameList = await db.collection("guilds").doc(msg.guild.id).get().then((data) => { return data.data().gameList; });
 
     var em = message.embeds[0]
         .setColor(gameList[game].color)
