@@ -69,6 +69,8 @@ client.on("message", async (msg) => {
     //holidays!! set a bot calendar thing that announces holidays/birthdays set by users
     //make bot autoping users in a queue
     //tic tac toe and rps
+    //serveremotes list
+    //join channel so ppl dont feel lonely
     guild = db.collection("guilds").doc(msg.guild.id);
     guildGet = await guild.get();
     guildData = guildGet.data();
@@ -145,13 +147,13 @@ async function editEmbed(msg, game, embedChannel) {
     let sessionData = await session.get().then((data) => { return data.data(); });
     if (sessionData == undefined) return console.log("session not started");
 
-    let nameList = `[${sessionData.users.length}]`;
+    let nameList = "";
 
     for (let i = 0; i < sessionData.users.length; i++) {
         await msg.guild.members.fetch(sessionData.users[i]).then((member) => {
             let m = member.user.username
             nameList += `\n - ${m}`;
-        })
+        });
     }
 
     const message = await msg.guild.channels.cache.get(embedChannel).messages.fetch(sessionData.embedid).catch((error) => {
@@ -176,7 +178,7 @@ async function editEmbed(msg, game, embedChannel) {
     if (sessionData.time)
         em.addField('Time', sessionData.time);
     if (sessionData.users[0])
-        em.addField('Players', nameList);
+        em.addField(`Players [${sessionData.users.length}]`, nameList);
 
     message.edit(em);
 }
