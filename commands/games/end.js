@@ -1,7 +1,7 @@
 module.exports = {
     name: "end",
     description: "end | end the session",
-    execute(msg, admin, session, sessionGet, gameList, embedChannel, game, args, createEmbed, editEmbed) {
+    execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, createEmbed, editEmbed) {
         if (!sessionGet.exists) return msg.react("❌");
         const props = sessionGet.data();
 

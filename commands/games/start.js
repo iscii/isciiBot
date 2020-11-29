@@ -1,7 +1,7 @@
 module.exports = {
     name: 'start',
     description: 'start | start a session',
-    async execute(msg, admin, session, sessionGet, gameList, embedChannel, game, args, createEmbed, editEmbed) {
+    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, createEmbed, editEmbed) {
         let date = new Date();
         const props = sessionGet.data();
         if(sessionGet.exists) {

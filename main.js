@@ -55,6 +55,7 @@ client.on("guildDelete", (guild) => {
 
 client.on("ready", async () => {
     console.log("bot is ready");
+    connection = null;
     /*
     var x = client.guilds.cache.array();
     for (i in x) {
@@ -79,18 +80,26 @@ client.on("message", async (msg) => {
     if (msg.content.startsWith(prefix)) cmdGeneral(msg);
     else cmdGames(msg);
 });
-function cmdGeneral(msg) {
+async function cmdGeneral(msg) {
     const cmd = msg.content.slice(prefix.length).trim().split(" ")[0];
     const args = msg.content.slice(prefix.length).trim().split(" ").splice(1);
-
     if (msg.content.includes(prefix)) {
+        //temporary for join and leave until you figure how to pass connection thru functions
+        if (cmd == "join") {
+            if(msg.member.voice.channel) connection = await msg.member.voice.channel.join(); else msg.channel.send("You are not in a voice channel");
+            return;
+        }
+        if(cmd == "leave") {
+            if(connection) connection.disconnect(); else msg.channel.send("I am not in a voice channel");
+            return;
+        }
         if (client.normCmds.get(cmd) == undefined) return msg.channel.send("That command does not exist");
         if (cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord, prefix);
 
         console.log(`${cmd} ${args}`);
 
         try {
-            client.normCmds.get(cmd).execute(msg, admin, cmd, args, Discord);
+            client.normCmds.get(cmd).execute(msg, admin, cmd, args, Discord, client);
         }
         catch (error) {
             msg.channel.send("There was an error");
@@ -116,7 +125,7 @@ async function cmdGames(msg) {
         sessionGet = await session.get();
 
         try {
-            client.gameCmds.get(cmd).execute(msg, admin, session, sessionGet, gameList, embedChannel, game, args, createEmbed, editEmbed);
+            client.gameCmds.get(cmd).execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, createEmbed, editEmbed);
         }
         catch (error) {
             msg.channel.send("There was an error");

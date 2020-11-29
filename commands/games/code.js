@@ -1,7 +1,7 @@
 module.exports = {
     name: "code",
     description: "code | get the code",
-    execute(msg, admin, session, sessionGet, gameList, embedChannel, game, args, createEmbed, editEmbed) {
+    execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, createEmbed, editEmbed) {
         let props = sessionGet.data();
 
         if (!props.code) return msg.channel.send("There is no code");
