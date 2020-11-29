@@ -1,7 +1,7 @@
 module.exports = {
     name: "add",
     description: "add <abbreviation> <name> | add a game to gamelist",
-    async executeexecute(msg, admin, cmd, args, Discord, client) {
+    async execute(msg, admin, cmd, args, Discord, client) {
         if (!args[1]) return msg.channel.send(this.description);
         if (/[^ ].{3}/.test(args[0])) return msg.channel.send("please limit the abbreviation to three characters");
         let name = "";

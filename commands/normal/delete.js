@@ -1,7 +1,7 @@
 module.exports = {
     name: "delete",
     description: "delete <message id> <channel id> | hehe only I can delete messages you mortals (this is for testing purposes pls don't remove my rights)",
-    executeexecute(msg, admin, cmd, args, Discord, client) {
+    execute(msg, admin, cmd, args, Discord, client) {
         if (msg.author.id != "303922359595696138") return msg.react("❌");
         let channel = msg.guild.id;
         if(args[1]) channel = args[1];
