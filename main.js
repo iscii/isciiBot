@@ -44,7 +44,7 @@ client.on("guildCreate", (guild) => {
     console.log(`Joined ${guild.name}`);
     db.collection("guilds").doc(guild.id).set({
         exists: true,
-        prefix: "|"
+        prefix: "i."
     });
 });
 
