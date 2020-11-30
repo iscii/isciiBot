@@ -72,14 +72,16 @@ client.on("message", async (msg) => {
     //tic tac toe and rps
     //serveremotes list
     //join channel so ppl dont feel lonely
-    guild = db.collection("guilds").doc(msg.guild.id);
-    guildGet = await guild.get();
-    guildData = guildGet.data();
-    prefix = guildData.prefix;
 
     if (msg.content.startsWith(prefix)) cmdGeneral(msg);
     else cmdGames(msg);
 });
+async function initGuild() {
+    guild = db.collection("guilds").doc(msg.guild.id);
+    guildGet = await guild.get();
+    guildData = guildGet.data();
+    prefix = guildData.prefix;
+}
 async function cmdGeneral(msg) {
     const cmd = msg.content.slice(prefix.length).trim().split(" ")[0];
     const args = msg.content.slice(prefix.length).trim().split(" ").splice(1);
@@ -94,6 +96,7 @@ async function cmdGeneral(msg) {
             return;
         }
         if (client.normCmds.get(cmd) == undefined) return msg.channel.send("That command does not exist");
+        initGuild();
         if (cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord, prefix);
 
         console.log(`${cmd} ${args}`);
@@ -117,6 +120,7 @@ async function cmdGames(msg) {
 
     if (msg.content.includes(".") && (gameList != undefined && gameList.hasOwnProperty(game))) {
         if (client.gameCmds.get(cmd) == undefined) return msg.channel.send("That command does not exist");
+        initGuild();
         if (cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord, prefix);
 
         console.log(`${game} ${cmd} ${args}`);
