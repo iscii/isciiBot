@@ -95,7 +95,6 @@ async function cmdGeneral(msg) {
             return;
         }
         if (client.normCmds.get(cmd) == undefined) return msg.channel.send("That command does not exist");
-        initGuild();
         if (cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord, prefix);
 
         console.log(`${cmd} ${args}`);
@@ -119,7 +118,6 @@ async function cmdGames(msg) {
 
     if (msg.content.includes(".") && (gameList != undefined && gameList.hasOwnProperty(game))) {
         if (client.gameCmds.get(cmd) == undefined) return msg.channel.send("That command does not exist");
-        initGuild();
         if (cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord, prefix);
 
         console.log(`${game} ${cmd} ${args}`);
