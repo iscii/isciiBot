@@ -72,16 +72,15 @@ client.on("message", async (msg) => {
     //tic tac toe and rps
     //serveremotes list
     //join channel so ppl dont feel lonely
-
-    if (msg.content.startsWith(prefix)) cmdGeneral(msg);
-    else cmdGames(msg);
-});
-async function initGuild() {
     guild = db.collection("guilds").doc(msg.guild.id);
     guildGet = await guild.get();
     guildData = guildGet.data();
     prefix = guildData.prefix;
-}
+
+    if (msg.content.startsWith(prefix)) cmdGeneral(msg);
+    else cmdGames(msg);
+});
+
 async function cmdGeneral(msg) {
     const cmd = msg.content.slice(prefix.length).trim().split(" ")[0];
     const args = msg.content.slice(prefix.length).trim().split(" ").splice(1);
