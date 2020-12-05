@@ -90,10 +90,7 @@ async function cmdGeneral(msg) {
             if(msg.member.voice.channel) connection = await msg.member.voice.channel.join(); else msg.channel.send("You are not in a voice channel");
             return;
         }
-        if(cmd == "leave") {
-            if(connection) connection.disconnect(); else msg.channel.send("I am not in a voice channel");
-            return;
-        }
+        if(cmd == "leave" && connection) return connection.disconect();
         if (client.normCmds.get(cmd) == undefined) return msg.channel.send("That command does not exist");
         if (cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord, prefix);
 

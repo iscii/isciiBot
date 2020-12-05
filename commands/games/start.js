@@ -3,8 +3,8 @@ module.exports = {
     description: 'start | start a session',
     async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, createEmbed, editEmbed) {
         let date = new Date();
-        const props = sessionGet.data();
-        if(sessionGet.exists) {
+        const props = await sessionGet.data();
+        if(props) {
             let hours = parseInt(Math.abs((date - new Date(props.date)) / (1000 * 60 * 60) % 24));
             console.log(hours);
             if (hours < 11) {
