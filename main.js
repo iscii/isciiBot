@@ -63,6 +63,50 @@ client.on("ready", async () => {
 
         }, { merge: true });
     }*/
+    //time
+    let date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1; //getmonth starts from 0
+    let hour = date.getHours();
+    let till = 0;
+
+    if (hour < 6) {
+        till = 7 - hour;
+    }
+    else if (hour > 7) {
+        till = (24 - hour) + 7;
+        day++;
+    }
+
+    let bd = await db.collection("birthdays").doc(month + "." + day).get();
+    let ppl = bd.data();
+    /*
+    let game = await db.collection("sessions").doc("au").get();
+    let props = game.data();
+    */
+    console.log(till);
+    setTimeout(() => {
+        client.channels.fetch("745349500587212943").then(async (channel) => { //745349500587212943
+            //good morning
+            channel.send(`Good Morning!!! ${client.emojis.cache.find(emoji => emoji.name == "miyanohey")}`);
+            /*
+            //end au session
+            client.channels.cache.get(embedchannel).messages.fetch(props.embedid).then((message) => {
+                message.delete();
+                db.collection("sessions").doc("au").delete();
+            }).catch((error) => {
+                console.log(error);
+            })*/
+            //birthdays
+            if (ppl) {
+                let users = "";
+                for (item in ppl.users) {
+                    users += `<@!${ppl.users[item]}> `;
+                }
+                channel.send(`Happy Birthday!!! :birthday: ${users}`);
+            }
+        }); 
+    }, till * 3600000);
 });
 
 client.on("message", async (msg) => {

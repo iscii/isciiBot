@@ -4,6 +4,8 @@ module.exports = {
     async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, createEmbed, editEmbed) {
         let date = new Date();
         const props = await sessionGet.data();
+        if(props) return msg.react("❌");
+        /*
         if(props) {
             let hours = parseInt(Math.abs((date - new Date(props.date)) / (1000 * 60 * 60) % 24));
             console.log(hours);
@@ -11,6 +13,7 @@ module.exports = {
                 return msg.react("❌");
             }
             await msg.guild.channels.cache.get(embedChannel).messages.fetch(props.embedid).then(async (message) => {
+                //deleting session causes bug
                 session.delete();
                 message.delete();
                 msg.react("✅");
@@ -18,7 +21,7 @@ module.exports = {
                 msg.react("❌");
                 console.log(error);
             })
-        }
+        }*/
 
         await session.set({
             users: [],
