@@ -1,7 +1,7 @@
 module.exports = {
     name: "setcode",
     description: "setcode <code> | set the code (ex: ex.setcode ABCDEF)",
-    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, createEmbed, editEmbed) {
+    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord, createEmbed, editEmbed) {
         if (!args[0]) return msg.react("❌");
 
         if (!sessionGet.exists) return msg.channel.send(`Please start the game session with ${game}.start`);

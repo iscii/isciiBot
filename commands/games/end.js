@@ -1,7 +1,7 @@
 module.exports = {
     name: "end",
     description: "end | end the session",
-    execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, createEmbed, editEmbed) {
+    execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord, createEmbed, editEmbed) {
         const props = sessionGet.data();
         if (!props) return msg.react("❌");
 

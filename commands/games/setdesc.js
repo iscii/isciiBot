@@ -1,7 +1,7 @@
 module.exports = {
     name: "setdesc",
     description: "setdesc <description> | set the embed description",
-    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, createEmbed, editEmbed) {
+    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord, createEmbed, editEmbed) {
         let desc = "";
         if (args[0])
             for (let i = 0; i < args.length; i++)

@@ -164,10 +164,10 @@ async function cmdGames(msg) {
         console.log(`${game} ${cmd} ${args}`);
 
         session = guild.collection("sessions").doc(game);
-        sessionGet = await session.get();
+        sessionGet = await session.get()
 
         try {
-            client.gameCmds.get(cmd).execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, createEmbed, editEmbed);
+            client.gameCmds.get(cmd).execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord, createEmbed, editEmbed);
         }
         catch (error) {
             msg.channel.send("There was an error");

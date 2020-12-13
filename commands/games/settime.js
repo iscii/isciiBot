@@ -1,7 +1,7 @@
 module.exports = {
     name: "settime",
     description: "settime <HH:MM> | set the time (ex: ex.settime 5:00)",
-    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, createEmbed, editEmbed) {
+    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord, createEmbed, editEmbed) {
         if (!args[0]) return msg.react("❌");
 
         let time = args[0];
