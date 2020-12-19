@@ -10,13 +10,11 @@ module.exports = {
                 let m = member.user.username
                 nameList += `\n - ${m}`;
             });
-
         }
         em = new Discord.MessageEmbed()
             .setTitle(gameList[game].name)
             .setColor("000000")
             .addField(`Players [${props.users.length}]`, nameList)
         msg.channel.send(em);
-        msg.react("✅");
     },
 }
