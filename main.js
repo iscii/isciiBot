@@ -112,10 +112,11 @@ client.on("ready", async () => {
 client.on("message", async (msg) => {
     if (msg.author.bot) return;
     //holidays!! set a bot calendar thing that announces holidays/birthdays set by users
+    //replace game w event
     //make bot autoping users in a queue
     //tic tac toe and rps
     //serveremotes list
-    //join channel so ppl dont feel lonely
+    //music
     guild = db.collection("guilds").doc(msg.guild.id);
     guildGet = await guild.get();
     guildData = guildGet.data();
@@ -135,7 +136,7 @@ async function cmdGeneral(msg) {
             return;
         }
         if(cmd == "leave" && connection) return connection.disconect();
-        if (client.normCmds.get(cmd) == undefined) return msg.channel.send("That command does not exist");
+        if (client.normCmds.get(cmd) == undefined) return; //msg.channel.send("That command does not exist");
         if (cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord, prefix);
 
         console.log(`${cmd} ${args}`);
@@ -158,7 +159,7 @@ async function cmdGames(msg) {
     embedChannel = guildData.embedChannel;
 
     if (msg.content.includes(".") && (gameList != undefined && gameList.hasOwnProperty(game))) {
-        if (client.gameCmds.get(cmd) == undefined) return msg.channel.send("That command does not exist");
+        if (client.gameCmds.get(cmd) == undefined) return; //msg.channel.send("That command does not exist");
         if (cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord, prefix);
 
         console.log(`${game} ${cmd} ${args}`);
@@ -208,7 +209,7 @@ async function editEmbed(msg, game, embedChannel) {
     }
 
     const message = await msg.guild.channels.cache.get(embedChannel).messages.fetch(sessionData.embedid).catch((error) => {
-        console.log("The game's embed exists in a non-embedChannel channel.");
+        console.log("The event's embed exists in a non-embedChannel channel.");
         console.log(error);
     });
 
@@ -229,7 +230,7 @@ async function editEmbed(msg, game, embedChannel) {
     if (sessionData.time)
         em.addField('Time', sessionData.time);
     if (sessionData.users[0])
-        em.addField(`Players [${sessionData.users.length}]`, nameList);
+        em.addField(`Participants [${sessionData.users.length}]`, nameList);
 
     message.edit(em);
 }
