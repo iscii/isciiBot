@@ -121,7 +121,7 @@ client.on("message", async (msg) => {
     guildData = guildGet.data();
     prefix = guildData.prefix;
 
-    if (msg.content.startsWith(prefix)) cmdGeneral(msg);
+    if (msg.content.toLowerCase().startsWith(prefix)) cmdGeneral(msg);
     else cmdGames(msg);
 });
 
@@ -150,7 +150,7 @@ async function cmdGeneral(msg) {
     }
 }
 async function cmdGames(msg) {
-    const game = msg.content.trim().split(" ")[0].split(".")[0];
+    const game = msg.content.toLowerCase().trim().split(" ")[0].split(".")[0];
     const cmd = msg.content.trim().split(" ")[0].split(".")[1];
     const args = msg.content.trim().split(" ").splice(1);
 
