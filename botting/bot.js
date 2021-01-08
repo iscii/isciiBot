@@ -3,8 +3,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 //import youtube download module
-const ytdl = require("ytdl-core");
-//import utilities
 const utilities = require("./utilities.js");
 //firebase
 const firebase = require("firebase/app");
@@ -19,8 +17,8 @@ admin.initializeApp({
 
 let db = admin.firestore(); //13:37
 
-client.login(process.env.TOKEN);
-//client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
+//client.login(process.env.TOKEN);
+client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
 
 global.servers = {}; //object list to store URLs and prevents overlapping music from multiple servers
 
