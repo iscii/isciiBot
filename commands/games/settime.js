@@ -6,6 +6,7 @@ module.exports = {
         if (!sessionGet.exists) return msg.channel.send(`Please start the game session with ${game}.start`);
 
         let time = args[0];
+        let meridian = "";
         if(args[1]){
             let meridian = args[1].toUpperCase();
             if(!(meridian=="AM" || meridian=="PM")) return msg.channel.send("State meridian as AM or PM");
