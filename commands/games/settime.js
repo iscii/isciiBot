@@ -8,7 +8,7 @@ module.exports = {
         let time = args[0];
         let meridian = "";
         if(args[1]){
-            let meridian = args[1].toUpperCase();
+            meridian = args[1].toUpperCase();
             if(!(meridian=="AM" || meridian=="PM")) return msg.channel.send("State meridian as AM or PM");
         }
 
