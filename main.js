@@ -147,7 +147,7 @@ async function cmdGeneral(msg) {
         catch (error) {
             msg.channel.send("There was an error");
             console.log(error);
-        }
+        } 
     }
 }
 async function cmdGames(msg) {

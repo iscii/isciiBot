@@ -3,7 +3,7 @@ module.exports = {
     description: "add <abbreviation> <name> | add a game to gamelist",
     async execute(msg, admin, cmd, args, Discord, client) {
         if (!args[1]) return msg.channel.send(this.description);
-        if (/[^ ].{3}/.test(args[0])) return msg.channel.send("please limit the abbreviation to three characters");
+        if (/[^ ].{3}/.test(args[0])) return msg.channel.send("Please limit the abbreviation to three characters");
         let name = "";
         for (let i = 1; i < args.length; i++) {
             name += args[i] + " ";
