@@ -105,7 +105,7 @@ client.on("ready", async () => {
                 }
                 channel.send(`Happy Birthday!!! :birthday: ${users}`);
             }
-        }); 
+        });
     }, till * 3600000);
 });
 
@@ -132,10 +132,10 @@ async function cmdGeneral(msg) {
     if (msg.content.includes(prefix)) {
         //temporary for join and leave until you figure how to pass connection thru functions
         if (cmd == "join") {
-            if(msg.member.voice.channel) connection = await msg.member.voice.channel.join(); else msg.channel.send("You are not in a voice channel");
+            if (msg.member.voice.channel) connection = await msg.member.voice.channel.join(); else msg.channel.send("You are not in a voice channel");
             return;
         }
-        if(cmd == "leave" && connection) return connection.disconect();
+        if (cmd == "leave" && connection) return connection.disconect();
         if (client.normCmds.get(cmd) == undefined) return; //msg.channel.send("That command does not exist");
         if (cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord, prefix);
 
@@ -147,7 +147,7 @@ async function cmdGeneral(msg) {
         catch (error) {
             msg.channel.send("There was an error");
             console.log(error);
-        } 
+        }
     }
 }
 async function cmdGames(msg) {

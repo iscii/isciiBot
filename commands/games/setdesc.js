@@ -6,8 +6,12 @@ module.exports = {
         if (args[0])
             for (let i = 0; i < args.length; i++)
                 desc += `${args[i]} `;
-        console.log(desc);
-        await admin.firestore().collection("guilds").doc(msg.guild.id).set({
+
+        session.update({
+            description: desc
+        });
+
+        /* await admin.firestore().collection("guilds").doc(msg.guild.id).set({
             gameList: {
                 [`${game}`]: {
                     description: desc
@@ -17,7 +21,7 @@ module.exports = {
             .catch((error) => {
                 msg.react("❌");
                 console.log(error);
-            });;
+            });; */
 
         editEmbed(msg, game, embedChannel);
         msg.react("✅");
