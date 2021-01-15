@@ -10,5 +10,7 @@ module.exports = {
         session.update({
             name: args[0]
         });
+        editEmbed(msg, game, embedChannel);
+        msg.react("✅");
     },
 }
