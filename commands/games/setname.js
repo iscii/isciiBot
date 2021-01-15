@@ -1,7 +1,7 @@
 module.exports = {
     name: "setname",
     description: "setname <name> | set the game's name",
-    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, createEmbed, editEmbed) {
+    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord, createEmbed, editEmbed) {
         if (!args[0]) return msg.channel.send("Please include the new name");
         let name = "";
         if (args[0])

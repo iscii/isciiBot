@@ -22,7 +22,7 @@ client.gameCmds = new Discord.Collection();
 const utilities = require("./utilities.js");
 
 //login
-//client.login(process.env.TOKEN); -- use this if ever plan on making repo public
+//client.login(process.env.TOKEN); //-- use this if ever plan on making repo public
 client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
 
 //get command files
@@ -185,7 +185,8 @@ async function createEmbed(msg, game, embedChannel) {
         .setThumbnail(gameList[game].icon)
         .setFooter("Good Morning!")
         .setTimestamp();
-
+    console.log("create embed");
+    console.trace();
     let ch = await msg.guild.channels.cache.get(embedChannel);
     ch.send(em)
         .then((message => {
