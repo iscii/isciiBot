@@ -179,12 +179,12 @@ async function cmdGames(msg) {
 async function createEmbed(msg, game, embedChannel) {
     var em = new Discord.MessageEmbed()
         .setTitle(gameList[game].name)
-        .setTimestamp()
-        .setFooter("Good Morning!")
         .setColor(gameList[game].color)
         .setDescription(gameList[game].description)
         .setURL(gameList[game].url)
-        .setThumbnail(gameList[game].icon);
+        .setThumbnail(gameList[game].icon)
+        .setFooter("Good Morning!")
+        .setTimestamp();
 
     let ch = await msg.guild.channels.cache.get(embedChannel);
     ch.send(em)
@@ -216,6 +216,7 @@ async function editEmbed(msg, game, embedChannel) {
     let gameList = await db.collection("guilds").doc(msg.guild.id).get().then((data) => { return data.data().gameList; });
 
     var em = message.embeds[0]
+        .setTitle(gameList[game].name)
         .setColor(gameList[game].color)
         .setDescription(gameList[game].description)
         .setURL(gameList[game].url)
