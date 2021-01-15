@@ -185,8 +185,7 @@ async function createEmbed(msg, game, embedChannel) {
         .setThumbnail(gameList[game].icon)
         .setFooter("Good Morning!")
         .setTimestamp();
-    console.log("create embed");
-    console.trace();
+    
     let ch = await msg.guild.channels.cache.get(embedChannel);
     ch.send(em)
         .then((message => {
