@@ -23,6 +23,7 @@ const utilities = require("./utilities.js");
 
 //login
 client.login(process.env.TOKEN); //-- use this if ever plan on making repo public
+//client.login(Token);
 
 //get command files
 const normCmdFiles = fs.readdirSync("./commands/normal").filter(file => file.endsWith(".js"));
