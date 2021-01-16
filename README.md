@@ -1,12 +1,7 @@
 # isciiBot
-discord bot
+iscii's discord bot
 
 Node.js 13.5
 
-Prefix: |
-
-To edit and test locally:
-  -Open entire folder in VSCode
-  -Change the tokens
-  -Turn off heroku dyno worker
-
+Prefix: i.
+https://discord.com/oauth2/authorize?client_id=662780078337425481&permissions=8&scope=bot
