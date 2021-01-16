@@ -1,0 +1,25 @@
+[debug] [2021-01-16T21:32:52.637Z] ----------------------------------------------------------------------
+[debug] [2021-01-16T21:32:52.640Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Issac\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve --only hosting
+[debug] [2021-01-16T21:32:52.640Z] CLI Version:   9.2.1
+[debug] [2021-01-16T21:32:52.640Z] Platform:      win32
+[debug] [2021-01-16T21:32:52.640Z] Node Version:  v13.5.0
+[debug] [2021-01-16T21:32:52.641Z] Time:          Sat Jan 16 2021 16:32:52 GMT-0500 (Eastern Standard Time)
+[debug] [2021-01-16T21:32:52.642Z] ----------------------------------------------------------------------
+[debug] [2021-01-16T21:32:52.642Z] 
+[debug] [2021-01-16T21:32:52.651Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-01-16T21:32:52.651Z] > authorizing via signed-in user
+[debug] [2021-01-16T21:32:52.651Z] [iam] checking project isciibot for permissions ["firebase.projects.get"]
+[debug] [2021-01-16T21:32:52.655Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/isciibot:testIamPermissions  
+ {"permissions":["firebase.projects.get"]}
+[debug] [2021-01-16T21:32:52.901Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sat, 16 Jan 2021 21:32:52 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=136","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-01-16T21:32:52.903Z] > refreshing access token with scopes: []
+[debug] [2021-01-16T21:32:52.903Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-01-16T21:32:53.049Z] <<< HTTP RESPONSE 200 {"expires":"Mon, 01 Jan 1990 00:00:00 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","pragma":"no-cache","date":"Sat, 16 Jan 2021 21:32:52 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-01-16T21:32:53.082Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/isciibot [none]
+[debug] [2021-01-16T21:32:53.328Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/isciibot 200
+[debug] [2021-01-16T21:32:53.328Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/isciibot {"projectId":"isciibot","projectNumber":"651185881080","displayName":"isciibot","name":"projects/isciibot","resources":{"hostingSite":"isciibot","realtimeDatabaseInstance":"isciibot","storageBucket":"isciibot.appspot.com","locationId":"us-central"},"state":"ACTIVE"}
+[debug] [2021-01-16T21:32:53.330Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/isciibot/webApps/-/config [none]
+[debug] [2021-01-16T21:32:53.999Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/isciibot/webApps/-/config 200
+[debug] [2021-01-16T21:32:53.999Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/isciibot/webApps/-/config {"projectId":"isciibot","databaseURL":"https://isciibot.firebaseio.com","storageBucket":"isciibot.appspot.com","locationId":"us-central","apiKey":"AIzaSyDyYnr61aJoR8uwzmv_LQlxmM7GzuaH2aY","authDomain":"isciibot.firebaseapp.com","messagingSenderId":"651185881080"}
+[info] +  hosting: Local server: http://localhost:5000 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:5000\u001b[22m\u001b[24m"}}
