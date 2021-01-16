@@ -22,8 +22,7 @@ client.gameCmds = new Discord.Collection();
 const utilities = require("./utilities.js");
 
 //login
-//client.login(process.env.TOKEN); //-- use this if ever plan on making repo public
-client.login("NjYyNzgwMDc4MzM3NDI1NDgx.Xg-8DA.7BbXctKTsA9zpp9uJiGONLOjvKc");
+client.login(process.env.TOKEN); //-- use this if ever plan on making repo public
 
 //get command files
 const normCmdFiles = fs.readdirSync("./commands/normal").filter(file => file.endsWith(".js"));
