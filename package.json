@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/iscii/isciiBot#readme",
   "dependencies": {
+    "async": "^3.2.0",
     "bad-words": "^3.0.4",
     "date-and-time": "^0.14.2",
     "discord.js": "^12.5.1",
