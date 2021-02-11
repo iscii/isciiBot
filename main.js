@@ -139,7 +139,7 @@ async function cmdGeneral(msg) {
         if (client.normCmds.get(cmd) == undefined) return; //msg.channel.send("That command does not exist");
         if (cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord, prefix);
 
-        console.log(`${cmd} ${args}`);
+        console.log(`${msg.author} ${cmd} ${args}`);
 
         try {
             client.normCmds.get(cmd).execute(msg, admin, cmd, args, Discord, client);
@@ -162,7 +162,7 @@ async function cmdGames(msg) {
         if (client.gameCmds.get(cmd) == undefined) return; //msg.channel.send("That command does not exist");
         if (cmd == "help") return client.normCmds.get("help").execute(msg, args, client, Discord, prefix);
 
-        console.log(`${game} ${cmd} ${args}`);
+        console.log(`${msg.author} ${game} ${cmd} ${args}`);
 
         session = guild.collection("sessions").doc(game);
         sessionGet = await session.get()
