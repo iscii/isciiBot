@@ -1,7 +1,9 @@
+const functions = require("../../functions.js");
+
 module.exports = {
     name: "setdesc",
     description: "setdesc <description> | set the embed description",
-    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord, createEmbed, editEmbed) {
+    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord) {
         let desc = "";
         if (args[0])
             for (let i = 0; i < args.length; i++)
@@ -19,7 +21,7 @@ module.exports = {
                 console.log(error);
             });
 
-        editEmbed(msg, game, embedChannel);
+        functions.editEmbed(msg, game, embedChannel, session);
         msg.react("✅");
     },
 }

@@ -1,7 +1,7 @@
 module.exports = {
     name: "list",
     description: "list | lists the event's queue, if you're too lazy to check their events channel",
-    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord, createEmbed, editEmbed) {
+    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord) {
         if (!sessionGet.exists) return msg.channel.send(`Please start the game session with ${game}.start`);
         let props = sessionGet.data();
         let nameList = "";

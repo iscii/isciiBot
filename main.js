@@ -1,17 +1,14 @@
 //discord
 const Discord = require("discord.js");
 const client = new Discord.Client();
-//const collection = new Discord.Collection();
 
 //firebase
-const firebase = require("firebase/app");
-const FieldValue = require("firebase-admin").firestore.FieldValue;
 const admin = require("firebase-admin");
 const serviceAccount = require("./serviceAccount.json");
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
-let db = admin.firestore(); //13:37
+const db = admin.firestore(); 
 
 //fs
 const fs = require("fs");
@@ -22,8 +19,8 @@ client.gameCmds = new Discord.Collection();
 const utilities = require("./utilities.js");
 
 //login
-client.login(process.env.TOKEN); //-- use this if ever plan on making repo public
-//client.login(Token);
+//client.login(process.env.TOKEN); //-- use this if ever plan on making repo public
+client.login(fs.readFileSync("./token.txt").toString());
 
 //get command files
 const normCmdFiles = fs.readdirSync("./commands/normal").filter(file => file.endsWith(".js"));
@@ -80,23 +77,11 @@ client.on("ready", async () => {
 
     let bd = await db.collection("birthdays").doc(month + "." + day).get();
     let ppl = bd.data();
-    /*
-    let game = await db.collection("sessions").doc("au").get();
-    let props = game.data();
-    */
     console.log(till);
     setTimeout(() => {
         client.channels.fetch("745349500587212943").then(async (channel) => { //745349500587212943
             //good morning
             channel.send(`Good Morning!!! ${client.emojis.cache.find(emoji => emoji.name == "miyanohey")}`);
-            /*
-            //end au session
-            client.channels.cache.get(embedchannel).messages.fetch(props.embedid).then((message) => {
-                message.delete();
-                db.collection("sessions").doc("au").delete();
-            }).catch((error) => {
-                console.log(error);
-            })*/
             //birthdays
             if (ppl) {
                 let users = "";
@@ -165,10 +150,10 @@ async function cmdGames(msg) {
         console.log(`${msg.author} ${game} ${cmd} ${args}`);
 
         session = guild.collection("sessions").doc(game);
-        sessionGet = await session.get()
+        sessionGet = await session.get();
 
         try {
-            client.gameCmds.get(cmd).execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord, createEmbed, editEmbed);
+            client.gameCmds.get(cmd).execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord);
         }
         catch (error) {
             msg.channel.send("There was an error");
@@ -176,63 +161,3 @@ async function cmdGames(msg) {
         }
     }
 }
-async function createEmbed(msg, game, embedChannel) {
-    var em = new Discord.MessageEmbed()
-        .setTitle(gameList[game].name)
-        .setColor(gameList[game].color)
-        .setDescription(gameList[game].description)
-        .setURL(gameList[game].url)
-        .setThumbnail(gameList[game].icon)
-        .setFooter("Good Morning!")
-        .setTimestamp();
-    
-    let ch = await msg.guild.channels.cache.get(embedChannel);
-    ch.send(em)
-        .then((message => {
-            session.update({
-                embedid: message.id
-            });
-        }));
-}
-
-async function editEmbed(msg, game, embedChannel) {
-    let sessionData = await session.get().then((data) => { return data.data(); });
-    if (sessionData == undefined) return console.log("session not started");
-
-    let nameList = "";
-
-    for (let i = 0; i < sessionData.users.length; i++) {
-        await msg.guild.members.fetch(sessionData.users[i]).then((member) => {
-            let m = member.user.username
-            nameList += `\n - ${m}`;
-        });
-    }
-
-    const message = await msg.guild.channels.cache.get(embedChannel).messages.fetch(sessionData.embedid).catch((error) => {
-        console.log("The event's embed exists in a non-embedChannel channel.");
-        console.log(error);
-    });
-
-    let gameList = await db.collection("guilds").doc(msg.guild.id).get().then((data) => { return data.data().gameList; });
-
-    var em = message.embeds[0]
-        .setTitle(gameList[game].name)
-        .setColor(gameList[game].color)
-        .setDescription(gameList[game].description)
-        .setURL(gameList[game].url)
-        .setThumbnail(gameList[game].icon);
-
-    em.fields = [];
-
-    if (sessionData.code)
-        em.addField('Code', sessionData.code);
-    if (sessionData.region)
-        em.addField('Region', sessionData.region);
-    if (sessionData.time)
-        em.addField('Time', sessionData.time);
-    if (sessionData.users[0])
-        em.addField(`Participants [${sessionData.users.length}]`, nameList);
-
-    message.edit(em);
-}
-//disclaimer: I know there's a ton of redundant code and im a lil lazy to fix them pls forgiv

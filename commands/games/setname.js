@@ -1,7 +1,9 @@
+const functions = require("../../functions.js");
+
 module.exports = {
     name: "setname",
     description: "setname <name> | set the game's name",
-    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord, createEmbed, editEmbed) {
+    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord) {
         if (!args[0]) return msg.channel.send("Please include the new name");
         let name = "";
         if (args[0])
@@ -20,7 +22,7 @@ module.exports = {
                 console.log(error);
             });
             
-        editEmbed(msg, game, embedChannel);
+        functions.editEmbed(msg, game, embedChannel, session);
         msg.react("✅");
     },
 }

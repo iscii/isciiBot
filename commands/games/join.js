@@ -1,7 +1,9 @@
+const functions = require("../../functions.js");
+
 module.exports = {
     name: "join",
     description: "join | join the session queue",
-    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord, createEmbed, editEmbed) {
+    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord) {
         if (!sessionGet.exists) return msg.channel.send(`Please start the game session with ${game}.start`);
         let props = sessionGet.data();
         console.log(props);
@@ -11,7 +13,7 @@ module.exports = {
             users: admin.firestore.FieldValue.arrayUnion(msg.author.id)
         });
 
-        editEmbed(msg, game, embedChannel);
+        functions.editEmbed(msg, game, embedChannel, session, session);
 
         msg.react("✅");
     },

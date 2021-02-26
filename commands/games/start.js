@@ -1,11 +1,13 @@
+const functions = require("../../functions.js");
+
 module.exports = {
     name: 'start',
     description: 'start | start a session',
-    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord, createEmbed, editEmbed) {
+    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord) {
         let date = new Date();
         const props = await sessionGet.data();
         if(props) return msg.react("❌");
-        /*
+        /* delete after a certain amt of time
         if(props) {
             let hours = parseInt(Math.abs((date - new Date(props.date)) / (1000 * 60 * 60) % 24));
             console.log(hours);
@@ -31,7 +33,7 @@ module.exports = {
             embedid: null,
             date: date.toString()
         });
-        createEmbed(msg, game, embedChannel);
+        functions.createEmbed(msg, game, embedChannel, session);
     
         msg.react("✅");
     },

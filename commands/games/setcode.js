@@ -1,7 +1,9 @@
+const functions = require("../../functions.js");
+
 module.exports = {
     name: "setcode",
     description: "setcode <code> | set the code (ex: ex.setcode ABCDEF)",
-    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord, createEmbed, editEmbed) {
+    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord) {
         if (!args[0]) return msg.react("❌");
 
         if (!sessionGet.exists) return msg.channel.send(`Please start the game session with ${game}.start`);
@@ -11,7 +13,7 @@ module.exports = {
             code: code
         });
         
-        editEmbed(msg, game, embedChannel);
+        functions.editEmbed(msg, game, embedChannel, session);
         msg.react("✅");
     },
 }

@@ -1,7 +1,9 @@
+const functions = require("../../functions.js");
+
 module.exports = {
     name: "settime",
     description: "settime <HH:MM> | set the time (ex: ex.settime 5:00 || ex.settime 5:30)",
-    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord, createEmbed, editEmbed) {
+    async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord) {
         if (!args[0]) return msg.react("❌");
         if (!sessionGet.exists) return msg.channel.send(`Please start the game session with ${game}.start`);
 
@@ -19,7 +21,7 @@ module.exports = {
         else
             return msg.channel.send("State time in the format HH or HH:MM");
 
-        editEmbed(msg, game, embedChannel);
+        functions.editEmbed(msg, game, embedChannel, session);
         msg.react("✅");
     },
 }

@@ -1,7 +1,7 @@
 module.exports = {
-    name: "owo",
-    description: "owo",
+    name: "uwu",
+    description: "uwu",
     execute(msg, admin, cmd, args, Discord, client) {
-        msg.channel.send("owo");
+        msg.channel.send("uwu");
     }
 }
