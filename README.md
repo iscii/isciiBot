@@ -1,7 +1,7 @@
 # isciiBot
 iscii's discord bot
 
-Node.js 13.5
+Node.js 15.8
 
 Prefix: i.    
 i.help    
