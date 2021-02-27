@@ -70,6 +70,7 @@ module.exports = {
         const polls = guild.collection("polls").doc(title ? title : embedid);
         const get = await polls.get();
         const data = get.data();
+        console.log(data);
         const emotes = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
 
         const message = title ? null : await msg.guild.channels.cache.get(data.embedchannel).messages.fetch(embedid).catch((error) => {
@@ -81,10 +82,11 @@ module.exports = {
             .setTitle(data.title)
             .setColor("#40E0D0")
             .setDescription(data.desc)
-            .setFooter(`${data.votes} ${data.votes == 1 ? "vote" : "votes"}`)
+            .setFooter(`${data.voted.length} ${data.voted.length == 1 ? "vote" : "votes"}`)
             .setTimestamp();
+
         for (let i = 0; i < data.stats.length; i++) {
-            const percent = data.votes > 0 ? Object.values(data.stats[i])[0] / data.votes * 100 : 0;
+            const percent = data.voted.length > 0 ? Object.values(data.stats[i])[0] / data.voted.length * 100 : 0;
             const count = Math.floor(percent/2);
             em.addField(`[${i + 1}] ${Object.keys(data.stats[i])[0]}`, (count > 0 ? `|**${"I".repeat(count)}**` : "|") + `${"I".repeat(50 - count)}| ${Object.values(data.stats[i])[0]} [${(percent).toFixed(2)}%]`);
         }
@@ -110,16 +112,14 @@ module.exports = {
                 }
                 const collector = message.createReactionCollector(filter, { time: (data.days * 86400000) });
                 collector.on("collect", async (reaction, user) => {
-                    if(data.voted.includes(user.id)) {
+                    /* if(data.voted.includes(user.id)) {
                         message.reactions.resolve(reaction).users.remove(user);
                         return msg.channel.send("You have already voted").then((message)=> {
                             setTimeout(() => {
                                 message.delete();
                             }, 1000);
                         });
-                    }
-                    const votes = data.votes + 1;
-
+                    } */
                     const voted = data.voted;
                     voted.push(user.id);
                     const idx = utilities.indexesOf(emotes, reaction.emoji.name)[0];
@@ -127,7 +127,6 @@ module.exports = {
                     stats[idx][Object.keys(stats[idx])[0]] += 1;
 
                     await polls2.update({
-                        votes: votes,
                         voted: voted,
                         stats: stats
                     })

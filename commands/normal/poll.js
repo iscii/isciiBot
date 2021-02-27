@@ -22,7 +22,6 @@ module.exports = {
             title: title,
             desc: desc,
             stats: stats,
-            votes: 0,
             voted: [],
             days: days,
             embedchannel: null
