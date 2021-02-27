@@ -50,7 +50,7 @@ module.exports = {
         Returns: 
             An array including all of the indices at which the item appears (empty if item is not in the list)
     */
-    indexesOfArray: function(array, itm)
+    indexesOf: function(array, itm)
     {
         var idxList = [];
 

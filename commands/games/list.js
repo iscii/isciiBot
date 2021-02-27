@@ -14,7 +14,7 @@ module.exports = {
         em = new Discord.MessageEmbed()
             .setTitle(gameList[game].name)
             .setColor("000000")
-            .addField(`Players [${props.users.length}]`, nameList)
+            .addField(`Participants [${props.users.length}]`, nameList)
         msg.channel.send(em);
     },
 }
