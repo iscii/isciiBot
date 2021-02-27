@@ -112,14 +112,14 @@ module.exports = {
                 }
                 const collector = message.createReactionCollector(filter, { time: (data.days * 86400000) });
                 collector.on("collect", async (reaction, user) => {
-                    /* if(data.voted.includes(user.id)) {
+                    if(data.voted.includes(user.id)) {
                         message.reactions.resolve(reaction).users.remove(user);
                         return msg.channel.send("You have already voted").then((message)=> {
                             setTimeout(() => {
                                 message.delete();
                             }, 1000);
                         });
-                    } */
+                    }
                     const voted = data.voted;
                     voted.push(user.id);
                     const idx = utilities.indexesOf(emotes, reaction.emoji.name)[0];

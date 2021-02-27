@@ -77,7 +77,7 @@ client.on("ready", async () => {
 
     let bd = await db.collection("birthdays").doc(month + "." + day).get();
     let ppl = bd.data();
-    console.log(till);
+    //console.log(till);
     setTimeout(() => {
         client.channels.fetch("745349500587212943").then(async (channel) => { //745349500587212943
             //good morning
