@@ -88,7 +88,7 @@ module.exports = {
         for (let i = 0; i < data.stats.length; i++) {
             const percent = data.voted.length > 0 ? Object.values(data.stats[i])[0] / data.voted.length * 100 : 0;
             const count = Math.floor(percent/2);
-            em.addField(`[${i + 1}] ${Object.keys(data.stats[i])[0]}`, (count > 0 ? `|**${"I".repeat(count)}**` : "|") + `${"I".repeat(50 - count)}| ${Object.values(data.stats[i])[0]} [${(percent).toFixed(2)}%]`);
+            em.addField(`[${i + 1}] ${Object.keys(data.stats[i])[0]}`, (count > 0 ? `|**${"=".repeat(count)}**` : "|") + `${"-".repeat(50 - count)}| ${Object.values(data.stats[i])[0]} [${(percent).toFixed(2)}%]`);
         }
 
         if (end) {
