@@ -18,6 +18,9 @@ module.exports = {
             em.addField(key[0], "- "+list.get(key[0]).description);
         }
 
+        //separate help into pages
+        //improve descriptions
+
         return msg.channel.send(em);
     },
 }

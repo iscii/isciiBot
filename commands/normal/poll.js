@@ -1,9 +1,13 @@
 const functions = require("../../functions.js");
 module.exports = {
     name: "poll",
-    description: "poll <title>-<description>-<option1>-<option 2>-<option 3>- ... (Max 10) | Makes a poll. Participants are anonymous. Options are set via reaction. The poll expires in an hour. Remember to include a dash - between options.",
+    description: "poll -<title> -<description> -<option1> -<option 2> -<option 3>- ... (Max 10) | Makes a poll. Participants are anonymous. Options are set via reaction. The poll expires in an hour. Remember to include a dash - between options.",
     async execute(msg, admin, cmd, args, Discord) {
-        args = args.join(" ").split("-");
+        console.log(args);
+        args = args.join(" ").split("-").filter(i => i !== "").map((i) => {
+            if(i[i.length-1] === " ") return i.slice(0, i.length-1);
+            return i;
+        });
         let title = args.splice(0, 1)[0];
         let desc = args.splice(0, 1)[0];
         //let days = 1;
