@@ -1,3 +1,5 @@
+const functions = require("../../functions.js")
+
 module.exports = {
     name: "help",
     description: "help [g] | get list of commands (ex: |help // |help g)",

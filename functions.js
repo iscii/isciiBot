@@ -1,8 +1,6 @@
-//eventually move functions here
 const Discord = require("discord.js");
 
 const admin = require("firebase-admin");
-const { indexesOfArray } = require("./utilities.js");
 const db = admin.firestore();
 
 const utilities = require("./utilities.js");
@@ -110,7 +108,7 @@ module.exports = {
                 const filter = (reaction, user) => {
                     return reaction.users.cache.has(client.user.id) && (user.id !== client.user.id);
                 }
-                const collector = message.createReactionCollector(filter, { time: (data.days * 86400000) });
+                const collector = message.createReactionCollector(filter, { time: (3600000) });
                 collector.on("collect", async (reaction, user) => {
                     if(data.voted.includes(user.id)) {
                         message.reactions.resolve(reaction).users.remove(user);
@@ -143,5 +141,8 @@ module.exports = {
         else {
             message.edit(em);
         }
+    },
+    displayHelp: async function() {
+
     },
 }
