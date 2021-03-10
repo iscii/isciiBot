@@ -1,7 +1,9 @@
 # isciiBot
 iscii's discord bot
 
-Node.js 15.8
+Node.js 15.8.0
+Deployed on Heroku
+Using Firebase
 
 Prefix: i.    
 i.help    
