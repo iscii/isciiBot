@@ -97,7 +97,7 @@ module.exports = {
         if (!message) {
             msg.channel.send(em).then((async message => {
                 data.embedchannel = message.channel.id;
-                const polls2 = guild.collection("polls").doc(message.id)
+                const polls2 = guild.collection("polls").doc(message.id);
                 await polls2.set(data).then(() => {
                     polls.delete();
                 });
@@ -106,9 +106,9 @@ module.exports = {
                     message.react(emotes[i]);
                 }
                 const filter = (reaction, user) => {
-                    return reaction.users.cache.has(client.user.id) && (user.id !== client.user.id);
+                    return reaction.users.cache.has(client.user.id) && (!user.bot); //only emotes the bot has already reacted to and reactor is not a bot.
                 }
-                const collector = message.createReactionCollector(filter, { time: (3600000) });
+                const collector = message.createReactionCollector(filter, { time: (3600000) }); //one hour
                 collector.on("collect", async (reaction, user) => {
                     if(data.voted.includes(user.id)) {
                         message.reactions.resolve(reaction).users.remove(user);
@@ -127,7 +127,7 @@ module.exports = {
                     await polls2.update({
                         voted: voted,
                         stats: stats
-                    })
+                    });
 
                     message.reactions.resolve(reaction).users.remove(user);
                     this.displayPoll(msg, null, message.id, false);
@@ -142,7 +142,30 @@ module.exports = {
             message.edit(em);
         }
     },
-    displayHelp: async function() {
-
+    displayHelp: function(msg, pages, idx, edit) {
+        if(!edit){
+            msg.channel.send(pages[idx]).then(async (message) => {
+                message.react(client.emojis.cache.find(emoji => emoji.name === "maileft"));
+                message.react(client.emojis.cache.find(emoji => emoji.name === "mairight"));
+                const nextPage = function(dir) {
+                    idx = idx === 0 && dir === -1 ? idx = pages.length-1 : idx >= pages.length-1 && dir === 1 ? idx = 0 : idx = idx + dir;
+                }
+                const filter = (reaction, user) => {
+                    return reaction.users.cache.has(client.user.id) && (!user.bot); //only emotes the bot has already reacted to and reactor is not a bot.
+                }
+                const collector = message.createReactionCollector(filter, { time: (300000) }); //5 minutes
+                collector.on("collect", async (reaction, user) => {
+                    nextPage(reaction.emoji.name === "maileft" ? -1 : reaction.emoji.name === "mairight" ? 1 : 0);
+                    this.displayHelp(message, pages, idx, true);
+                    message.reactions.resolve(reaction).users.remove(user);
+                });
+                collector.on("end", collected => {
+                    message.reactions.removeAll().catch(error => console.log("Failed to clear reactions", error));
+                });
+            });
+        }
+        else{
+            msg.edit(pages[idx]);
+        }
     },
 }
