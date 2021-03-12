@@ -18,7 +18,7 @@ client.gameCmds = new Discord.Collection();
 //local js
 const utilities = require("./utilities.js");
 
-/login
+//login
 client.login(process.env.TOKEN); //-- use this if ever plan on making repo public
 //client.login(fs.readFileSync("./token.txt").toString());
 
