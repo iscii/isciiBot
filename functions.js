@@ -90,7 +90,7 @@ module.exports = {
         }
 
         if (end) {
-            em.addField("This poll has ended");
+            em.addField("This poll has ended", null);
             polls.delete();
         }
 
