@@ -161,3 +161,7 @@ async function cmdGames(msg) {
         }
     }
 }
+
+//use webhooks
+//take influence from nqn bot's emote system (!pack search for server list)
+//make a setup command to set up embed channels and stuff

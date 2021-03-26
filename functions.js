@@ -80,17 +80,16 @@ module.exports = {
             .setTitle(data.title)
             .setColor("#40E0D0")
             .setDescription(data.desc)
-            .setFooter(`${data.voted.length} ${data.voted.length == 1 ? "vote" : "votes"}`)
+            .setFooter(`${data.voted.length} ${data.voted.length == 1 ? "vote" : "votes"} ${end ? "| This poll has ended" : ""}`)
             .setTimestamp();
 
         for (let i = 0; i < data.stats.length; i++) {
             const percent = data.voted.length > 0 ? Object.values(data.stats[i])[0] / data.voted.length * 100 : 0;
-            const count = Math.floor(percent/2);
+            const count = Math.floor(percent / 2);
             em.addField(`[${i + 1}] ${Object.keys(data.stats[i])[0]}`, (count > 0 ? `|${":".repeat(count)}` : "|") + `${".".repeat(50 - count)}| ${Object.values(data.stats[i])[0]} [${(percent).toFixed(2)}%]`);
         }
 
         if (end) {
-            em.addField("This poll has ended", null);
             polls.delete();
         }
 
@@ -108,11 +107,11 @@ module.exports = {
                 const filter = (reaction, user) => {
                     return reaction.users.cache.has(client.user.id) && (!user.bot); //only emotes the bot has already reacted to and reactor is not a bot.
                 }
-                const collector = message.createReactionCollector(filter, { time: (3600000) }); //one hour
+                const collector = message.createReactionCollector(filter, { time: (5000/* 3600000 */) }); //one hour
                 collector.on("collect", async (reaction, user) => {
-                    if(data.voted.includes(user.id)) {
+                    if (data.voted.includes(user.id)) {
                         message.reactions.resolve(reaction).users.remove(user);
-                        return msg.channel.send("You have already voted").then((message)=> {
+                        return msg.channel.send("You have already voted").then((message) => {
                             setTimeout(() => {
                                 message.delete();
                             }, 1000);
@@ -142,13 +141,13 @@ module.exports = {
             message.edit(em);
         }
     },
-    displayHelp: function(msg, pages, idx, edit) {
-        if(!edit){
+    displayHelp: function (msg, pages, idx, edit) {
+        if (!edit) {
             msg.channel.send(pages[idx]).then(async (message) => {
                 message.react(client.emojis.cache.find(emoji => emoji.name === "maileft"));
                 message.react(client.emojis.cache.find(emoji => emoji.name === "mairight"));
-                const nextPage = function(dir) {
-                    idx = idx === 0 && dir === -1 ? idx = pages.length-1 : idx >= pages.length-1 && dir === 1 ? idx = 0 : idx = idx + dir;
+                const nextPage = function (dir) {
+                    idx = idx === 0 && dir === -1 ? idx = pages.length - 1 : idx >= pages.length - 1 && dir === 1 ? idx = 0 : idx = idx + dir;
                 }
                 const filter = (reaction, user) => {
                     return reaction.users.cache.has(client.user.id) && (!user.bot); //only emotes the bot has already reacted to and reactor is not a bot.
@@ -164,7 +163,7 @@ module.exports = {
                 });
             });
         }
-        else{
+        else {
             msg.edit(pages[idx]);
         }
     },
