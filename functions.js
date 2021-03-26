@@ -107,7 +107,7 @@ module.exports = {
                 const filter = (reaction, user) => {
                     return reaction.users.cache.has(client.user.id) && (!user.bot); //only emotes the bot has already reacted to and reactor is not a bot.
                 }
-                const collector = message.createReactionCollector(filter, { time: (5000/* 3600000 */) }); //one hour
+                const collector = message.createReactionCollector(filter, { time: (7200000) }); //two hours
                 collector.on("collect", async (reaction, user) => {
                     if (data.voted.includes(user.id)) {
                         message.reactions.resolve(reaction).users.remove(user);
