@@ -7,4 +7,4 @@ Using Firebase
 
 Prefix: i.    
 i.help    
-https://discord.com/oauth2/authorize?client_id=662780078337425481&permissions=8&scope=bot
+https://discord.com/oauth2/authorize?client_id=662780078337425481&permissions=8&scope=bot%20applications.commands
