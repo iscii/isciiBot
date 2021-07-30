@@ -2,7 +2,9 @@ const functions = require("../../functions.js");
 
 module.exports = {
     name: "leave",
+    synopsis: "",
     description: "leave | leave the session queue",
+    options: "",
     async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord) {
         if (!sessionGet.exists) return msg.channel.send(`Please start the game session with ${abbs[item]}.start`);
         let props = sessionGet.data();

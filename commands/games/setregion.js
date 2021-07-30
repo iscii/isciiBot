@@ -2,7 +2,9 @@ const functions = require("../../functions.js");
 
 module.exports = {
     name: "setregion",
+    synopsis: "",
     description: "setregion <NA/EU/ASIA> | set the region (ex: ex.setregion NA)",
+    options: "",
     async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord) {
         if (!args[0]) return msg.react("❌");
 

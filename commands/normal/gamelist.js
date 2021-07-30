@@ -1,6 +1,8 @@
 module.exports = {
     name: "gamelist",
-    description: "gamelist | get all games in the gamelist",
+    synopsis: "i.gamelist",
+    description: "get all games in the gamelist",
+    options: "",
     async execute(msg, admin, cmd, args, Discord, client) {
         let doc = admin.firestore().collection("guilds").doc(msg.guild.id);
         let docGet = await doc.get();

@@ -1,6 +1,8 @@
 module.exports = {
     name: "pin",
+    synopsis: "",
     description: "pin <message id> | hehe only I can pin messages you mortals (this is exploit but pls don't remove my rights)",
+    options: "",
     execute(msg, admin, cmd, args, Discord) {
         if(msg.author.id != "303922359595696138") return msg.react("❌");
         if(!args[0]) return msg.channel.send("Please provide the message id")

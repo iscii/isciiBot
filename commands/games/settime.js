@@ -2,7 +2,9 @@ const functions = require("../../functions.js");
 
 module.exports = {
     name: "settime",
+    synopsis: "",
     description: "settime <HH:MM> | set the time (ex: ex.settime 5:00 || ex.settime 5:30)",
+    options: "",
     async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord) {
         if (!args[0]) return msg.react("❌");
         if (!sessionGet.exists) return msg.channel.send(`Please start the game session with ${game}.start`);

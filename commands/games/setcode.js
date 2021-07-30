@@ -2,7 +2,9 @@ const functions = require("../../functions.js");
 
 module.exports = {
     name: "setcode",
+    synopsis: "",
     description: "setcode <code> | set the code (ex: ex.setcode ABCDEF)",
+    options: "",
     async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord) {
         if (!args[0]) return msg.react("❌");
 

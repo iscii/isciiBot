@@ -1,15 +1,4 @@
 
-6)
-https://cdn.discordapp.com/attachments/680227759024636001/681207772343304212/unknown.png
-	-make a command that'll react to a certain message (maybe the message above it)
-	with the specified emote
-
-5)X
-https://cdn.discordapp.com/attachments/680227759024636001/680608450857926703/unknown.png
-	-iterate through client.guilds to get every possible emoji
-	-instead of sending every emote in one go, make a command that sends 
-	the names of the guilds which the bot is in, and then have the user do |emotelist <guild>
-	-give bot a set num of emotes per message.
 4)
 https://cdn.discordapp.com/attachments/680227759024636001/680605968177954904/unknown.png
 	-"serveremotelist" command: fix the design (add || or smthn b/t the emotes)
@@ -17,33 +6,19 @@ https://cdn.discordapp.com/attachments/680227759024636001/680605968177954904/unk
 3)
 	-message authorization and permission checking
 
-2)X
-https://cdn.discordapp.com/attachments/680227759024636001/680228029829742618/unknown.png
-	-load bot into many servers to use as fake nitro
-
 1)
 https://cdn.discordapp.com/attachments/680227759024636001/680227970152923157/unknown.png
 https://cdn.discordapp.com/attachments/680227759024636001/680230039710990350/unknown.png
 	-route DMS to server channel (for confessions)
-
-7)
-https://discordapp.com/channels/745349499958067230/745349500587212943/745797464191139930
-	- among us queuemaker
-
 8)
 	- detect when everyone leaves and call endsession function there
-9)
-	- minecraft coords
-10)
-	- voting
-	- preset emotes for y/n
-		- when a user clicks one, remove their reaction and add the vote count to a progress-bar
-		type thing, which displays the percent yes/no or smtn (like yt poll posts)
-		(keeps it anonymous)
 
 11)
 	- whack a mole
 https://discordapp.com/channels/745349499958067230/748924877674643559/750439146002055230
 
-12)
-	genshin ids
+- truly anonymous voting (DMS)
+- just get working on some things DM
+- learn to use AI on the bot?
+- move db to MySQL maybe
+	- beckett recomments SQLite - it is more portable

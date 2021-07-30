@@ -2,7 +2,9 @@ const functions = require("../../functions.js");
 
 module.exports = {
     name: "setdesc",
+    synopsis: "",
     description: "setdesc <description> | set the embed description",
+    options: "",
     async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord) {
         let desc = "";
         if (args[0])

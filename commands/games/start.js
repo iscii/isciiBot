@@ -2,7 +2,9 @@ const functions = require("../../functions.js");
 
 module.exports = {
     name: 'start',
+    synopsis: "",
     description: 'start | start a session',
+    options: "",
     async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord) {
         let date = new Date();
         const props = await sessionGet.data();

@@ -1,6 +1,8 @@
 module.exports = {
     name: "code",
+    synopsis: "",
     description: "code | get the code",
+    options: "",
     execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord) {
         let props = sessionGet.data();
 

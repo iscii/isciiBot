@@ -1,8 +1,8 @@
-const { Emoji } = require("discord.js");
-
 module.exports = {
     name: "invite",
+    synopsis: "",
     description: "invite | get my invite link :J",
+    options: "",
     async execute(msg, admin, cmd, args, Discord, client) {
         em = new Discord.MessageEmbed()
             .setTitle("Click Me!")

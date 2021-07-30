@@ -2,7 +2,9 @@ const functions = require("../../functions.js");
 
 module.exports = {
     name: "setname",
+    synopsis: "",
     description: "setname <name> | set the game's name",
+    options: "",
     async execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord) {
         if (!args[0]) return msg.channel.send("Please include the new name");
         let name = "";

@@ -1,9 +1,10 @@
-const { displayHelp } = require("../../functions.js");
 const functions = require("../../functions.js")
 
 module.exports = {
     name: "help",
+    synopsis: "",
     description: "help [g] | get list of commands (ex: |help // |help g)",
+    options: "",
     execute(msg, args, client, Discord, prefix) {
         let list = client.normCmds;
         if (args[0] === "g") list = client.gameCmds;

@@ -1,6 +1,8 @@
 module.exports = {
     name: "ping",
+    synopsis: "",
     description: "ping | ping all players queued for session",
+    options: "",
     execute(msg, session, sessionGet, gameList, embedChannel, game, args, client, admin, Discord) {
         if (!sessionGet.exists) return msg.channel.send(`Please start the game session with ${game}.start`);
         let props = sessionGet.data();

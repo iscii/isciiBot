@@ -1,6 +1,8 @@
 module.exports = {
     name: "say",
+    synopsis: "",
     description: "say <message [.e.<emotename>] [prefix]> | say stuff. include <.e.> to emote, <prefix> to anonymize. (ex: |say hi | // |say hi .e.poop)",
+    options: "",
     async execute(msg, admin, cmd, args, Discord, client) {
         if (args[0] == null) return msg.channel.send("Please state the message to be sent.");
         msg.delete(); //* unknown message error: two instances of bot running; one deletes, the other can't find

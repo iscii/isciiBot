@@ -1,6 +1,8 @@
 module.exports = {
     name: "rm",
+    synopsis: "",
     description: "rm <abbreviation> | remove a game from gamelist",
+    options: "",
     async execute(msg, admin, cmd, args, Discord, client) {
         if(!args[0]) return msg.channel.send(this.description);
         let doc = admin.firestore().collection("guilds").doc(msg.guild.id);
