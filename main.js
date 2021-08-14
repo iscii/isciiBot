@@ -19,8 +19,8 @@ client.gameCmds = new Discord.Collection();
 const utilities = require("./utilities.js");
 
 //login
-client.login(process.env.TOKEN); //-- use this if ever plan on making repo public
-//client.login(fs.readFileSync("./token.txt").toString());
+//client.login(process.env.TOKEN); //-- use this if ever plan on making repo public
+client.login(fs.readFileSync("./token.txt").toString());
 
 //get command files
 const normCmdFiles = fs.readdirSync("./commands/normal").filter(file => file.endsWith(".js"));
@@ -106,7 +106,6 @@ client.on("message", async (msg) => {
     guildGet = await guild.get();
     guildData = guildGet.data();
     prefix = guildData.prefix;
-
     if (msg.content.toLowerCase().startsWith(prefix)) cmdGeneral(msg);
     else cmdGames(msg);
 });

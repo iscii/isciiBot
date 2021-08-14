@@ -2,7 +2,7 @@ const functions = require("../../functions.js");
 module.exports = {
     name: "poll",
     synopsis: "",
-    description: "poll -<title> -<description> -<option1> -<option 2> -<option 3>- ... (Max 10) | Makes a poll. Participants are anonymous. Options are set via reaction. The poll expires in an hour. Remember to include a dash - between options.",
+    description: "poll -<title> -<description> -<option1> -<option 2> -<option 3> ... (Max 10) | Makes a poll. Participants are anonymous. Options are set via reaction. The poll expires in an hour. Remember to include a dash - between options.",
     options: "",
     async execute(msg, admin, cmd, args, Discord) {
         console.log(args);
