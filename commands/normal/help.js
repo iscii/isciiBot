@@ -28,6 +28,6 @@ module.exports = {
     
         //improve descriptions
         //if categorize, organize command files into folders and use fs to get name of folder and organize per page or smtn
-        functions.displayHelp(msg, pages, 0, false);
+        functions.displayMenu(msg, pages, 0, false);
     },
 }

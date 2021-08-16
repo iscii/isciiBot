@@ -141,8 +141,9 @@ module.exports = {
             message.edit(em);
         }
     },
-    displayHelp: function (msg, pages, idx, edit) {
+    displayMenu: function (msg, pages, idx, edit) {
         if (!edit) {
+            if(pages.length == 1) return msg.channel.send(pages[idx]);
             msg.channel.send(pages[idx]).then(async (message) => {
                 message.react(client.emojis.cache.find(emoji => emoji.name === "maileft"));
                 message.react(client.emojis.cache.find(emoji => emoji.name === "mairight"));
@@ -155,7 +156,7 @@ module.exports = {
                 const collector = message.createReactionCollector(filter, { time: (300000) }); //5 minutes
                 collector.on("collect", async (reaction, user) => {
                     nextPage(reaction.emoji.name === "maileft" ? -1 : reaction.emoji.name === "mairight" ? 1 : 0);
-                    this.displayHelp(message, pages, idx, true);
+                    this.displayMenu(message, pages, idx, true);
                     message.reactions.resolve(reaction).users.remove(user);
                 });
                 collector.on("end", collected => {
@@ -166,5 +167,8 @@ module.exports = {
         else {
             msg.edit(pages[idx]);
         }
+    },
+    displaySauce: function (msg, pages, idx, edit) {
+
     },
 }
