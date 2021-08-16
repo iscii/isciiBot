@@ -3,13 +3,13 @@ const functions = require("../../functions.js");
 module.exports = {
     name: "sauce",
     synopsis: "",
-    description: "sauce <messages>| google image search image attachments in last <messages> (default 10) user-sent messages in channel and return the results",
+    description: "sauce <link>||<messages> | google image search image attachments in last <messages> (default 10) user-sent messages in channel or specified image link and return the results",
     options: "",
     async execute(msg, admin, cmd, args, Discord) {
         const search = require("another-node-reverse-image-search");
         //const search = require("../../modules/another-node-reverse-image-search"); //for testing purposes
         
-        const messagecount = args[0] ? args[0] : 10;
+        const arg = args[0] ? args[0] : 10;
         var i = j = 0; //i = image count, j = progressive page count
         let pages = [];
         //runtest function to wake up the search engine thing. First search never seems to work.
@@ -40,21 +40,29 @@ module.exports = {
         }
         //for each message, if it's an image, search and add results to an embed. format the embed and send the message, separately or together.
         search("https://cdn.discordapp.com/attachments/825057174178627614/876616833933926420/91928398_p0_master1200.png", test); //run search once first to prevent buggy first-runs
-        await msg.channel.messages.fetch({limit: messagecount})
-        .then(messages => {
-            console.log(`recieved ${messages.size} messages`);
-            messages.filter(message => message.attachments.size > 0).forEach(message => {
-                let links = message.attachments.map(attachment => attachment.proxyURL);
-                links.forEach(link => {i++;}); //counts expected number of results so we know when to display embeds. async await isn't working here.
-                links.forEach(link => {
-                    console.log(`search ${link}`);
-                    search(link, sendResults);
-                });
-            })
-        });
-        if(i == 0)
+        
+        if(isNaN(arg)){
+            if (!/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/.test(args[0]))
+                return msg.channel.send("That is not a valid url");
+            search(arg, sendResults);
+        }
+        else{
+            await msg.channel.messages.fetch({limit: arg})
+            .then(messages => {
+                console.log(`recieved ${messages.size} messages`);
+                messages.filter(message => message.attachments.size > 0).forEach(async message => {
+                    let links = message.attachments.map(attachment => attachment.proxyURL);
+                    links.forEach(link => {i++;}); //counts expected number of results so we know when to display embeds. async await isn't working here.
+                    links.forEach(async link => {
+                        console.log(`search ${link}`);
+                        await search(link, sendResults);
+                    });
+                })
+            });
+            if(i == 0)
             msg.react("❌");
-        else
+            else
             msg.channel.send(`Found ${i} images. Searching Google...`);
+        }
     },
 }
