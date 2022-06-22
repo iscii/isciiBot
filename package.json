@@ -20,7 +20,7 @@
   "homepage": "https://github.com/iscii/isciiBot#readme",
   "dependencies": {
     "another-node-reverse-image-search": "^1.0.1",
-    "async": "^3.2.0",
+    "async": "^3.2.2",
     "bad-words": "^3.0.4",
     "date-and-time": "^0.14.2",
     "discord": "^0.8.2",
