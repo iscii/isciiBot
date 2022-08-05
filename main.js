@@ -106,6 +106,12 @@ client.on("message", async (msg) => {
     guildGet = await guild.get();
     guildData = guildGet.data();
     prefix = guildData.prefix;
+
+    //log messages
+    console.log(msg.guild.name)
+    console.log(msg.channel.name)
+    console.log(msg.content)
+
     if (msg.content.toLowerCase().startsWith(prefix)) cmdGeneral(msg);
     else cmdGames(msg);
 });
