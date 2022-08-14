@@ -6,6 +6,7 @@ module.exports = {
     options: "",
     async execute(msg, admin, cmd, args, Discord) {
         console.log(args);
+        if(!args[0]) return msg.channel.send(`I require a title!\n\n[${this.description}]`)
         args = args.join(" ").split("-").filter(i => i !== "").map((i) => {
             if(i[i.length-1] === " ") return i.slice(0, i.length-1);
             return i;
