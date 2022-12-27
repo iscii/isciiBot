@@ -84,6 +84,7 @@ client.on("ready", async () => {
 		.get();
 	let ppl = bd.data();
 	//console.log(till);
+	//FIXME: use cron package instead of this janky setup
 	setTimeout(() => {
 		client.channels.fetch("745349500587212943").then(async (channel) => {
 			//745349500587212943
@@ -102,6 +103,14 @@ client.on("ready", async () => {
 				channel.send(`Happy Birthday!!! :birthday: ${users}`);
 			}
 		});
+		//send to isciimotes to test gm function
+		client.channels.fetch("819403384821776414").then(async (channel) => {
+			channel.send(
+				`Good Morning!!! ${client.emojis.cache.find(
+					(emoji) => emoji.name == "miyanohey"
+				)}`
+			);
+		})
 	}, till * 3600000);
 });
 
@@ -198,6 +207,8 @@ async function cmdGames(msg) {
 	}
 }
 
+//rework database: guilds are displayed by name, have field containing ID
+//allow birthdays to be added, put them into specific guilds
 //use webhooks
 //take influence from nqn bot's emote system (!pack search for server list)
 //make a setup command to set up embed channels and stuff
