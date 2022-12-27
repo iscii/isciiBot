@@ -104,7 +104,7 @@ client.on("ready", async () => {
 			}
 		});
 		//send to isciimotes to test gm function
-		client.channels.fetch("819403384821776414").then(async (channel) => {
+		client.channels.fetch("1012459312116924498").then(async (channel) => {
 			channel.send(
 				`Good Morning!!! ${client.emojis.cache.find(
 					(emoji) => emoji.name == "miyanohey"
